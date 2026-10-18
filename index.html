@@ -227,6 +227,41 @@
   .tile.used { visibility: hidden; }
   .tile.bad { animation: shake .4s; }
 
+  /* ---------- Jeux 5-6 ans ---------- */
+  .dotp { position: absolute; border-radius: 50%; background: #fff; border: 4px solid #ff7043; color: #e65100; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; box-sizing: border-box; line-height: 1; }
+  .dotp.next { background: #fff59d; animation: pulse .6s infinite alternate; }
+  .dotp.done { background: #a5d6a7; border-color: #43a047; color: #1b5e20; }
+  .mcell { position: absolute; box-sizing: border-box; border: 3px solid #b0bec5; background: #fff; border-radius: 10px; }
+  .mcell.right { border-style: dashed; background: rgba(255,255,255,.55); cursor: pointer; }
+  .mcell.on { border-style: solid; }
+  .mcell.bad { animation: shake .4s; }
+  .mirror-axis { position: absolute; width: 0; border-left: 4px dotted #7b1fa2; }
+  .st-row { display: flex; gap: 12px; justify-content: center; }
+  .stslot, .stcard { border-radius: 18px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; line-height: 1; padding: 0; font-family: inherit; }
+  .stslot { border: 4px dashed #ffb74d; background: rgba(255,255,255,.6); color: rgba(0,0,0,.2); font-weight: bold; }
+  .stslot.filled { border-style: solid; border-color: #66bb6a; background: #fff; color: inherit; }
+  .stcard { border: 6px solid #fff; background: #fff; cursor: pointer; box-shadow: 0 6px 0 rgba(0,0,0,.18); }
+  .stcard.used { visibility: hidden; }
+  .stcard.bad { animation: shake .4s; }
+  .rb-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 14px; padding: 6px; box-sizing: border-box; }
+  .rb-grid { position: relative; flex: none; background: #e8f5e9; border: 5px solid #5d4037; border-radius: 12px; box-sizing: content-box; }
+  .rb-cell { position: absolute; box-sizing: border-box; border: 1px solid rgba(0,0,0,.08); }
+  .rb-goal { position: absolute; display: flex; align-items: center; justify-content: center; line-height: 1; }
+  .rb-tok { position: absolute; display: flex; align-items: center; justify-content: center; line-height: 1; transition: left .35s, top .35s; }
+  .rb-ring { position: absolute; inset: 0; transition: transform .3s; pointer-events: none; }
+  .rb-ring i { position: absolute; right: 1px; top: 50%; margin-top: -9px; border-left: 15px solid #e53935; border-top: 9px solid transparent; border-bottom: 9px solid transparent; }
+  .rb-tok.bump { animation: shake .4s; }
+  .rb-ctl { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; flex: 1; min-width: 0; }
+  .rb-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .cmdb, .rbtn { border: none; border-radius: 18px; color: #fff; font: inherit; font-weight: bold; cursor: pointer; box-shadow: 0 5px 0 rgba(0,0,0,.2);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; padding: 0; }
+  .cmdb small { font-size: .26em; margin-top: 2px; }
+  .cmdb:active, .rbtn:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.2); }
+  .rb-prog { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-content: flex-start; background: rgba(255,255,255,.7); border-radius: 14px; padding: 6px; box-sizing: border-box; width: 100%; }
+  .chip { background: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 3px solid #90a4ae; line-height: 1; }
+  .chip.act { border-color: #e53935; background: #ffebee; }
+
   /* ---------- Version tactile (iPad / téléphone) ---------- */
   html, body { touch-action: manipulation; overscroll-behavior: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
   #stage, .bubble { touch-action: none; }
@@ -303,6 +338,23 @@
       <button class="menu-btn" style="background:#7cb342" data-mode="initial"><span class="ico">🔠</span>1ère lettre</button>
       <button class="menu-btn" style="background:#f9a825" data-mode="add"><span class="ico">➕</span>Additions</button>
       <button class="menu-btn" style="background:#6d4c41" data-mode="where"><span class="ico">📦</span>Où est-il ?</button>
+    </div>
+  </div>
+  <div class="menu-section">
+    <h2 class="menu-sub">🎓 Je grandis (5-6 ans)</h2>
+    <div class="menu-grid">
+      <button class="menu-btn" style="background:#ef6c00" data-mode="trace"><span class="ico">✍️</span>Je trace</button>
+      <button class="menu-btn" style="background:#5c6bc0" data-mode="sound"><span class="ico">👂</span>Les sons</button>
+      <button class="menu-btn" style="background:#00897b" data-mode="syll"><span class="ico">👏</span>Syllabes</button>
+      <button class="menu-btn" style="background:#d81b60" data-mode="rhyme"><span class="ico">🎤</span>Rimes</button>
+      <button class="menu-btn" style="background:#3949ab" data-mode="dots"><span class="ico">📍</span>Relie-points</button>
+      <button class="menu-btn" style="background:#8e24aa" data-mode="mirror"><span class="ico">🪞</span>Miroir</button>
+      <button class="menu-btn" style="background:#0288d1" data-mode="shapes3d"><span class="ico">🧊</span>Formes 3D</button>
+      <button class="menu-btn" style="background:#43a047" data-mode="habitat"><span class="ico">🏝️</span>Habitats</button>
+      <button class="menu-btn" style="background:#f9a825" data-mode="emotion"><span class="ico">😊</span>Émotions</button>
+      <button class="menu-btn" style="background:#e64a19" data-mode="season"><span class="ico">🍂</span>Saisons</button>
+      <button class="menu-btn" style="background:#6d4c41" data-mode="story"><span class="ico">📖</span>Histoires</button>
+      <button class="menu-btn" style="background:#546e7a" data-mode="robot"><span class="ico">🤖</span>Robot</button>
     </div>
   </div>
 </div>
@@ -725,6 +777,13 @@ function nextQuestion() {
   if (mode === "initial")  q = buildInitial();
   if (mode === "add")      q = buildAdd();
   if (mode === "where")    q = buildWhere();
+  if (mode === "sound")    q = buildSound();
+  if (mode === "syll")     q = buildSyll();
+  if (mode === "rhyme")    q = buildRhyme();
+  if (mode === "shapes3d") q = buildSolid();
+  if (mode === "habitat")  q = buildHabitat();
+  if (mode === "emotion")  q = buildEmotion();
+  if (mode === "season")   q = buildSeason();
   current = q;
   $("promptText").textContent = q.text;
   if (q.visual) $("promptVisual").textContent = q.visual;
@@ -1508,6 +1567,574 @@ ARENA.melody = function () {
     }
   }));
   newRound();
+};
+
+
+/* ================== Jeux 5-6 ans : quiz ================== */
+const nOthers = () => lv() >= 2 ? 3 : 2;
+function rwHTML(e, label) {
+  return `<span style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;gap:.05em;max-width:100%"><span style="font-size:.62em">${e}</span><small style="font-size:.2em;font-weight:bold;color:#37474f;white-space:nowrap">${label}</small></span>`;
+}
+
+/* --- Les sons : quelle image commence par cette lettre ? --- */
+function initialOf(item) { return stripArt(item.art)[0].normalize("NFD").replace(/[̀-ͯ]/g, "").toUpperCase(); }
+function buildSound() {
+  const pool = [...ANIMALS, ...FRUITS, ...VEHICLES].filter(x => !x.art.includes(" de "));
+  const t = rand(pool), L = initialOf(t);
+  const used = new Set([L]), others = [];
+  for (const x of shuffle(pool)) {
+    const l = initialOf(x);
+    if (!used.has(l)) { used.add(l); others.push(x); }
+    if (others.length >= nOthers()) break;
+  }
+  return {
+    text: `Trouve ce qui commence par la lettre ${L}`,
+    visualHTML: `<span style="color:${rand(LETTER_COLORS)}">${L}</span>`,
+    speech: `Trouve quelque chose qui commence par la lettre ${L}. Touche dessus !`,
+    letter: L,
+    options: shuffle([t, ...others]).map(x => ({ html: x.e, correct: x === t }))
+  };
+}
+
+/* --- Syllabes --- */
+const SYLL = [
+  { w: "chat", e: "🐱", n: 1 }, { w: "loup", e: "🐺", n: 1 }, { w: "pain", e: "🍞", n: 1 }, { w: "main", e: "✋", n: 1 },
+  { w: "nez", e: "👃", n: 1 }, { w: "fleur", e: "🌸", n: 1 }, { w: "ours", e: "🐻", n: 1 }, { w: "lit", e: "🛏️", n: 1 },
+  { w: "sac", e: "🎒", n: 1 }, { w: "mer", e: "🌊", n: 1 },
+  { w: "lapin", e: "🐰", n: 2 }, { w: "canard", e: "🦆", n: 2 }, { w: "ballon", e: "⚽", n: 2 }, { w: "bateau", e: "⛵", n: 2 },
+  { w: "maison", e: "🏠", n: 2 }, { w: "soleil", e: "☀️", n: 2 }, { w: "poisson", e: "🐟", n: 2 }, { w: "chapeau", e: "🎩", n: 2 },
+  { w: "gâteau", e: "🎂", n: 2 }, { w: "cheval", e: "🐴", n: 2 }, { w: "papa", e: "👨", n: 2 },
+  { w: "éléphant", e: "🐘", n: 3 }, { w: "kangourou", e: "🦘", n: 3 }, { w: "chocolat", e: "🍫", n: 3 }, { w: "papillon", e: "🦋", n: 3 },
+  { w: "ananas", e: "🍍", n: 3 }, { w: "parapluie", e: "☂️", n: 3 }, { w: "hérisson", e: "🦔", n: 3 }, { w: "dinosaure", e: "🦖", n: 3 }
+];
+let lastSyll = "";
+function buildSyll() {
+  const pool = SYLL.filter(x => (lv() >= 2 || x.n <= 2) && x.w !== lastSyll);
+  const t = rand(pool); lastSyll = t.w;
+  const pal = shuffle(LETTER_COLORS);
+  return {
+    text: `Combien de syllabes dans « ${t.w} » ?`,
+    visual: t.e,
+    speech: `Combien de syllabes dans le mot ${t.w} ? Tape-les dans tes mains. Touche le bon chiffre !`,
+    word: t.w,
+    options: [1, 2, 3].map((n, i) => ({ html: `<span style="color:${pal[i]}">${n}</span>`, correct: n === t.n }))
+  };
+}
+
+/* --- Rimes --- */
+const RHYMES = [
+  [["mouton", "🐑"], ["bouton", "🔘"], ["ballon", "⚽"], ["avion", "✈️"], ["citron", "🍋"], ["poisson", "🐟"], ["maison", "🏠"], ["camion", "🚚"]],
+  [["chapeau", "🎩"], ["bateau", "⛵"], ["gâteau", "🎂"], ["cadeau", "🎁"], ["château", "🏰"], ["drapeau", "🏁"], ["oiseau", "🐦"]],
+  [["pain", "🍞"], ["main", "✋"], ["train", "🚂"], ["lapin", "🐰"], ["raisin", "🍇"], ["dauphin", "🐬"]],
+  [["poule", "🐔"], ["boule", "🎱"]],
+  [["fleur", "🌸"], ["cœur", "❤️"], ["tracteur", "🚜"]],
+  [["hibou", "🦉"], ["bijou", "💍"], ["caillou", "🪨"], ["chou", "🥬"]],
+  [["souris", "🐭"], ["riz", "🍚"], ["fourmi", "🐜"], ["lit", "🛏️"], ["nid", "🪺"]]
+];
+let lastRhyme = "";
+function buildRhyme() {
+  let gi, a, b;
+  do {
+    gi = Math.floor(Math.random() * RHYMES.length);
+    [a, b] = shuffle(RHYMES[gi]);
+  } while (a[0] === lastRhyme);
+  lastRhyme = a[0];
+  const others = shuffle(RHYMES.map((g, i) => i).filter(i => i !== gi)).slice(0, nOthers()).map(i => rand(RHYMES[i]));
+  return {
+    text: `Quel mot rime avec « ${a[0]} » ?`,
+    visual: a[1],
+    speech: `Quel mot rime avec ${a[0]} ? Écoute bien la fin du mot. Touche dessus !`,
+    word: a[0],
+    options: shuffle([b, ...others]).map(x => ({ html: rwHTML(x[1], x[0]), correct: x === b }))
+  };
+}
+
+/* --- Formes 3D --- */
+const SOLIDS = {
+  cube:     { de: "d'un cube",     items: ["🎲", "🧊"],
+    svg: '<polygon points="50,8 88,28 50,48 12,28" fill="#90caf9" stroke="#1565c0" stroke-width="3"/><polygon points="12,28 50,48 50,92 12,72" fill="#64b5f6" stroke="#1565c0" stroke-width="3"/><polygon points="88,28 50,48 50,92 88,72" fill="#42a5f5" stroke="#1565c0" stroke-width="3"/>' },
+  sphere:   { de: "d'une sphère",  items: ["⚽", "🏀", "🌍", "🎱"],
+    svg: '<defs><radialGradient id="sg" cx="35%" cy="30%" r="70%"><stop offset="0" stop-color="#fff59d"/><stop offset="1" stop-color="#ef6c00"/></radialGradient></defs><circle cx="50" cy="50" r="40" fill="url(#sg)" stroke="#e65100" stroke-width="3"/>' },
+  cylindre: { de: "d'un cylindre", items: ["🥫", "🛢️"],
+    svg: '<ellipse cx="50" cy="22" rx="30" ry="11" fill="#a5d6a7" stroke="#2e7d32" stroke-width="3"/><path d="M20 22 V76 A30 11 0 0 0 80 76 V22" fill="#66bb6a" stroke="#2e7d32" stroke-width="3"/><ellipse cx="50" cy="22" rx="30" ry="11" fill="#a5d6a7" stroke="#2e7d32" stroke-width="3"/>' },
+  cone:     { de: "d'un cône",     items: ["🍦", "🎄"],
+    svg: '<path d="M50 8 L84 76 A34 12 0 0 1 16 76 Z" fill="#ffcc80" stroke="#ef6c00" stroke-width="3"/>' }
+};
+let lastSolid = "";
+function buildSolid() {
+  const keys = Object.keys(SOLIDS).filter(k => k !== lastSolid);
+  const k = rand(keys); lastSolid = k;
+  const target = rand(SOLIDS[k].items);
+  const others = shuffle(Object.keys(SOLIDS).filter(x => x !== k)).slice(0, nOthers()).map(x => rand(SOLIDS[x].items));
+  return {
+    text: `Lequel a la forme ${SOLIDS[k].de} ?`,
+    visualHTML: `<svg viewBox="0 0 100 100" style="width:1.3em;height:1.3em;vertical-align:middle">${SOLIDS[k].svg}</svg>`,
+    speech: `Lequel a la forme ${SOLIDS[k].de} ? Touche dessus !`,
+    solid: k,
+    options: shuffle([target, ...others]).map(e => ({ html: e, correct: e === target }))
+  };
+}
+
+/* --- Habitats --- */
+const HABITATS = {
+  banquise: { e: "🧊", n: "banquise" }, jungle: { e: "🌴", n: "jungle" }, foret: { e: "🌲", n: "forêt" },
+  ocean: { e: "🌊", n: "océan" }, savane: { e: "🌾", n: "savane" }, desert: { e: "🏜️", n: "désert" }
+};
+const HAB_ANIMALS = [
+  { art: "le manchot", e: "🐧", h: "banquise" }, { art: "le phoque", e: "🦭", h: "banquise" },
+  { art: "le singe", e: "🐒", h: "jungle" }, { art: "le tigre", e: "🐅", h: "jungle" }, { art: "le perroquet", e: "🦜", h: "jungle" }, { art: "le gorille", e: "🦍", h: "jungle" },
+  { art: "le renard", e: "🦊", h: "foret" }, { art: "le cerf", e: "🦌", h: "foret" }, { art: "la chouette", e: "🦉", h: "foret" }, { art: "le hérisson", e: "🦔", h: "foret" },
+  { art: "le dauphin", e: "🐬", h: "ocean" }, { art: "la baleine", e: "🐳", h: "ocean" }, { art: "la pieuvre", e: "🐙", h: "ocean" }, { art: "le requin", e: "🦈", h: "ocean" },
+  { art: "le lion", e: "🦁", h: "savane" }, { art: "la girafe", e: "🦒", h: "savane" }, { art: "le zèbre", e: "🦓", h: "savane" }, { art: "l'éléphant", e: "🐘", h: "savane" },
+  { art: "le chameau", e: "🐪", h: "desert" }, { art: "le scorpion", e: "🦂", h: "desert" }
+];
+let lastHab = "";
+function buildHabitat() {
+  const a = rand(HAB_ANIMALS.filter(x => x.art !== lastHab)); lastHab = a.art;
+  const others = shuffle(Object.keys(HABITATS).filter(k => k !== a.h)).slice(0, nOthers());
+  const cap = a.art.charAt(0).toUpperCase() + a.art.slice(1);
+  return {
+    text: `Où vit ${a.art} ?`,
+    visual: a.e,
+    speech: `Où vit ${a.art} ? Touche dessus !`,
+    animal: a.art,
+    options: shuffle([a.h, ...others]).map(k => ({ html: rwHTML(HABITATS[k].e, HABITATS[k].n), correct: k === a.h }))
+  };
+}
+
+/* --- Émotions --- */
+const FEELINGS = {
+  joie: { e: "😄", n: "content" }, triste: { e: "😢", n: "triste" }, colere: { e: "😠", n: "en colère" },
+  peur: { e: "😨", n: "a peur" }, fatigue: { e: "😴", n: "fatigué" }, surprise: { e: "😲", n: "surpris" }
+};
+const SITUATIONS = [
+  { t: "Il reçoit un beau cadeau", e: "🎁", f: "joie" }, { t: "C'est son anniversaire", e: "🎂", f: "joie" },
+  { t: "Son ballon s'est envolé", e: "🎈", f: "triste" }, { t: "Son doudou est perdu", e: "🧸", f: "triste" },
+  { t: "Son frère a cassé sa tour", e: "🏗️", f: "colere" }, { t: "Un copain lui a pris sa place", e: "🪑", f: "colere" },
+  { t: "Il y a un gros orage la nuit", e: "⛈️", f: "peur" }, { t: "Un gros chien aboie très fort", e: "🐕", f: "peur" },
+  { t: "Il a couru toute la journée", e: "🏃", f: "fatigue" }, { t: "Il est très tard et il bâille", e: "🌙", f: "fatigue" },
+  { t: "Une boîte surprise s'ouvre d'un coup", e: "🎊", f: "surprise" }, { t: "Un feu d'artifice éclate", e: "🎆", f: "surprise" }
+];
+let lastSit = "";
+function buildEmotion() {
+  const s = rand(SITUATIONS.filter(x => x.t !== lastSit)); lastSit = s.t;
+  const others = shuffle(Object.keys(FEELINGS).filter(k => k !== s.f)).slice(0, nOthers());
+  return {
+    text: `${s.t}. Comment se sent-il ?`,
+    visual: s.e,
+    speech: `${s.t}. Comment se sent-il ? Touche dessus !`,
+    situation: s.t,
+    options: shuffle([s.f, ...others]).map(k => ({ html: rwHTML(FEELINGS[k].e, FEELINGS[k].n), correct: k === s.f }))
+  };
+}
+
+/* --- Saisons --- */
+const SEASONS = {
+  automne:   { n: "automne",   e: "🍂", bg: "#ffcc80", items: ["🍄", "🌰", "🍁", "🧥"] },
+  hiver:     { n: "hiver",     e: "❄️", bg: "#b3e5fc", items: ["⛄", "🧣", "🧤", "🎿"] },
+  printemps: { n: "printemps", e: "🌸", bg: "#c8e6c9", items: ["🌷", "🐣", "🐝", "🦋"] },
+  ete:       { n: "été",       e: "☀️", bg: "#fff59d", items: ["🏖️", "🍦", "🍉", "🕶️"] }
+};
+let lastSeason = "";
+function buildSeason() {
+  const k = rand(Object.keys(SEASONS).filter(x => x !== lastSeason)); lastSeason = k;
+  const items = shuffle(SEASONS[k].items).slice(0, lv() >= 2 ? 2 : 3);
+  const others = shuffle(Object.keys(SEASONS).filter(x => x !== k)).slice(0, nOthers());
+  return {
+    text: "Quelle saison est-ce ?",
+    visual: items.join(" "),
+    speech: "Regarde bien ces images. Quelle saison est-ce ? Touche dessus !",
+    season: k,
+    options: shuffle([k, ...others]).map(x => ({ html: rwHTML(SEASONS[x].e, SEASONS[x].n), bg: SEASONS[x].bg, correct: x === k }))
+  };
+}
+
+/* ================== Jeux 5-6 ans : mini-jeux ================== */
+
+/* --- Je trace : suivre un chiffre ou une lettre --- */
+let TRACE = null;
+ARENA.trace = function () {
+  const f = $("field");
+  let round = 0, lastG = "";
+  $("stars3").textContent = "☆☆☆";
+  const FONT = '"Arial Rounded MT Bold","Trebuchet MS",Arial,Helvetica,sans-serif';
+  const play = () => {
+    f.innerHTML = ""; TRACE = null;
+    const hard = lv() >= 2;
+    const D = (hard ? "0123456789" : "1234570").split(""), L = (hard ? "ABCDEFGHIJLMNOPRSTUVZ" : "LTIVOCUHEA").split("");
+    let g;
+    do { g = round === 0 ? rand(D) : round === 1 ? rand(L) : rand([...D, ...L]); } while (g === lastG);
+    lastG = g;
+    const isDigit = /\d/.test(g), what = isDigit ? "le chiffre" : "la lettre";
+    setArena(`Trace ${what} ${g} !`, `Trace ${what} ${g} ! Pose ton doigt et suis la forme !`);
+    const W = f.clientWidth, H = f.clientHeight, dpr = Math.min(2, window.devicePixelRatio || 1);
+    const fs = Math.floor(Math.min(H * 0.86, W * 0.9 / 0.64));
+    const mk = () => {
+      const c = document.createElement("canvas");
+      c.width = Math.round(W * dpr); c.height = Math.round(H * dpr);
+      c.style.cssText = `position:absolute;left:0;top:0;width:${W}px;height:${H}px`;
+      const x = c.getContext("2d"); x.scale(dpr, dpr); return [c, x];
+    };
+    const [gc, gx] = mk(), [ic, ix] = mk();
+    const place = x => {
+      x.font = `bold ${fs}px ${FONT}`; x.textAlign = "center"; x.textBaseline = "alphabetic";
+      const m = x.measureText(g), asc = m.actualBoundingBoxAscent || fs * 0.72, desc = m.actualBoundingBoxDescent || 0;
+      return H / 2 + (asc - desc) / 2;
+    };
+    const by = place(gx);
+    gx.fillStyle = "#fff3e0"; gx.fillText(g, W / 2, by);
+    gx.strokeStyle = "#ff9800"; gx.lineWidth = Math.max(3, fs * 0.012); gx.setLineDash([fs * 0.03, fs * 0.04]); gx.strokeText(g, W / 2, by);
+    // masque : où est la forme ?
+    const mc = document.createElement("canvas"); mc.width = W; mc.height = H;
+    const mx = mc.getContext("2d"); const by2 = place(mx); mx.fillStyle = "#000"; mx.fillText(g, W / 2, by2);
+    const data = mx.getImageData(0, 0, W, H).data;
+    const step = Math.max(4, Math.round(fs / 55)), cols = Math.ceil(W / step), rows = Math.ceil(H / step);
+    const id = new Int32Array(cols * rows).fill(-1), samples = [];
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+      const x = Math.min(W - 1, Math.floor(i * step + step / 2)), y = Math.min(H - 1, Math.floor(j * step + step / 2));
+      if (data[(y * W + x) * 4 + 3] > 128) { id[j * cols + i] = samples.length; samples.push([x, y]); }
+    }
+    const covered = new Uint8Array(samples.length);
+    let nCov = 0, pts = 0, inside = 0, done = false, drawing = false, lx = 0, ly = 0;
+    const rb = Math.max(14, fs * 0.075);
+    const touch = (x, y) => {
+      let hit = false;
+      const r = rb * 0.95, k = Math.ceil(r / step), cx = Math.floor(x / step), cy = Math.floor(y / step);
+      for (let j = cy - k; j <= cy + k; j++) for (let i = cx - k; i <= cx + k; i++) {
+        if (i < 0 || j < 0 || i >= cols || j >= rows) continue;
+        const s = id[j * cols + i]; if (s < 0) continue;
+        const dx = samples[s][0] - x, dy = samples[s][1] - y;
+        if (dx * dx + dy * dy <= r * r) { hit = true; if (!covered[s]) { covered[s] = 1; nCov++; } }
+      }
+      return hit;
+    };
+    const dot = (x, y) => { pts++; if (touch(x, y)) inside++; };
+    const win = () => {
+      done = true; round++;
+      $("stars3").textContent = "⭐".repeat(round) + "☆".repeat(3 - round);
+      ix.clearRect(0, 0, W, H);
+      gx.setLineDash([]); gx.fillStyle = rand(["#66bb6a", "#42a5f5", "#ab47bc", "#ffa726"]); gx.fillText(g, W / 2, by);
+      sound.win(); confetti(40);
+      later(() => say(`Bravo${nm()} ! Tu as écrit ${what} ${g} !`), 400);
+      later(() => round >= 3 ? finish() : play(), 2200);
+    };
+    const check = () => { if (!done && samples.length && nCov / samples.length >= 0.72 && pts && inside / pts >= 0.6) win(); };
+    const reset = () => { ix.clearRect(0, 0, W, H); covered.fill(0); nCov = 0; pts = 0; inside = 0; say("Essaie de rester sur la forme !"); };
+    const pos = e => { const r = ic.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+    ic.style.touchAction = "none";
+    ic.addEventListener("pointerdown", e => {
+      if (done) return;
+      drawing = true; try { ic.setPointerCapture(e.pointerId); } catch (err) {}
+      [lx, ly] = pos(e);
+      ix.fillStyle = "#e53935"; ix.beginPath(); ix.arc(lx, ly, rb * 0.75, 0, 7); ix.fill(); dot(lx, ly); check();
+    });
+    ic.addEventListener("pointermove", e => {
+      if (!drawing || done) return;
+      const [x, y] = pos(e);
+      ix.lineCap = ix.lineJoin = "round"; ix.lineWidth = rb * 1.5; ix.strokeStyle = "#e53935";
+      ix.beginPath(); ix.moveTo(lx, ly); ix.lineTo(x, y); ix.stroke();
+      const d = Math.hypot(x - lx, y - ly), n = Math.max(1, Math.ceil(d / (rb * 0.5)));
+      for (let i = 1; i <= n; i++) dot(lx + (x - lx) * i / n, ly + (y - ly) * i / n);
+      lx = x; ly = y; check();
+    });
+    const up = () => {
+      if (!drawing) return; drawing = false;
+      check();
+      if (!done && pts > 150 && inside / pts < 0.5) reset();
+    };
+    ic.addEventListener("pointerup", up); ic.addEventListener("pointercancel", up);
+    f.appendChild(gc); f.appendChild(ic);
+    TRACE = { g, round, W, H, samples, rb, step, fs };
+  };
+  play();
+};
+
+/* --- Relie-points : de 1 à 16, dans l'ordre --- */
+const DOT_SHAPES = {
+  maison: { n: "une maison", pts: () => [[.15, .92], [.15, .5], [.5, .12], [.85, .5], [.85, .92], [.63, .92], [.63, .66], [.37, .66], [.37, .92]] },
+  etoile: { n: "une étoile", pts: () => Array.from({ length: 10 }, (_, i) => { const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? 0.22 : 0.5; return [0.5 + r * Math.cos(a), 0.52 + r * Math.sin(a)]; }) },
+  coeur:  { n: "un cœur", pts: n => n >= 14
+    ? [[.5, .28], [.4, .14], [.28, .1], [.15, .15], [.08, .3], [.1, .46], [.22, .62], [.5, .92], [.78, .62], [.9, .46], [.92, .3], [.85, .15], [.72, .1], [.6, .14]]
+    : [[.5, .28], [.38, .12], [.2, .12], [.08, .3], [.12, .52], [.5, .92], [.88, .52], [.92, .3], [.8, .12], [.62, .12]] }
+};
+ARENA.dots = function () {
+  const f = $("field");
+  let round = 0;
+  const order = shuffle(["maison", "etoile", "coeur"]);
+  $("stars3").textContent = "☆☆☆";
+  const play = () => {
+    f.innerHTML = "";
+    const key = order[round % 3];
+    setArena("Relie les points dans l'ordre !", "Relie les points dans l'ordre, en commençant par 1 ! Glisse ton doigt dessus.");
+    const W = f.clientWidth, H = f.clientHeight, PAD = 34, S = Math.min(W, H) - 2 * PAD;
+    const raw = key === "coeur" ? DOT_SHAPES.coeur.pts(lv() >= 2 && S >= 360 ? 14 : 10) : DOT_SHAPES[key].pts();
+    const ox = (W - S) / 2, oy = (H - S) / 2;
+    const P = raw.map(([x, y]) => [ox + x * S, oy + y * S]);
+    let minD = 1e9;
+    for (let i = 0; i < P.length; i++) for (let j = i + 1; j < P.length; j++) minD = Math.min(minD, Math.hypot(P[i][0] - P[j][0], P[i][1] - P[j][1]));
+    const ds = Math.round(Math.max(28, Math.min(68, minD * 0.78)));
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("width", W); svg.setAttribute("height", H);
+    svg.style.cssText = "position:absolute;inset:0;pointer-events:none";
+    f.appendChild(svg);
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+    line.setAttribute("fill", "none"); line.setAttribute("stroke", "#5c6bc0"); line.setAttribute("stroke-width", 6); line.setAttribute("stroke-linecap", "round"); line.setAttribute("stroke-linejoin", "round");
+    svg.appendChild(line);
+    const els = P.map(([x, y], i) => {
+      const d = document.createElement("div");
+      d.className = "dotp"; d.dataset.n = i + 1; d.textContent = i + 1;
+      d.style.cssText = `left:${x - ds / 2}px;top:${y - ds / 2}px;width:${ds}px;height:${ds}px;font-size:${Math.round(ds * 0.5)}px`;
+      f.appendChild(d); return d;
+    });
+    let idx = 0;
+    const refresh = () => els.forEach((d, i) => d.classList.toggle("next", i === idx));
+    refresh();
+    const R = Math.max(22, ds * 0.75);
+    const move = e => {
+      if (idx >= P.length) return;
+      const r = f.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+      if (Math.hypot(x - P[idx][0], y - P[idx][1]) > R) return;
+      els[idx].classList.remove("next"); els[idx].classList.add("done");
+      tone(450 + idx * 40, 0.12, "triangle");
+      idx++;
+      line.setAttribute("points", P.slice(0, idx).map(p => p.join(",")).join(" "));
+      if (idx === P.length) {
+        const poly = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        poly.setAttribute("points", P.map(p => p.join(",")).join(" "));
+        poly.setAttribute("fill", rand(["#ffab91", "#ce93d8", "#90caf9", "#a5d6a7"])); poly.setAttribute("fill-opacity", ".85"); poly.setAttribute("stroke", "#5c6bc0"); poly.setAttribute("stroke-width", 6); poly.setAttribute("stroke-linejoin", "round");
+        svg.insertBefore(poly, line);
+        round++;
+        $("stars3").textContent = "⭐".repeat(round) + "☆".repeat(3 - round);
+        sound.win(); confetti(40);
+        later(() => say(`Bravo${nm()} ! C'est ${DOT_SHAPES[key].n} !`), 400);
+        later(() => round >= 3 ? finish() : play(), 2400);
+      } else refresh();
+    };
+    f.onpointermove = move; f.onpointerdown = move;
+  };
+  play();
+};
+
+/* --- Miroir : compléter l'autre moitié --- */
+ARENA.mirror = function () {
+  const f = $("field");
+  let round = 0;
+  $("stars3").textContent = "☆☆☆";
+  const play = () => {
+    f.innerHTML = "";
+    setArena("Fais pareil de l'autre côté du miroir !", "Fais pareil de l'autre côté du miroir ! Colorie les cases de droite, comme celles de gauche. Touche dessus !");
+    const W = f.clientWidth, H = f.clientHeight;
+    const hc = lv() >= 2 ? 4 : 3, rows = lv() >= 2 ? 5 : 4;
+    const cell = Math.floor(Math.min((W - 24) / (2 * hc), (H - 24) / rows, 100));
+    const gw = cell * 2 * hc, gh = cell * rows, ox = Math.round((W - gw) / 2), oy = Math.round((H - gh) / 2);
+    const total = hc * rows, k = Math.min(total - 2, 4 + round + (lv() >= 2 ? 2 : 0));
+    const filled = new Set(shuffle([...Array(total).keys()]).slice(0, k));
+    const color = rand(["#ef5350", "#42a5f5", "#66bb6a", "#ffa726", "#ab47bc"]);
+    let left = k;
+    for (let r = 0; r < rows; r++) for (let c = 0; c < 2 * hc; c++) {
+      const d = document.createElement("div");
+      const isRight = c >= hc;
+      const lc = isRight ? 2 * hc - 1 - c : c, want = filled.has(r * hc + lc);
+      d.className = "mcell" + (isRight ? " right" : "");
+      d.dataset.r = r; d.dataset.c = c; d.dataset.side = isRight ? "right" : "left"; d.dataset.want = want ? "1" : "0";
+      d.style.cssText = `left:${ox + c * cell}px;top:${oy + r * cell}px;width:${cell - 4}px;height:${cell - 4}px;`;
+      if (!isRight && want) { d.classList.add("on"); d.style.background = color; }
+      if (isRight) d.addEventListener("click", () => {
+        if (d.classList.contains("on") || left === 0) return;
+        if (want) {
+          d.classList.add("on"); d.style.background = color; left--; tone(500 + left * 40, 0.12, "triangle");
+          if (left === 0) {
+            round++;
+            $("stars3").textContent = "⭐".repeat(round) + "☆".repeat(3 - round);
+            sound.win(); confetti(40); say(rand(["Bravo", "Super", "Génial"]) + nm() + " !");
+            later(() => round >= 3 ? finish() : play(), 1800);
+          }
+        } else { d.classList.remove("bad"); void d.offsetWidth; d.classList.add("bad"); sound.oops(); }
+      });
+      f.appendChild(d);
+    }
+    const ax = document.createElement("div");
+    ax.className = "mirror-axis"; ax.style.cssText = `left:${ox + hc * cell - 4}px;top:${oy - 6}px;height:${gh + 12}px`;
+    f.appendChild(ax);
+  };
+  play();
+};
+
+/* --- Histoires : remettre les images dans l'ordre --- */
+const STORIES3 = [
+  { s: ["🌰", "🌱", "🌻"], say: "D'abord la graine, puis la pousse, et enfin la belle fleur." },
+  { s: ["🥚", "🐣", "🐔"], say: "D'abord l'œuf, puis le poussin, et enfin la poule." },
+  { s: ["🥣", "🔥", "🎂"], say: "On mélange la pâte, on la fait cuire, et on mange le gâteau." },
+  { s: ["☁️", "🌧️", "🌈"], say: "Le nuage arrive, la pluie tombe, et l'arc-en-ciel apparaît." }
+];
+const STORIES4 = [
+  { s: ["🌅", "☀️", "🌇", "🌙"], say: "Le matin, le soleil se lève. À midi, il brille. Le soir, il se couche. Et la nuit, la lune arrive." },
+  { s: ["🛏️", "🪥", "🥣", "🏫"], say: "Je me lève, je me lave les dents, je mange mon petit-déjeuner, et je pars à l'école." },
+  { s: ["❄️", "⛄", "☀️", "💧"], say: "Il neige, on fait un bonhomme de neige, le soleil brille, et le bonhomme fond." }
+];
+let STORY = null;
+ARENA.story = function () {
+  const f = $("field");
+  let round = 0; const used = new Set();
+  $("stars3").textContent = "☆☆☆";
+  const play = () => {
+    f.innerHTML = "";
+    const list = lv() >= 2 ? STORIES4 : STORIES3;
+    let pool = list.filter(x => !used.has(x.say)); if (!pool.length) { used.clear(); pool = list; }
+    const st = rand(pool); used.add(st.say);
+    const n = st.s.length;
+    STORY = { steps: st.s, say: st.say };
+    setArena("Remets l'histoire dans l'ordre !", `Écoute l'histoire. ${st.say} Remets les images dans l'ordre, du début à la fin. Touche dessus !`);
+    const W = f.clientWidth, H = f.clientHeight;
+    const sz = Math.max(48, Math.floor(Math.min(H * 0.3, (W - 16) / n - 14, 140)));
+    const wrap = document.createElement("div");
+    wrap.style.cssText = "position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly";
+    const slotRow = document.createElement("div"), cardRow = document.createElement("div");
+    slotRow.className = cardRow.className = "st-row";
+    const slots = st.s.map((_, i) => {
+      const d = document.createElement("div"); d.className = "stslot"; d.textContent = i + 1;
+      d.style.cssText = `width:${sz}px;height:${sz}px;font-size:${Math.round(sz * 0.5)}px`; slotRow.appendChild(d); return d;
+    });
+    let order; do { order = shuffle(st.s); } while (order.every((e, i) => e === st.s[i]));
+    let idx = 0;
+    order.forEach(e => {
+      const b = document.createElement("button"); b.className = "stcard"; b.dataset.e = e; b.textContent = e;
+      b.style.cssText = `width:${sz}px;height:${sz}px;font-size:${Math.round(sz * 0.6)}px`;
+      b.addEventListener("click", () => {
+        if (b.classList.contains("used") || idx >= n) return;
+        if (e === st.s[idx]) {
+          b.classList.add("used"); slots[idx].textContent = e; slots[idx].classList.add("filled"); slots[idx].style.fontSize = Math.round(sz * 0.6) + "px";
+          idx++; tone(480 + idx * 60, 0.12, "triangle");
+          if (idx === n) {
+            round++;
+            $("stars3").textContent = "⭐".repeat(round) + "☆".repeat(3 - round);
+            sound.win(); confetti(40);
+            later(() => say("Bravo" + nm() + " ! " + st.say), 400);
+            later(() => round >= 3 ? finish() : play(), 5200);
+          }
+        } else { b.classList.remove("bad"); void b.offsetWidth; b.classList.add("bad"); sound.oops(); }
+      });
+      cardRow.appendChild(b);
+    });
+    wrap.appendChild(slotRow); wrap.appendChild(cardRow); f.appendChild(wrap);
+  };
+  play();
+};
+
+/* --- Robot : programmer un parcours --- */
+let ROBOT = null;
+ARENA.robot = function () {
+  const f = $("field");
+  let round = 0;
+  $("stars3").textContent = "☆☆☆";
+  const V = [[0, 1], [1, 0], [0, -1], [-1, 0]];
+  const play = () => {
+    f.innerHTML = "";
+    setArena("Programme le robot jusqu'à la pile !", "Programme le robot pour qu'il aille jusqu'à la pile ! Choisis des flèches dans l'ordre, puis lance le programme. Touche dessus !");
+    const N = lv() >= 2 ? 5 : 4;
+    const W = f.clientWidth, H = f.clientHeight, portrait = H > W * 1.05;
+    const start = { r: N - 1, c: 0 };
+    const dmin = lv() >= 2 ? 4 : 3, dmax = lv() >= 2 ? 6 : 4;
+    let goal;
+    for (;;) {
+      goal = [Math.floor(Math.random() * N), Math.floor(Math.random() * N)];
+      const dist = Math.abs(goal[0] - start.r) + Math.abs(goal[1] - start.c);
+      if (dist >= dmin && dist <= dmax) break;
+    }
+    const gridPx = portrait ? Math.min(W - 24, Math.floor(H * 0.46)) : Math.min(H - 24, Math.floor(W * 0.46));
+    const cell = Math.floor(gridPx / N), gw = cell * N;
+    const wrap = document.createElement("div");
+    wrap.className = "rb-wrap"; wrap.style.flexDirection = portrait ? "column" : "row";
+    const grid = document.createElement("div");
+    grid.className = "rb-grid"; grid.style.cssText = `width:${gw}px;height:${gw}px`;
+    for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
+      const d = document.createElement("div"); d.className = "rb-cell";
+      d.style.cssText = `left:${c * cell}px;top:${r * cell}px;width:${cell}px;height:${cell}px;background:${(r + c) % 2 ? "#c8e6c9" : "#e8f5e9"}`;
+      grid.appendChild(d);
+    }
+    const gl = document.createElement("div");
+    gl.className = "rb-goal"; gl.textContent = "🔋";
+    gl.style.cssText = `left:${goal[1] * cell}px;top:${goal[0] * cell}px;width:${cell}px;height:${cell}px;font-size:${Math.round(cell * 0.62)}px`;
+    grid.appendChild(gl);
+    const tok = document.createElement("div");
+    tok.className = "rb-tok";
+    tok.innerHTML = `<div class="rb-ring"><i></i></div>🤖`;
+    tok.style.cssText = `width:${cell}px;height:${cell}px;font-size:${Math.round(cell * 0.6)}px`;
+    grid.appendChild(tok);
+    const ring = tok.querySelector(".rb-ring");
+    const ctl = document.createElement("div"); ctl.className = "rb-ctl";
+    const room = portrait ? W - 24 : W - gw - 50;
+    const bs = Math.max(44, Math.min(78, Math.floor(room / 4.2), Math.floor((portrait ? H - gw - 40 : H - 24) / 4.6)));
+    const cmdRow = document.createElement("div"); cmdRow.className = "rb-row";
+    const prog = [];
+    const strip = document.createElement("div"); strip.className = "rb-prog";
+    const cs = Math.max(30, Math.round(bs * 0.55));
+    strip.style.minHeight = (cs + 12) + "px";
+    const ICON = { F: "⬆️", L: "⬅️", R: "➡️" };
+    const renderProg = () => {
+      strip.innerHTML = "";
+      prog.forEach((c, i) => {
+        const d = document.createElement("div"); d.className = "chip"; d.textContent = ICON[c];
+        d.style.cssText = `width:${cs}px;height:${cs}px;font-size:${Math.round(cs * 0.6)}px`; strip.appendChild(d);
+      });
+      ROBOT.prog = prog.slice();
+    };
+    let st = { r: start.r, c: start.c }, ang = 0, busy = false;
+    ROBOT = { N, start: { r: start.r, c: start.c, d: 0 }, goal, prog: [], get st() { return { r: st.r, c: st.c, d: ((ang / 90) % 4 + 4) % 4 }; } };
+    const setTok = () => { tok.style.left = st.c * cell + "px"; tok.style.top = st.r * cell + "px"; ring.style.transform = `rotate(${ang}deg)`; };
+    setTok();
+    const mkBtn = (cls, html, bg, w, handler, extra) => {
+      const b = document.createElement("button"); b.className = cls; b.innerHTML = html;
+      b.style.cssText = `width:${w}px;height:${bs}px;background:${bg};font-size:${Math.round(bs * 0.5)}px`;
+      if (extra) Object.entries(extra).forEach(([k, v]) => b.dataset[k] = v);
+      b.addEventListener("click", handler); return b;
+    };
+    [["F", "⬆️", "avance", "#43a047"], ["L", "⬅️", "gauche", "#fb8c00"], ["R", "➡️", "droite", "#1e88e5"]].forEach(([c, e, t, bg]) =>
+      cmdRow.appendChild(mkBtn("cmdb", `${e}<small>${t}</small>`, bg, bs, () => { if (busy || prog.length >= 12) return; prog.push(c); renderProg(); tone(520, 0.06, "triangle"); }, { c })));
+    const runRow = document.createElement("div"); runRow.className = "rb-row";
+    const reset = () => { st = { r: start.r, c: start.c }; ang = 0; setTok(); busy = false; strip.querySelectorAll(".chip").forEach(c => c.classList.remove("act")); };
+    const run = () => {
+      if (busy) return;
+      if (!prog.length) { say("Choisis d'abord des flèches !"); return; }
+      busy = true; st = { r: start.r, c: start.c }; ang = 0; setTok();
+      let i = 0;
+      const step = () => {
+        const chips = strip.querySelectorAll(".chip");
+        chips.forEach((c, k) => c.classList.toggle("act", k === i));
+        if (i >= prog.length) {
+          if (st.r === goal[0] && st.c === goal[1]) {
+            round++;
+            $("stars3").textContent = "⭐".repeat(round) + "☆".repeat(3 - round);
+            sound.win(); confetti(40); say(rand(["Bravo", "Super", "Génial"]) + nm() + " ! Le robot a sa pile !");
+            later(() => round >= 3 ? finish() : play(), 2200);
+          } else { sound.oops(); say("Pas encore. Essaie encore !"); later(reset, 900); }
+          return;
+        }
+        const c = prog[i];
+        if (c === "L") ang -= 90; else if (c === "R") ang += 90;
+        else {
+          const [dr, dc] = V[((ang / 90) % 4 + 4) % 4], nr = st.r + dr, nc = st.c + dc;
+          if (nr < 0 || nc < 0 || nr >= N || nc >= N) {
+            tok.classList.remove("bump"); void tok.offsetWidth; tok.classList.add("bump");
+            sound.oops(); say("Aïe, un mur ! Essaie encore !"); later(reset, 1000); return;
+          }
+          st = { r: nr, c: nc };
+        }
+        setTok(); tone(300 + i * 40, 0.08, "square", 0, 0.05); i++;
+        later(step, 520);
+      };
+      step();
+    };
+    runRow.appendChild(mkBtn("rbtn", "▶️", "#e53935", Math.round(bs * 1.5), run, {}));
+    runRow.lastChild.id = "rbRun";
+    const back = mkBtn("rbtn", "❌", "#78909c", bs, () => { if (busy) return; prog.pop(); renderProg(); }, {}); back.id = "rbBack";
+    const clear = mkBtn("rbtn", "🗑️", "#78909c", bs, () => { if (busy) return; prog.length = 0; renderProg(); }, {}); clear.id = "rbClear";
+    runRow.appendChild(back); runRow.appendChild(clear);
+    ctl.appendChild(cmdRow); ctl.appendChild(strip); ctl.appendChild(runRow);
+    wrap.appendChild(grid); wrap.appendChild(ctl); f.appendChild(wrap);
+    renderProg();
+  };
+  play();
 };
 
 function finish() {
