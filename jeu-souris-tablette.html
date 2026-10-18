@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="light">
+<title>Doigts magiques</title>
+<style>
+  * { box-sizing: border-box; user-select: none; -webkit-user-select: none; }
+  html, body { margin: 0; height: 100%; overflow: hidden; }
+  body {
+    font-family: "Comic Sans MS", "Chalkboard SE", "Trebuchet MS", sans-serif;
+    background: linear-gradient(180deg, #bde7ff 0%, #e8f8ff 60%, #d9f5c5 100%);
+    color: #333;
+  }
+  .screen { position: fixed; inset: 0; display: none; flex-direction: column; align-items: center; }
+  .screen.active { display: flex; }
+
+  /* ---------- Menu ---------- */
+  #menu { justify-content: center; gap: 3vh; padding: 2vh 3vw; }
+  #menu h1 { margin: 0; font-size: clamp(32px, 6vw, 64px); color: #ff6f00; text-shadow: 3px 3px 0 #fff; text-align: center; }
+  .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2.5vmin; width: min(900px, 94vw); }
+  .menu-btn {
+    border: none; border-radius: 28px; padding: 3vh 1vw; cursor: pointer;
+    font-family: inherit; font-size: clamp(22px, 3.2vw, 34px); color: #fff; font-weight: bold;
+    box-shadow: 0 8px 0 rgba(0,0,0,.2); transition: transform .15s, box-shadow .15s;
+    display: flex; flex-direction: column; align-items: center; gap: 1vh;
+  }
+  .menu-btn .ico { font-size: clamp(50px, 8vw, 90px); line-height: 1; }
+  .menu-btn:hover { transform: scale(1.08) rotate(-2deg); box-shadow: 0 12px 0 rgba(0,0,0,.2), 0 0 30px rgba(255,255,255,.9); }
+  .menu-btn:active { transform: translateY(6px); box-shadow: 0 2px 0 rgba(0,0,0,.2); }
+
+  /* ---------- Barre du haut ---------- */
+  .topbar { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 1.5vh 2vw; }
+  .round-btn {
+    width: clamp(60px, 9vmin, 90px); height: clamp(60px, 9vmin, 90px); border-radius: 50%; border: none; cursor: pointer;
+    font-size: clamp(30px, 5vmin, 48px); background: #fff; box-shadow: 0 5px 0 rgba(0,0,0,.2); transition: transform .15s;
+  }
+  .round-btn:hover { transform: scale(1.15); box-shadow: 0 5px 0 rgba(0,0,0,.2), 0 0 25px #ffeb3b; }
+  .stars { font-size: clamp(28px, 5vmin, 48px); letter-spacing: 4px; }
+
+  /* ---------- Questions ---------- */
+  #prompt { display: flex; align-items: center; gap: 2vw; margin-top: 1vh; padding: 0 2vw; text-align: center; }
+  #promptText { font-size: clamp(28px, 5vw, 56px); font-weight: bold; color: #e65100; text-shadow: 2px 2px 0 #fff; }
+  #promptVisual { font-size: clamp(36px, 7vw, 70px); min-height: 1.2em; text-align: center; padding: 0 3vw; }
+  #choices { flex: 1; width: 100%; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4vmin; padding: 2vh 3vw 6vh; }
+  .card {
+    width: clamp(150px, 26vmin, 260px); height: clamp(150px, 26vmin, 260px);
+    background: #fff; border: 8px solid #fff; border-radius: 32px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 0 rgba(0,0,0,.18); transition: transform .15s, box-shadow .15s, border-color .15s;
+    font-size: clamp(80px, 15vmin, 150px); font-weight: bold; padding: 0; font-family: inherit;
+  }
+  .card svg { width: 80%; height: 80%; }
+  .card:hover { transform: scale(1.12); border-color: #ffca28; box-shadow: 0 12px 0 rgba(0,0,0,.18), 0 0 35px #ffe082; }
+  .card:active { transform: scale(0.96); }
+  .card.good { animation: jump .7s ease; border-color: #66bb6a; background: #e8f5e9; }
+  .card.bad { animation: shake .45s ease; border-color: #ef9a9a; }
+  @keyframes jump { 0%,100% { transform: translateY(0) scale(1.1);} 30% { transform: translateY(-40px) scale(1.25);} 60% { transform: translateY(0) scale(1.1);} 80% { transform: translateY(-15px) scale(1.15);} }
+  @keyframes shake { 0%,100% { transform: translateX(0);} 20% { transform: translateX(-18px);} 40% { transform: translateX(18px);} 60% { transform: translateX(-12px);} 80% { transform: translateX(12px);} }
+
+  /* ---------- Bulles (souris magique) ---------- */
+  #stage { position: relative; flex: 1; width: 100%; }
+  .bubble {
+    position: absolute; width: clamp(90px, 15vmin, 150px); height: clamp(90px, 15vmin, 150px); border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.95) 0 12%, var(--c) 35%, var(--c) 100%);
+    box-shadow: inset -8px -8px 18px rgba(0,0,0,.15), 0 4px 12px rgba(0,0,0,.15);
+    animation: bob var(--d) ease-in-out infinite alternate; transition: transform .1s;
+  }
+  .bubble:hover { transform: scale(1.12); }
+  .bubble.pop { animation: pop .35s ease-out forwards; pointer-events: none; }
+  @keyframes bob { from { transform: translateY(-14px) translateX(-8px);} to { transform: translateY(14px) translateX(8px);} }
+  @keyframes pop { 0% { transform: scale(1); opacity: 1;} 60% { transform: scale(1.6); opacity: .8;} 100% { transform: scale(2.2); opacity: 0;} }
+
+  /* ---------- Fin de partie ---------- */
+  #end { justify-content: center; gap: 4vh; text-align: center; }
+  #end h2 { font-size: clamp(40px, 8vw, 90px); margin: 0; color: #ff6f00; text-shadow: 3px 3px 0 #fff; }
+  #end .big { font-size: clamp(60px, 12vw, 130px); }
+  .end-btns { display: flex; gap: 4vw; }
+
+  .confetti { position: fixed; top: -30px; width: 16px; height: 22px; z-index: 99; pointer-events: none; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+
+  /* ---------- Menu élargi ---------- */
+  #menu { justify-content: flex-start; overflow-y: auto; gap: 2vh; padding: 3vh 3vw 6vh; }
+  #menu h1 { font-size: clamp(28px, 5vw, 52px); }
+  .menu-btn { padding: 1.6vh 1vw; font-size: clamp(16px, 2.2vw, 24px); border-radius: 24px; }
+  .menu-btn .ico { font-size: clamp(38px, 5.5vw, 62px); }
+  .menu-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); width: min(1000px, 94vw); }
+  .menu-section { display: flex; flex-direction: column; align-items: center; gap: 1.5vh; width: 100%; }
+  .menu-sub { margin: 0; font-size: clamp(20px, 3vw, 32px); color: #37474f; text-shadow: 1px 1px 0 #fff; }
+
+  /* ---------- Mini-jeux ---------- */
+  #field { position: relative; flex: 1; width: 100%; }
+  .target { position: absolute; background: none; border: none; cursor: pointer; padding: 0; line-height: 1;
+    font-size: clamp(70px, 14vmin, 130px); transition: transform .25s, opacity .3s; }
+  .target:hover { transform: scale(1.3); filter: drop-shadow(0 0 18px #ffe082); }
+  .bigtarget { background: none; border: none; cursor: pointer; padding: 0; line-height: 1;
+    font-size: clamp(120px, 28vmin, 260px); transition: transform .15s; }
+  .bigtarget:hover { transform: scale(1.1); filter: drop-shadow(0 0 25px #ffe082); }
+  .dots { font-size: clamp(30px, 6vmin, 56px); letter-spacing: 8px; }
+  .palette { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 12px;
+    z-index: 5; background: rgba(255,255,255,.88); padding: 10px 16px; border-radius: 40px;
+    box-shadow: 0 4px 0 rgba(0,0,0,.15); flex-wrap: wrap; justify-content: center; }
+  .swatch { width: clamp(44px, 7vmin, 64px); height: clamp(44px, 7vmin, 64px); border-radius: 50%; border: 5px solid #fff;
+    cursor: pointer; box-shadow: 0 3px 0 rgba(0,0,0,.25); font-size: 26px; padding: 0; background: #fff; transition: transform .15s; }
+  .swatch:hover { transform: scale(1.2); }
+  .dropbox { width: 24vmin; height: 24vmin; border: 8px dashed; border-radius: 24px;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center; align-content: center; gap: 4px; }
+  .ball { position: absolute; border-radius: 50%; cursor: grab; z-index: 5; touch-action: none;
+    box-shadow: inset -8px -8px 14px rgba(0,0,0,.2), 0 5px 8px rgba(0,0,0,.2); }
+  .ball:hover { box-shadow: inset -8px -8px 14px rgba(0,0,0,.2), 0 0 28px #ffe082; }
+  .ball.dragging { cursor: grabbing; z-index: 10; transform: scale(1.1); }
+  .ball.back { transition: left .3s, top .3s; }
+  .mini { width: 26%; height: 26%; border-radius: 50%; }
+
+  /* ---------- Jeux d'éveil (ajouts) ---------- */
+  #field { touch-action: none; }
+  #promptVisual { font-size: clamp(40px, 9vw, 80px); }
+  @media (max-height: 520px) { #promptText2 { font-size: 20px !important; } #promptVisual { font-size: 36px; } }
+  .ball.itm { background: #fff; display: flex; align-items: center; justify-content: center; line-height: 1; }
+  .pz { position: absolute; z-index: 5; border-radius: 8px; overflow: hidden; box-shadow: 0 5px 10px rgba(0,0,0,.3);
+    cursor: grab; touch-action: none; border: 3px solid #fff; background: #fff; }
+  .pz.dragging { cursor: grabbing; z-index: 10; transform: scale(1.06); }
+  .pz.back { transition: left .3s, top .3s; }
+  .slot { position: absolute; border: 3px dashed #90a4ae; background: rgba(255,255,255,.5); overflow: hidden; }
+  .slot svg { opacity: .22; }
+  .cp { position: absolute; display: flex; align-items: center; justify-content: center; line-height: 1; pointer-events: none; transition: opacity .2s; }
+  .cp.dim { opacity: .45; }
+  .cp.next { animation: pulse .7s ease-in-out infinite alternate; }
+  @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.3); } }
+  .key { flex: 1; min-width: 0; border: none; border-radius: 0 0 22px 22px; cursor: pointer; color: #fff; font-family: inherit; font-weight: bold;
+    font-size: clamp(16px, 3vw, 32px); display: flex; align-items: flex-end; justify-content: center; padding: 0 0 14px;
+    box-shadow: 0 8px 0 rgba(0,0,0,.22); transition: transform .08s, box-shadow .08s; touch-action: none; }
+  .key.down { transform: translateY(8px); box-shadow: 0 0 0 rgba(0,0,0,.22); filter: brightness(1.2); }
+  .bigitem { background: none; border: none; cursor: pointer; padding: 4px; line-height: 1;
+    font-size: clamp(52px, 11vmin, 96px); transition: transform .15s, opacity .2s; }
+  .bigitem:hover { transform: scale(1.2); }
+  .bigitem.gone { opacity: 0; pointer-events: none; transform: scale(.3); }
+  .basket { min-width: 44vmin; min-height: 20vmin; border: 8px solid #a1887f; border-radius: 10px 10px 40px 40px; background: #ffe0b2;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 2px; padding: 6px; }
+  .basket .ph { font-size: 12vmin; opacity: .35; }
+  .basket .in { font-size: clamp(24px, 5vmin, 48px); line-height: 1; }
+
+  /* ---------- Bulles numérotées ---------- */
+  .bubble { display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff;
+    font-size: clamp(34px, 7vmin, 62px); text-shadow: 0 2px 4px rgba(0,0,0,.35); }
+  .bubble.next { animation: bob var(--d) ease-in-out infinite alternate, glow 1s ease-out infinite; }
+  .bubble.nope { animation: shake .4s; }
+  @keyframes glow {
+    from { box-shadow: inset -8px -8px 18px rgba(0,0,0,.15), 0 0 0 0 rgba(255,235,59,.95); }
+    to   { box-shadow: inset -8px -8px 18px rgba(0,0,0,.15), 0 0 0 22px rgba(255,235,59,0); }
+  }
+
+  /* ---------- Version tactile (iPad / téléphone) ---------- */
+  html, body { touch-action: manipulation; overscroll-behavior: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
+  #stage, .bubble { touch-action: none; }
+  @media (hover: none) {
+    .card:hover { transform: none; border-color: #fff; box-shadow: 0 8px 0 rgba(0,0,0,.18); }
+    .card.good, .card.good:hover { border-color: #66bb6a; }
+    .card.bad, .card.bad:hover { border-color: #ef9a9a; }
+    .menu-btn:hover { transform: none; box-shadow: 0 8px 0 rgba(0,0,0,.2); }
+    .round-btn:hover { transform: none; box-shadow: 0 5px 0 rgba(0,0,0,.2); }
+    .target:hover, .bigtarget:hover, .bigitem:hover { transform: none; filter: none; }
+    .swatch:hover, .bubble:hover { transform: none; }
+    .ball:hover { box-shadow: inset -8px -8px 14px rgba(0,0,0,.2), 0 5px 8px rgba(0,0,0,.2); }
+  }
+  @media (max-height: 520px) {
+    .card { width: 30vh; height: 30vh; border-width: 5px; border-radius: 20px; font-size: 16vh; }
+    .round-btn { width: 48px; height: 48px; font-size: 24px; }
+    .topbar { padding: 6px 2vw; }
+    .stars { font-size: 24px; }
+    #promptText, #promptText3 { font-size: 24px !important; }
+    #promptVisual { font-size: 36px; min-height: 1em; }
+    #choices { gap: 3vh; padding: 1vh 3vw 3vh; }
+    .menu-btn .ico { font-size: 40px; }
+    #menu h1 { font-size: 26px; }
+    .dropbox { width: 28vh; height: 28vh; }
+    .bigtarget { font-size: 30vh; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MENU -->
+<div id="menu" class="screen active">
+  <h1>👆 Le jeu des doigts magiques</h1>
+  <div class="menu-section">
+    <h2 class="menu-sub">👆 Je m'entraîne avec le doigt</h2>
+    <div class="menu-grid">
+      <button class="menu-btn" style="background:#29b6f6" data-mode="bubbles"><span class="ico">🫧</span>Bulles</button>
+      <button class="menu-btn" style="background:#ff7043" data-mode="catch"><span class="ico">🎯</span>Attrape</button>
+      <button class="menu-btn" style="background:#8d6e63" data-mode="draw"><span class="ico">🖍️</span>Dessin</button>
+      <button class="menu-btn" style="background:#26a69a" data-mode="drag"><span class="ico">🧺</span>Rangement</button>
+      <button class="menu-btn" style="background:#5c6bc0" data-mode="memory"><span class="ico">🃏</span>Mémoire</button>
+      <button class="menu-btn" style="background:#ec407a" data-mode="clicks"><span class="ico">👆</span>Compte-touches</button>
+      <button class="menu-btn" style="background:#fb8c00" data-mode="path"><span class="ico">🥕</span>Chemin</button>
+      <button class="menu-btn" style="background:#3f51b5" data-mode="puzzle"><span class="ico">🧩</span>Puzzle</button>
+      <button class="menu-btn" style="background:#00897b" data-mode="sort"><span class="ico">🗂️</span>Tri</button>
+      <button class="menu-btn" style="background:#d81b60" data-mode="basket"><span class="ico">🛒</span>Panier</button>
+      <button class="menu-btn" style="background:#6d4c41" data-mode="piano"><span class="ico">🎹</span>Piano</button>
+      <button class="menu-btn" style="background:#8e24aa" data-mode="melody"><span class="ico">🎼</span>Mélodie</button>
+    </div>
+  </div>
+  <div class="menu-section">
+    <h2 class="menu-sub">🧠 J'apprends</h2>
+    <div class="menu-grid">
+      <button class="menu-btn" style="background:#ab47bc" data-mode="shapes"><span class="ico">⭐</span>Formes</button>
+      <button class="menu-btn" style="background:#ef5350" data-mode="colors"><span class="ico">🎨</span>Couleurs</button>
+      <button class="menu-btn" style="background:#66bb6a" data-mode="numbers"><span class="ico">🔢</span>Chiffres</button>
+      <button class="menu-btn" style="background:#ffa726" data-mode="animals"><span class="ico">🐶</span>Animaux</button>
+      <button class="menu-btn" style="background:#42a5f5" data-mode="letters"><span class="ico">🔤</span>Lettres</button>
+      <button class="menu-btn" style="background:#e53935" data-mode="fruits"><span class="ico">🍎</span>Fruits</button>
+      <button class="menu-btn" style="background:#78909c" data-mode="vehicles"><span class="ico">🚗</span>Véhicules</button>
+      <button class="menu-btn" style="background:#7e57c2" data-mode="odd"><span class="ico">🔍</span>L'intrus</button>
+      <button class="menu-btn" style="background:#009688" data-mode="size"><span class="ico">🐘</span>Gros / petit</button>
+      <button class="menu-btn" style="background:#5e35b1" data-mode="pattern"><span class="ico">🔁</span>Suite</button>
+      <button class="menu-btn" style="background:#039be5" data-mode="compare"><span class="ico">⚖️</span>Plus / moins</button>
+      <button class="menu-btn" style="background:#455a64" data-mode="shadow"><span class="ico">🌑</span>Ombres</button>
+      <button class="menu-btn" style="background:#f4511e" data-mode="mix"><span class="ico">🖌️</span>Mélanges</button>
+      <button class="menu-btn" style="background:#7cb342" data-mode="initial"><span class="ico">🔠</span>1ère lettre</button>
+    </div>
+  </div>
+</div>
+
+<!-- JEU : QUESTIONS -->
+<div id="game" class="screen">
+  <div class="topbar">
+    <button class="round-btn" id="homeBtn" title="Menu">🏠</button>
+    <div class="stars" id="stars"></div>
+    <button class="round-btn" id="speakBtn" title="Répéter">🔊</button>
+  </div>
+  <div id="prompt"><div id="promptText"></div></div>
+  <div id="promptVisual"></div>
+  <div id="choices"></div>
+</div>
+
+<!-- JEU : BULLES -->
+<div id="bubblesScreen" class="screen">
+  <div class="topbar">
+    <button class="round-btn" id="homeBtn2" title="Menu">🏠</button>
+    <div id="promptText2" style="font-size:clamp(24px,4vw,46px);font-weight:bold;color:#e65100;text-shadow:2px 2px 0 #fff;text-align:center">Touche les bulles avec ton doigt, dans l'ordre : 1, 2, 3 !</div>
+    <button class="round-btn" id="speakBtn2" title="Répéter">🔊</button>
+  </div>
+  <div id="stage"></div>
+</div>
+
+<!-- MINI-JEUX -->
+<div id="arena" class="screen">
+  <div class="topbar">
+    <button class="round-btn" id="homeBtn3" title="Menu">🏠</button>
+    <div class="stars" id="stars3"></div>
+    <button class="round-btn" id="speakBtn3" title="Répéter">🔊</button>
+  </div>
+  <div id="promptText3" style="font-size:clamp(24px,4.5vw,50px);font-weight:bold;color:#e65100;text-shadow:2px 2px 0 #fff;text-align:center;padding:0 2vw"></div>
+  <div id="field"></div>
+</div>
+
+<!-- FIN -->
+<div id="end" class="screen">
+  <div class="big">🏆🌟🎉</div>
+  <h2>Bravo !</h2>
+  <div class="end-btns">
+    <button class="round-btn" id="againBtn" title="Rejouer" style="width:120px;height:120px;font-size:64px">🔄</button>
+    <button class="round-btn" id="endHome" title="Menu" style="width:120px;height:120px;font-size:64px">🏠</button>
+  </div>
+</div>
+
+<script>
+/* ================== Outils : voix, sons, confettis ================== */
+let audioCtx = null;
+function ctx() {
+  if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {} }
+  if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
+  return audioCtx;
+}
+function tone(freq, dur = 0.15, type = "sine", delay = 0, vol = 0.15) {
+  const c = ctx(); if (!c) return;
+  const o = c.createOscillator(), g = c.createGain();
+  o.type = type; o.frequency.value = freq;
+  const t = c.currentTime + delay;
+  g.gain.setValueAtTime(0, t);
+  g.gain.linearRampToValueAtTime(vol, t + 0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g); g.connect(c.destination);
+  o.start(t); o.stop(t + dur + 0.05);
+}
+const sound = {
+  hover: () => tone(660, 0.06, "sine", 0, 0.05),
+  win:   () => { tone(523, 0.15, "triangle"); tone(659, 0.15, "triangle", 0.12); tone(784, 0.3, "triangle", 0.24); },
+  oops:  () => { tone(300, 0.2, "sine", 0, 0.1); tone(240, 0.25, "sine", 0.15, 0.1); },
+  pop:   () => { tone(500 + Math.random() * 400, 0.1, "square", 0, 0.08); },
+  fanfare: () => { [523,659,784,1047,784,1047].forEach((f,i)=>tone(f,0.2,"triangle",i*0.14)); }
+};
+
+let frVoice = null;
+function loadVoice() {
+  if (!("speechSynthesis" in window)) return;
+  const vs = speechSynthesis.getVoices();
+  frVoice = vs.find(v => /^fr/i.test(v.lang)) || null;
+}
+if ("speechSynthesis" in window) { loadVoice(); speechSynthesis.onvoiceschanged = loadVoice; }
+function say(text) {
+  if (!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "fr-FR"; u.rate = 0.85; u.pitch = 1.15;
+  if (frVoice) u.voice = frVoice;
+  speechSynthesis.speak(u);
+}
+
+function confetti(n = 60) {
+  const cols = ["#ef5350","#ffca28","#66bb6a","#29b6f6","#ab47bc","#ff7043"];
+  for (let i = 0; i < n; i++) {
+    const d = document.createElement("div");
+    d.className = "confetti";
+    d.style.left = Math.random() * 100 + "vw";
+    d.style.background = cols[Math.floor(Math.random() * cols.length)];
+    d.style.animationDuration = (1.8 + Math.random() * 1.8) + "s";
+    d.style.animationDelay = Math.random() * 0.4 + "s";
+    d.style.borderRadius = Math.random() > .5 ? "50%" : "3px";
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 4500);
+  }
+}
+
+/* ================== Données ================== */
+const COLORS = [
+  { name: "rouge",  art: "le rouge",  hex: "#e53935" },
+  { name: "bleu",   art: "le bleu",   hex: "#1e88e5" },
+  { name: "jaune",  art: "le jaune",  hex: "#fdd835" },
+  { name: "vert",   art: "le vert",   hex: "#43a047" },
+  { name: "orange", art: "l'orange",  hex: "#fb8c00" },
+  { name: "violet", art: "le violet", hex: "#8e24aa" },
+  { name: "rose",   art: "le rose",   hex: "#f06292" }
+];
+
+const SHAPES = [
+  { name: "cercle",    art: "le cercle",    svg: c => `<circle cx="50" cy="50" r="42" fill="${c}"/>` },
+  { name: "carré",     art: "le carré",     svg: c => `<rect x="10" y="10" width="80" height="80" rx="4" fill="${c}"/>` },
+  { name: "triangle",  art: "le triangle",  svg: c => `<polygon points="50,8 94,88 6,88" fill="${c}"/>` },
+  { name: "étoile",    art: "l'étoile",     svg: c => `<polygon points="50,5 61,38 96,38 68,58 79,92 50,72 21,92 32,58 4,38 39,38" fill="${c}"/>` },
+  { name: "cœur",      art: "le cœur",      svg: c => `<path d="M50 90 C10 58 4 32 24 18 C38 9 50 20 50 28 C50 20 62 9 76 18 C96 32 90 58 50 90Z" fill="${c}"/>` },
+  { name: "rectangle", art: "le rectangle", svg: c => `<rect x="4" y="25" width="92" height="50" rx="4" fill="${c}"/>` }
+];
+
+const ANIMALS = [
+  { art: "le chat",       e: "🐱" },
+  { art: "le chien",      e: "🐶" },
+  { art: "la vache",      e: "🐮" },
+  { art: "le cochon",     e: "🐷" },
+  { art: "le lapin",      e: "🐰" },
+  { art: "le lion",       e: "🦁" },
+  { art: "l'éléphant",    e: "🐘" },
+  { art: "le singe",      e: "🐵" },
+  { art: "la grenouille", e: "🐸" },
+  { art: "le canard",     e: "🦆" },
+  { art: "la poule",      e: "🐔" },
+  { art: "le poisson",    e: "🐟" }
+];
+
+const NUM_THINGS = [
+  { e: "🍎", q: "pommes" }, { e: "⭐", q: "étoiles" }, { e: "🐟", q: "poissons" },
+  { e: "🎈", q: "ballons" }, { e: "🍓", q: "fraises" }
+];
+
+/* ================== Utilitaires ================== */
+const $ = id => document.getElementById(id);
+const rand = arr => arr[Math.floor(Math.random() * arr.length)];
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function show(id) { document.querySelectorAll(".screen").forEach(s => s.classList.remove("active")); $(id).classList.add("active"); }
+
+const ROUNDS = 5;
+let mode = null, score = 0, current = null, locked = false, lastTargetIdx = -1;
+
+/* ================== Navigation ================== */
+document.querySelectorAll(".menu-btn").forEach(b => b.addEventListener("click", () => start(b.dataset.mode)));
+["homeBtn", "homeBtn2", "endHome"].forEach(id => $(id).addEventListener("click", goMenu));
+$("againBtn").addEventListener("click", () => start(mode));
+$("speakBtn").addEventListener("click", () => current && say(current.speech));
+$("speakBtn2").addEventListener("click", () => say("Touche les bulles avec ton doigt, dans l'ordre : 1, 2, 3 !"));
+document.querySelectorAll(".menu-btn, .round-btn, .card").forEach(el => el.addEventListener("mouseenter", sound.hover));
+
+function goMenu() { clearArena(); mode = null; if ("speechSynthesis" in window) speechSynthesis.cancel(); show("menu"); }
+
+function start(m) {
+  ctx();
+  mode = m; score = 0; locked = false; lastTargetIdx = -1; clearArena();
+  if (m === "bubbles") { show("bubblesScreen"); spawnBubbles(); say("Touche les bulles avec ton doigt, dans l'ordre : 1, 2, 3 !"); }
+  else if (ARENA[m]) { show("arena"); renderStars(); ARENA[m](); }
+  else { show("game"); renderStars(); nextQuestion(); }
+}
+
+function renderStars() {
+  const s = "⭐".repeat(score) + "☆".repeat(ROUNDS - score);
+  $("stars").textContent = s; $("stars3").textContent = s;
+}
+
+/* ================== Bulles : survol uniquement ================== */
+function spawnBubbles() {
+  const stage = $("stage"); stage.innerHTML = "";
+  const cols = ["#ef5350", "#42a5f5", "#ffca28", "#66bb6a", "#ab47bc", "#ff7043", "#26c6da", "#ec407a"];
+  const portrait = window.innerHeight > window.innerWidth;
+  const perRow = portrait ? 2 : 4, rows = portrait ? 4 : 2, N = 8;
+  let next = 1;
+  const all = [];
+  shuffle([...Array(N).keys()]).forEach((cell, i) => {
+    const num = i + 1;
+    const b = document.createElement("div");
+    b.className = "bubble"; b.textContent = num;
+    const col = cell % perRow, row = Math.floor(cell / perRow);
+    b.style.left = (col * (100 / perRow) + 100 / perRow / 2 - 7 + (Math.random() * 6 - 3)) + "%";
+    b.style.top = (row * (100 / rows) + 4 + Math.random() * 6) + "%";
+    b.style.setProperty("--c", cols[i % cols.length]);
+    b.style.setProperty("--d", (1.8 + Math.random() * 1.6) + "s");
+    b._pop = () => {
+      if (b.classList.contains("pop")) return;
+      if (num !== next) {
+        if (b.classList.contains("nope")) return;
+        b.classList.add("nope"); setTimeout(() => b.classList.remove("nope"), 400);
+        return;
+      }
+      b.classList.remove("next"); b.classList.add("pop"); sound.pop(); next++;
+      setTimeout(() => b.remove(), 400);
+      if (next <= N) all[next - 1].classList.add("next");
+      else {
+        setTimeout(() => { sound.win(); confetti(); say("Bravo ! Tu sais compter jusqu'à huit !"); }, 350);
+        setTimeout(() => { if ($("bubblesScreen").classList.contains("active")) spawnBubbles(); }, 4200);
+      }
+    };
+    all[i] = b;
+    stage.appendChild(b);
+  });
+  all[0].classList.add("next");
+}
+/* Doigt qui glisse (ou souris qui survole) : on éclate la bulle sous le pointeur */
+const touchPop = e => {
+  const el = document.elementFromPoint(e.clientX, e.clientY);
+  if (el && el._pop) el._pop();
+};
+$("stage").addEventListener("pointermove", touchPop);
+$("stage").addEventListener("pointerdown", touchPop);
+
+/* ================== Questions à choix ================== */
+function nextQuestion() {
+  if (!mode) return;
+  locked = false;
+  $("promptVisual").textContent = "";
+  const box = $("choices"); box.innerHTML = "";
+  let q;
+  if (mode === "colors")  q = buildColors();
+  if (mode === "shapes")  q = buildShapes();
+  if (mode === "animals") q = buildAnimals();
+  if (mode === "numbers") q = buildNumbers();
+  if (mode === "letters")  q = buildLetters();
+  if (mode === "fruits")   q = buildEmoji(FRUITS);
+  if (mode === "vehicles") q = buildEmoji(VEHICLES);
+  if (mode === "odd")      q = buildOdd();
+  if (mode === "size")     q = buildSize();
+  if (mode === "pattern")  q = buildPattern();
+  if (mode === "compare")  q = buildCompare();
+  if (mode === "shadow")   q = buildShadow();
+  if (mode === "mix")      q = buildMix();
+  if (mode === "initial")  q = buildInitial();
+  current = q;
+  $("promptText").textContent = q.text;
+  if (q.visual) $("promptVisual").textContent = q.visual;
+  q.options.forEach(o => {
+    const btn = document.createElement("button");
+    btn.className = "card";
+    btn.innerHTML = o.html;
+    if (o.bg) btn.style.background = o.bg;
+    btn.addEventListener("mouseenter", sound.hover);
+    btn.addEventListener("click", () => answer(btn, o.correct));
+    box.appendChild(btn);
+  });
+  setTimeout(() => say(q.speech), 250);
+}
+
+function pickThree(pool, keyFn) {
+  let idx;
+  do { idx = Math.floor(Math.random() * pool.length); } while (idx === lastTargetIdx && pool.length > 1);
+  lastTargetIdx = idx;
+  const target = pool[idx];
+  const others = shuffle(pool.filter((_, i) => i !== idx)).slice(0, score >= 2 ? 3 : 2);
+  return { target, options: shuffle([target, ...others]) };
+}
+
+function buildColors() {
+  const { target, options } = pickThree(COLORS);
+  return {
+    text: `Où est ${target.art} ?`,
+    speech: `Où est ${target.art} ? Touche dessus !`,
+    options: options.map(c => ({
+      html: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="${c.hex}"/></svg>`,
+      correct: c === target
+    }))
+  };
+}
+
+function buildShapes() {
+  const { target, options } = pickThree(SHAPES);
+  const cols = shuffle(COLORS.map(c => c.hex));
+  return {
+    text: `Où est ${target.art} ?`,
+    speech: `Où est ${target.art} ? Touche dessus !`,
+    options: options.map((s, i) => ({
+      html: `<svg viewBox="0 0 100 100">${s.svg(cols[i])}</svg>`,
+      correct: s === target
+    }))
+  };
+}
+
+function buildAnimals() {
+  const { target, options } = pickThree(ANIMALS);
+  return {
+    text: `Où est ${target.art} ?`,
+    speech: `Où est ${target.art} ? Touche dessus !`,
+    options: options.map(a => ({ html: a.e, correct: a === target }))
+  };
+}
+
+function buildNumbers() {
+  const max = Math.min(9, 5 + score);
+  const { target, options } = pickThree(Array.from({ length: max }, (_, i) => ({ n: i + 1 })));
+  const palette = shuffle(["#e53935", "#1e88e5", "#43a047", "#fb8c00", "#8e24aa", "#00acc1"]);
+  const cards = options.map((o, i) => ({
+    html: `<span style="color:${palette[i]}">${o.n}</span>`,
+    correct: o === target
+  }));
+  if (score >= 2 && Math.random() < 0.5) {
+    return {
+      text: `Où est le chiffre ${target.n} ?`,
+      speech: `Où est le chiffre ${target.n} ? Touche dessus !`,
+      options: cards
+    };
+  }
+  const thing = rand(NUM_THINGS);
+  return {
+    text: `Combien y a-t-il de ${thing.q} ?`,
+    visual: thing.e.repeat(target.n),
+    speech: `Combien y a-t-il de ${thing.q} ? Touche le bon chiffre !`,
+    options: cards
+  };
+}
+
+function answer(btn, ok) {
+  if (locked) return;
+  if (ok) {
+    locked = true;
+    btn.classList.add("good");
+    score++; renderStars();
+    sound.win(); confetti(35);
+    say(rand(["Bravo !", "Super !", "Bien joué !", "Génial !"]));
+    setTimeout(() => {
+      if (score >= ROUNDS) finish(); else nextQuestion();
+    }, 1700);
+  } else {
+    btn.classList.remove("bad"); void btn.offsetWidth; btn.classList.add("bad");
+    sound.oops();
+    say("Essaie encore !");
+  }
+}
+
+/* ================== Nouveaux quiz ================== */
+const FRUITS = [
+  { art: "la pomme", e: "🍎" }, { art: "la banane", e: "🍌" }, { art: "la fraise", e: "🍓" },
+  { art: "le raisin", e: "🍇" }, { art: "l'orange", e: "🍊" }, { art: "la poire", e: "🍐" },
+  { art: "la pastèque", e: "🍉" }, { art: "le citron", e: "🍋" }, { art: "la pêche", e: "🍑" }
+];
+const VEHICLES = [
+  { art: "la voiture", e: "🚗" }, { art: "le bus", e: "🚌" }, { art: "le vélo", e: "🚲" },
+  { art: "l'avion", e: "✈️" }, { art: "le train", e: "🚂" }, { art: "le bateau", e: "⛵" },
+  { art: "le tracteur", e: "🚜" }, { art: "l'hélicoptère", e: "🚁" }, { art: "la moto", e: "🏍️" },
+  { art: "le camion de pompiers", e: "🚒" }
+];
+const LETTER_COLORS = ["#e53935", "#1e88e5", "#43a047", "#fb8c00", "#8e24aa", "#00acc1"];
+
+function buildEmoji(pool) {
+  const { target, options } = pickThree(pool);
+  return {
+    text: `Où est ${target.art} ?`,
+    speech: `Où est ${target.art} ? Touche dessus !`,
+    options: options.map(a => ({ html: a.e, correct: a === target }))
+  };
+}
+function buildLetters() {
+  const letters = score >= 2 ? "ABCDEFGHIJLMNOPQRSTUV" : "ABCDEFLMOPST";
+  const pool = letters.split("").map(l => ({ l }));
+  const { target, options } = pickThree(pool);
+  const pal = shuffle(LETTER_COLORS);
+  return {
+    text: `Où est la lettre ${target.l} ?`,
+    speech: `Où est la lettre ${target.l} ? Touche dessus !`,
+    options: options.map((o, i) => ({ html: `<span style="color:${pal[i]}">${o.l}</span>`, correct: o === target }))
+  };
+}
+function buildOdd() {
+  const pool = shuffle([...ANIMALS, ...FRUITS, ...VEHICLES]);
+  const a = pool[0], b = pool[1], same = score >= 2 ? 4 : 3;
+  return {
+    text: "Trouve celui qui n'est pas pareil !",
+    speech: "Trouve celui qui n'est pas pareil ! Touche dessus !",
+    options: shuffle([...Array(same).fill(a), b]).map(x => ({ html: x.e, correct: x === b }))
+  };
+}
+function buildSize() {
+  const big = Math.random() > 0.5, a = rand(ANIMALS);
+  const sizes = shuffle(score >= 2 ? [0.45, 0.7, 0.95, 1.2] : [0.5, 0.85, 1.2]);
+  const text = big ? "Où est le plus gros ?" : "Où est le plus petit ?";
+  const hi = Math.max(...sizes), lo = Math.min(...sizes);
+  return {
+    text, speech: text + " Touche dessus !",
+    options: sizes.map(s => ({
+      html: `<span style="font-size:${s}em">${a.e}</span>`,
+      correct: big ? s === hi : s === lo
+    }))
+  };
+}
+
+/* ================== Mini-jeux de souris ================== */
+let timers = [], arenaSpeech = "";
+function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+function clearArena() {
+  timers.forEach(clearTimeout); timers = [];
+  const f = $("field"); if (f) { f.innerHTML = ""; f.onpointermove = null; f.onpointerdown = null; }
+}
+function setArena(text, speech) {
+  $("promptText3").textContent = text;
+  arenaSpeech = speech || text;
+  later(() => say(arenaSpeech), 250);
+}
+$("homeBtn3").addEventListener("click", goMenu);
+$("speakBtn3").addEventListener("click", () => say(arenaSpeech));
+$("homeBtn3").addEventListener("mouseenter", sound.hover);
+$("speakBtn3").addEventListener("mouseenter", sound.hover);
+
+const ARENA = {};
+
+/* --- Attrape : on cherche la bonne image parmi d'autres --- */
+ARENA.catch = function () {
+  const f = $("field");
+  const items = [
+    { e: "⭐", art: "l'étoile" }, { e: "🦋", art: "le papillon" }, { e: "🐞", art: "la coccinelle" },
+    { e: "🎈", art: "le ballon" }, { e: "🐠", art: "le poisson" }, { e: "🍄", art: "le champignon" }
+  ];
+  const place = () => {
+    f.innerHTML = "";
+    const k = 1 + Math.min(score, 3);
+    const picks = shuffle(items).slice(0, k), it = picks[0];
+    setArena(`Touche ${it.art} !`);
+    const W = f.clientWidth, H = f.clientHeight, portrait = H > W;
+    const cols = portrait ? 2 : 4, rows = portrait ? 4 : 2, cw = W / cols, ch = H / rows;
+    const cells = shuffle([...Array(cols * rows).keys()]).slice(0, k);
+    const size = Math.round(Math.max(56, Math.min(cw, ch, 130) * (1 - 0.08 * score)));
+    let won = false;
+    picks.forEach((p, i) => {
+      const b = document.createElement("button");
+      b.className = "target" + (i === 0 ? "" : " decoy"); b.textContent = p.e;
+      const cx = (cells[i] % cols + 0.5) * cw + (Math.random() - 0.5) * Math.max(0, cw - size) * 0.6;
+      const cy = (Math.floor(cells[i] / cols) + 0.5) * ch + (Math.random() - 0.5) * Math.max(0, ch - size) * 0.6;
+      b.style.cssText += `left:${cx - size / 2}px;top:${cy - size / 2}px;width:${size}px;height:${size}px;font-size:${Math.round(size * 0.8)}px;`;
+      b.addEventListener("click", () => {
+        if (won) return;
+        if (i !== 0) { sound.oops(); say("Essaie encore !"); return; }
+        won = true; b.dataset.done = "1";
+        b.style.transform = "scale(1.8)"; b.style.opacity = "0";
+        sound.win(); confetti(25);
+        score++; renderStars();
+        later(() => score >= ROUNDS ? finish() : place(), 800);
+      });
+      f.appendChild(b);
+    });
+  };
+  place();
+};
+
+/* --- Dessin libre : rester appuyé et bouger --- */
+ARENA.draw = function () {
+  const f = $("field");
+  $("stars3").textContent = "";
+  setArena("Dessine avec ton doigt !", "Dessine avec ton doigt ! Pose ton doigt et bouge-le.");
+  const cv = document.createElement("canvas");
+  cv.width = f.clientWidth; cv.height = f.clientHeight;
+  cv.style.cssText = "position:absolute;inset:0;background:#fff;border-radius:24px;touch-action:none;cursor:crosshair";
+  f.appendChild(cv);
+  const g = cv.getContext("2d");
+  g.lineCap = "round"; g.lineJoin = "round"; g.lineWidth = 16;
+  let col = "#e53935", down = false;
+  const pos = e => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  cv.addEventListener("pointerdown", e => {
+    down = true; const [x, y] = pos(e);
+    g.strokeStyle = col; g.beginPath(); g.moveTo(x, y); g.lineTo(x + 0.1, y); g.stroke();
+    g.beginPath(); g.moveTo(x, y);
+  });
+  cv.addEventListener("pointermove", e => {
+    if (!down) return;
+    const [x, y] = pos(e); g.strokeStyle = col; g.lineTo(x, y); g.stroke(); g.beginPath(); g.moveTo(x, y);
+  });
+  const up = () => { down = false; };
+  cv.addEventListener("pointerup", up); cv.addEventListener("pointerleave", up);
+
+  const pal = document.createElement("div"); pal.className = "palette";
+  COLORS.forEach(c => {
+    const s = document.createElement("button"); s.className = "swatch"; s.style.background = c.hex;
+    s.addEventListener("click", () => { col = c.hex; g.lineWidth = 16; sound.hover(); });
+    s.addEventListener("mouseenter", sound.hover);
+    pal.appendChild(s);
+  });
+  const er = document.createElement("button"); er.className = "swatch"; er.textContent = "🧽";
+  er.addEventListener("click", () => { col = "#ffffff"; g.lineWidth = 44; sound.hover(); });
+  const clr = document.createElement("button"); clr.className = "swatch"; clr.textContent = "🗑️";
+  clr.addEventListener("click", () => { g.clearRect(0, 0, cv.width, cv.height); sound.pop(); });
+  pal.appendChild(er); pal.appendChild(clr);
+  f.appendChild(pal);
+};
+
+/* --- Rangement : glisser-déposer les balles dans la boîte de la même couleur --- */
+ARENA.drag = function () {
+  const f = $("field");
+  setArena("Mets chaque balle dans la boîte de la même couleur !",
+    "Mets chaque balle dans la boîte de la même couleur ! Pose ton doigt sur la balle, déplace-la, puis lève ton doigt.");
+  const N = 6, cols = shuffle(COLORS).slice(0, 4);
+  const row = document.createElement("div");
+  row.style.cssText = "position:absolute;left:0;right:0;bottom:3%;display:flex;justify-content:space-around;";
+  const boxes = cols.map(c => {
+    const b = document.createElement("div");
+    b.className = "dropbox"; b.style.width = "20vmin"; b.style.height = "20vmin";
+    b.style.borderColor = c.hex; b.style.background = c.hex + "33";
+    b.dataset.hex = c.hex; row.appendChild(b); return b;
+  });
+  f.appendChild(row);
+  const W = f.clientWidth, H = f.clientHeight;
+  const size = Math.round(Math.min(120, W / (N + 2), H / 5));
+  const slots = shuffle([...Array(N).keys()]);
+  let done = 0;
+  $("stars3").textContent = "☆".repeat(N);
+  for (let i = 0; i < N; i++) {
+    const c = cols[i % cols.length];
+    const ball = document.createElement("div");
+    ball.className = "ball";
+    ball.style.cssText += `width:${size}px;height:${size}px;background:radial-gradient(circle at 30% 30%,#fff 0 10%,${c.hex} 35%);`;
+    const left0 = (slots[i] + 0.5) / N * W - size / 2;
+    const top0 = H * 0.04 + Math.random() * H * 0.2;
+    ball.style.left = left0 + "px"; ball.style.top = top0 + "px";
+    makeDraggable(ball, { left: left0, top: top0 }, (cx, cy) => {
+      const hit = boxes.find(b => { const q = b.getBoundingClientRect(); return cx > q.left && cx < q.right && cy > q.top && cy < q.bottom; });
+      if (hit && hit.dataset.hex === c.hex) {
+        ball.remove();
+        const m = document.createElement("div"); m.className = "mini"; m.style.background = c.hex; hit.appendChild(m);
+        sound.win(); done++;
+        $("stars3").textContent = "⭐".repeat(done) + "☆".repeat(N - done);
+        if (done >= N) later(finish, 800);
+        return true;
+      }
+      sound.oops(); if (hit) say("Essaie encore !");
+      return false;
+    });
+    f.appendChild(ball);
+  }
+};
+
+/* --- Mémoire : retrouver les paires (4 puis 6) --- */
+ARENA.memory = function () {
+  const f = $("field");
+  const PAIRS = [4, 6];
+  let round = 0;
+  $("stars3").textContent = "☆☆";
+  const play = () => {
+    f.innerHTML = "";
+    setArena("Retrouve les paires !", "Retrouve les deux images pareilles ! Touche les cartes.");
+    const np = PAIRS[round], picks = shuffle(ANIMALS).slice(0, np), deck = shuffle([...picks, ...picks]);
+    const W = f.clientWidth, H = f.clientHeight, gap = 12, n = deck.length;
+    let best = 0, bc = 2;
+    for (let c = 2; c <= 6; c++) {
+      const r = Math.ceil(n / c);
+      const s = Math.min((W - gap * (c + 1)) / c, (H - gap * (r + 1)) / r, 190);
+      if (s > best) { best = s; bc = c; }
+    }
+    const s = Math.floor(best);
+    const grid = document.createElement("div");
+    grid.style.cssText = `display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:${gap}px;width:${bc * s + (bc - 1) * gap + 2}px;max-width:100%;height:100%;margin:0 auto;`;
+    f.appendChild(grid);
+    let first = null, busy = false, matched = 0;
+    const hide = c => { c.textContent = "❓"; c.style.background = "#fff59d"; };
+    deck.forEach(a => {
+      const c = document.createElement("button");
+      c.className = "card"; c.dataset.e = a.e;
+      c.style.cssText += `width:${s}px;height:${s}px;font-size:${Math.round(s * 0.55)}px;border-width:5px;border-radius:20px;`;
+      hide(c);
+      c.addEventListener("mouseenter", sound.hover);
+      c.addEventListener("click", () => {
+        if (busy || c === first || c.classList.contains("good")) return;
+        c.textContent = a.e; c.style.background = "#fff"; tone(880, 0.1);
+        if (!first) { first = c; return; }
+        if (first.dataset.e === c.dataset.e) {
+          first.classList.add("good"); c.classList.add("good"); first = null; matched++;
+          sound.win(); confetti(20);
+          if (matched === np) {
+            round++;
+            $("stars3").textContent = "⭐".repeat(round) + "☆".repeat(2 - round);
+            later(() => round >= 2 ? finish() : play(), 1300);
+          }
+        } else {
+          busy = true; sound.oops();
+          const f1 = first; first = null;
+          later(() => { hide(f1); hide(c); busy = false; }, 1100);
+        }
+      });
+      grid.appendChild(c);
+    });
+  };
+  play();
+};
+
+/* --- Compte-touches : cliquer le bon nombre de fois --- */
+ARENA.clicks = function () {
+  const f = $("field");
+  const items = [{ e: "🎈", art: "le ballon" }, { e: "⭐", art: "l'étoile" }, { e: "🍎", art: "la pomme" }, { e: "🐱", art: "le chat" }];
+  const words = ["zéro", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit"];
+  const round = () => {
+    f.innerHTML = "";
+    const it = rand(items), n = 1 + Math.floor(Math.random() * Math.min(7, 3 + score));
+    setArena(`Touche ${n} fois ${it.art} !`, `Touche ${n === 1 ? "une" : words[n]} fois ${it.art} !`);
+    const wrap = document.createElement("div");
+    wrap.style.cssText = "display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:3vh;";
+    const b = document.createElement("button"); b.className = "bigtarget"; b.textContent = it.e;
+    const dots = document.createElement("div"); dots.className = "dots"; dots.textContent = "⚪".repeat(n);
+    wrap.appendChild(b); wrap.appendChild(dots); f.appendChild(wrap);
+    let count = 0, done = false;
+    b.addEventListener("click", () => {
+      if (done) return;
+      count++;
+      b.animate([{ transform: "scale(1.3)" }, { transform: "scale(1)" }], { duration: 220 });
+      dots.textContent = "🟢".repeat(count) + "⚪".repeat(n - count);
+      tone(500 + count * 120, 0.15, "triangle");
+      say(words[count]);
+      if (count === n) {
+        done = true; score++; renderStars();
+        later(() => { sound.win(); confetti(30); say("Bravo !"); }, 700);
+        later(() => score >= ROUNDS ? finish() : round(), 2200);
+      }
+    });
+  };
+  round();
+};
+
+/* ================== Jeux d'éveil : nouveaux quiz ================== */
+function stripArt(s) { return s.replace(/^(le |la |l')/, ""); }
+
+function buildPattern() {
+  const sets = [["🔴", "🔵", "🟡", "🟢", "🟠", "🟣"], ["🐶", "🐱", "🐸", "🐰", "🐷"], ["⭐", "❤️", "🌙", "☀️"]];
+  const [A, B, C, D] = shuffle(rand(sets));
+  const hard = score >= 2;
+  const kind = rand(hard ? ["ABB", "AABB", "ABC", "AAB"] : ["AB", "AAB", "ABC"]);
+  let seq, answer;
+  if (kind === "AB")   { seq = [A, B, A, B, A];       answer = B; }
+  if (kind === "AAB")  { seq = [A, A, B, A, A];       answer = B; }
+  if (kind === "ABC")  { seq = [A, B, C, A, B];       answer = C; }
+  if (kind === "ABB")  { seq = [A, B, B, A, B];       answer = B; }
+  if (kind === "AABB") { seq = [A, A, B, B, A, A, B]; answer = B; }
+  const wrong = [A, B, C, D].filter(x => x !== answer).slice(0, hard ? 3 : 2);
+  return {
+    text: "Que vient ensuite ?",
+    visual: seq.join(" ") + " ❓",
+    speech: "Que vient ensuite ? Touche dessus !",
+    options: shuffle([answer, ...wrong]).map(x => ({ html: x, correct: x === answer }))
+  };
+}
+
+function buildCompare() {
+  const thing = rand(NUM_THINGS), more = Math.random() > 0.5;
+  const max = Math.min(9, 5 + score);
+  const a = 1 + Math.floor(Math.random() * max);
+  let b; do { b = 1 + Math.floor(Math.random() * max); } while (b === a);
+  const text = more ? "Où y en a-t-il le plus ?" : "Où y en a-t-il le moins ?";
+  return {
+    text, speech: text + " Touche dessus !",
+    options: shuffle([a, b]).map(n => ({
+      html: `<span style="display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:2px 4px;font-size:.36em;line-height:1.1;padding:4px;max-width:100%">${Array(n).fill(`<span>${thing.e}</span>`).join("")}</span>`,
+      correct: more ? n === Math.max(a, b) : n === Math.min(a, b)
+    }))
+  };
+}
+
+function buildShadow() {
+  const pool = [...ANIMALS, ...FRUITS, ...VEHICLES];
+  const { target, options } = pickThree(pool);
+  return {
+    text: "Où est son ombre ?",
+    visual: target.e,
+    speech: "Où est l'ombre de cette image ? Touche dessus !",
+    options: options.map(a => ({
+      html: `<span style="filter:brightness(0);opacity:.8">${a.e}</span>`,
+      correct: a === target
+    }))
+  };
+}
+
+function buildMix() {
+  const MIXES = [
+    { a: "🔴", an: "le rouge", b: "🟡", bn: "le jaune", hex: "#fb8c00" },
+    { a: "🔵", an: "le bleu",  b: "🟡", bn: "le jaune", hex: "#43a047" },
+    { a: "🔴", an: "le rouge", b: "🔵", bn: "le bleu",  hex: "#8e24aa" }
+  ];
+  if (score >= 2) MIXES.push({ a: "⚪", an: "le blanc", b: "🔴", bn: "le rouge", hex: "#f06292" });
+  const m = rand(MIXES);
+  const others = shuffle(COLORS.filter(c => c.hex !== m.hex)).slice(0, score >= 2 ? 3 : 2).map(c => c.hex);
+  return {
+    text: "Quelle couleur obtient-on ?",
+    visual: `${m.a} + ${m.b} = ❓`,
+    speech: `Si on mélange ${m.an} et ${m.bn}, quelle couleur obtient-on ? Touche dessus !`,
+    options: shuffle([m.hex, ...others]).map(h => ({
+      html: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="${h}"/></svg>`,
+      correct: h === m.hex
+    }))
+  };
+}
+
+function buildInitial() {
+  const pool = [...ANIMALS, ...FRUITS, ...VEHICLES].filter(x => !x.art.includes(" de "));
+  const t = rand(pool), name = stripArt(t.art);
+  const flat = s => s[0].normalize("NFD").replace(/[̀-ͯ]/g, "").toUpperCase();
+  const letter = flat(name);
+  const others = shuffle("ABCDEFGHILMOPRSTV".split("").filter(l => l !== letter)).slice(0, score >= 2 ? 3 : 2);
+  const pal = shuffle(LETTER_COLORS);
+  return {
+    text: `Par quelle lettre commence « ${name} » ?`,
+    visual: t.e,
+    speech: `Par quelle lettre commence le mot ${name} ? Touche dessus !`,
+    options: shuffle([letter, ...others]).map((l, i) => ({
+      html: `<span style="color:${pal[i]}">${l}</span>`,
+      correct: l === letter
+    }))
+  };
+}
+
+/* ================== Jeux d'éveil : outils ================== */
+function makeDraggable(el, home, onDrop) {
+  let sx, sy, ox, oy, dragging = false;
+  el.addEventListener("pointerdown", e => {
+    dragging = true; el.setPointerCapture(e.pointerId);
+    el.classList.remove("back"); el.classList.add("dragging");
+    sx = e.clientX; sy = e.clientY; ox = el.offsetLeft; oy = el.offsetTop;
+  });
+  el.addEventListener("pointermove", e => {
+    if (!dragging) return;
+    el.style.left = (ox + e.clientX - sx) + "px"; el.style.top = (oy + e.clientY - sy) + "px";
+  });
+  const end = e => {
+    if (!dragging) return; dragging = false;
+    el.classList.remove("dragging");
+    const r = el.getBoundingClientRect();
+    const ok = onDrop(r.left + r.width / 2, r.top + r.height / 2);
+    if (!ok) { el.classList.add("back"); el.style.left = home.left + "px"; el.style.top = home.top + "px"; }
+  };
+  el.addEventListener("pointerup", end);
+  el.addEventListener("pointercancel", end);
+}
+
+/* --- Chemin : passer sur les étoiles dans l'ordre jusqu'à la carotte --- */
+ARENA.path = function () {
+  const f = $("field");
+  let round = 0;
+  $("stars3").textContent = "☆☆☆";
+  const play = () => {
+    f.innerHTML = "";
+    setArena("Suis le chemin jusqu'à la carotte !", "Suis le chemin jusqu'à la carotte ! Glisse ton doigt sur les étoiles dans l'ordre.");
+    const W = f.clientWidth, H = f.clientHeight, portrait = H > W;
+    const along = portrait ? H : W, across = portrait ? W : H;
+    const n = 5 + round, m = 5 + round, flip = Math.random() < 0.5, pts = [];
+    for (let i = 0; i < n; i++) {
+      const high = (i % 2 === 0) !== flip;
+      const u = along * (0.12 + 0.76 * i / (n - 1));
+      const v = across * (high ? 0.22 + Math.random() * 0.12 : 0.66 + Math.random() * 0.12);
+      pts.push(portrait ? [v, u] : [u, v]);
+    }
+    let d = `M ${pts[0][0]} ${pts[0][1]}`;
+    for (let i = 1; i < n; i++) {
+      const [x0, y0] = pts[i - 1], [x1, y1] = pts[i];
+      const c1 = portrait ? [x0, (y0 + y1) / 2] : [(x0 + x1) / 2, y0];
+      const c2 = portrait ? [x1, (y0 + y1) / 2] : [(x0 + x1) / 2, y1];
+      d += ` C ${c1[0]} ${c1[1]}, ${c2[0]} ${c2[1]}, ${x1} ${y1}`;
+    }
+    const w = Math.max(60, Math.min(W, H) * 0.13);
+    f.innerHTML = `<svg width="${W}" height="${H}" style="position:absolute;inset:0">
+      <path d="${d}" fill="none" stroke="#ffe082" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="${d}" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 16"/></svg>`;
+    const pathEl = f.querySelector("path"), total = pathEl.getTotalLength();
+    const size = Math.round(w * 0.85);
+    const mk = (len, emoji) => {
+      const p = pathEl.getPointAtLength(len);
+      const el = document.createElement("div");
+      el.className = "cp"; el.textContent = emoji;
+      el.style.cssText = `left:${p.x - size / 2}px;top:${p.y - size / 2}px;width:${size}px;height:${size}px;font-size:${size * 0.8}px`;
+      f.appendChild(el);
+      return { el, x: p.x, y: p.y, r: size * 0.7 };
+    };
+    mk(0, "🐰");
+    const cps = Array.from({ length: m }, (_, i) => mk(total * (0.12 + 0.72 * i / (m - 1)), "⭐")).concat([mk(total, "🥕")]);
+    let idx = 0;
+    const refresh = () => cps.forEach((c, i) => { c.el.classList.toggle("next", i === idx); c.el.classList.toggle("dim", i > idx); });
+    refresh();
+    const move = e => {
+      if (idx >= cps.length) return;
+      const r = f.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, c = cps[idx];
+      if (Math.hypot(x - c.x, y - c.y) > c.r) return;
+      c.el.classList.remove("next"); tone(500 + idx * 60, 0.15, "triangle");
+      if (idx < cps.length - 1) c.el.textContent = "✅";
+      idx++;
+      if (idx === cps.length) {
+        round++;
+        $("stars3").textContent = "⭐".repeat(round) + "☆".repeat(3 - round);
+        sound.win(); confetti(40);
+        later(() => round >= 3 ? finish() : play(), 1500);
+      } else refresh();
+    };
+    f.onpointermove = move; f.onpointerdown = move;
+  };
+  play();
+};
+
+/* --- Puzzle : glisser les morceaux (4, 4 puis 9) --- */
+const PUZZLES = [
+  '<rect width="200" height="200" fill="#b3e5fc"/><rect y="140" width="200" height="60" fill="#81c784"/><circle cx="160" cy="40" r="22" fill="#ffd54f"/><rect x="55" y="90" width="90" height="60" fill="#ef5350"/><polygon points="45,92 100,45 155,92" fill="#6d4c41"/><rect x="90" y="116" width="20" height="34" fill="#fff8e1"/><rect x="65" y="104" width="18" height="18" fill="#fff8e1"/><rect x="117" y="104" width="18" height="18" fill="#fff8e1"/>',
+  '<rect width="200" height="200" fill="#4fc3f7"/><rect y="170" width="200" height="30" fill="#ffe082"/><ellipse cx="95" cy="100" rx="55" ry="34" fill="#ff7043"/><polygon points="145,100 188,66 188,134" fill="#ff7043"/><circle cx="72" cy="92" r="8" fill="#fff"/><circle cx="70" cy="92" r="4" fill="#333"/><circle cx="40" cy="50" r="7" fill="#e1f5fe"/><circle cx="55" cy="28" r="5" fill="#e1f5fe"/><circle cx="150" cy="40" r="6" fill="#e1f5fe"/>',
+  '<rect width="200" height="200" fill="#e1f5fe"/><rect y="150" width="200" height="50" fill="#81c784"/><rect x="97" y="95" width="6" height="65" fill="#388e3c"/><circle cx="100" cy="54" r="18" fill="#f06292"/><circle cx="125" cy="72" r="18" fill="#f06292"/><circle cx="115" cy="102" r="18" fill="#f06292"/><circle cx="85" cy="102" r="18" fill="#f06292"/><circle cx="75" cy="72" r="18" fill="#f06292"/><circle cx="100" cy="80" r="14" fill="#fdd835"/><circle cx="30" cy="35" r="14" fill="#ffd54f"/>'
+];
+ARENA.puzzle = function () {
+  const f = $("field");
+  const scenes = shuffle(PUZZLES), GRIDS = [2, 2, 3];
+  let round = 0;
+  $("stars3").textContent = "☆☆☆";
+  const play = () => {
+    f.innerHTML = "";
+    setArena("Reconstruis le puzzle !", "Reconstruis le puzzle ! Glisse chaque morceau à sa place.");
+    const g = GRIDS[round], scene = scenes[round], cnt = g * g, gap = 10;
+    const pieceSvg = i => `<svg viewBox="${(i % g) * 200 / g} ${Math.floor(i / g) * 200 / g} ${200 / g} ${200 / g}" width="100%" height="100%" preserveAspectRatio="none">${scene}</svg>`;
+    const W = f.clientWidth, H = f.clientHeight, land = W > H * 1.15;
+    const cell = Math.floor(land
+      ? Math.min((W * 0.42 - (g - 1) * gap) / g, H * 0.9 / g)
+      : Math.min((W - 24) / g, (H * 0.96 - 24 - (g - 1) * gap) / (2 * g)));
+    const trayW = g * cell + (g - 1) * gap;
+    const bx = land ? W * 0.06 : (W - g * cell) / 2, by = land ? (H - g * cell) / 2 : H * 0.02;
+    const tx = land ? W * 0.54 : (W - trayW) / 2, ty = land ? (H - trayW) / 2 : by + g * cell + 24;
+    const slotPos = i => ({ left: bx + (i % g) * cell, top: by + Math.floor(i / g) * cell });
+    const slots = Array.from({ length: cnt }, (_, i) => {
+      const s = document.createElement("div");
+      s.className = "slot"; s.innerHTML = pieceSvg(i);
+      const p = slotPos(i);
+      s.style.cssText += `left:${p.left}px;top:${p.top}px;width:${cell}px;height:${cell}px;`;
+      f.appendChild(s); return s;
+    });
+    let placed = 0;
+    shuffle([...Array(cnt).keys()]).forEach((i, k) => {
+      const home = { left: tx + (k % g) * (cell + gap), top: ty + Math.floor(k / g) * (cell + gap) };
+      const p = document.createElement("div");
+      p.className = "pz"; p.innerHTML = pieceSvg(i);
+      p.style.cssText += `left:${home.left}px;top:${home.top}px;width:${cell}px;height:${cell}px;`;
+      makeDraggable(p, home, (cx, cy) => {
+        const q = slots[i].getBoundingClientRect();
+        if (Math.abs(cx - (q.left + q.width / 2)) > cell * 0.6 || Math.abs(cy - (q.top + q.height / 2)) > cell * 0.6) { sound.oops(); return false; }
+        const pos = slotPos(i);
+        p.style.left = pos.left + "px"; p.style.top = pos.top + "px";
+        p.style.pointerEvents = "none"; p.style.zIndex = 3; p.style.borderRadius = "0";
+        tone(660, 0.12, "triangle"); placed++;
+        if (placed === cnt) {
+          round++;
+          $("stars3").textContent = "⭐".repeat(round) + "☆".repeat(3 - round);
+          later(() => { sound.win(); confetti(40); }, 250);
+          later(() => round >= 3 ? finish() : play(), 1800);
+        }
+        return true;
+      });
+      f.appendChild(p);
+    });
+  };
+  play();
+};
+
+/* --- Tri : ranger dans la bonne boîte (3 catégories, 6 images) --- */
+const SORT_CATS = [
+  { name: "les animaux", icon: "🐾", pool: ANIMALS },
+  { name: "les fruits", icon: "🍎", pool: FRUITS },
+  { name: "les véhicules", icon: "🚗", pool: VEHICLES }
+];
+ARENA.sort = function () {
+  const f = $("field");
+  const cats = shuffle(SORT_CATS);
+  setArena("Range chaque image dans la bonne boîte !", `Range chaque image dans la bonne boîte : ${cats[0].name}, ${cats[1].name} ou ${cats[2].name} !`);
+  const row = document.createElement("div");
+  row.style.cssText = "position:absolute;left:0;right:0;bottom:3%;display:flex;justify-content:space-around;";
+  const boxes = cats.map(cat => {
+    const b = document.createElement("div");
+    b.className = "dropbox";
+    b.style.cssText = "width:28vmin;height:28vmin;border-color:#90a4ae;background:rgba(255,255,255,.6);";
+    b.dataset.cat = cat.name;
+    b.innerHTML = `<div style="width:100%;text-align:center;line-height:1.1"><div style="font-size:8vmin">${cat.icon}</div><div style="font-size:max(12px,3vmin);font-weight:bold;color:#546e7a">${cat.name}</div></div>`;
+    row.appendChild(b); return b;
+  });
+  f.appendChild(row);
+  const W = f.clientWidth, H = f.clientHeight;
+  const picks = shuffle(cats.flatMap(cat => shuffle(cat.pool).slice(0, 2).map(x => ({ x, cat }))));
+  const total = picks.length, portrait = H > W, perRow = portrait ? 3 : total;
+  const size = Math.round(Math.min(110, W / (perRow + 1), H / (portrait ? 7 : 5)));
+  let done = 0;
+  $("stars3").textContent = "☆".repeat(total);
+  picks.forEach((p, i) => {
+    const it = document.createElement("div");
+    it.className = "ball itm"; it.textContent = p.x.e;
+    const left0 = (i % perRow + 0.5) / perRow * W - size / 2, top0 = H * 0.04 + Math.floor(i / perRow) * (size + H * 0.05) + Math.random() * H * 0.04;
+    it.style.cssText += `width:${size}px;height:${size}px;font-size:${Math.round(size * 0.6)}px;left:${left0}px;top:${top0}px;`;
+    makeDraggable(it, { left: left0, top: top0 }, (cx, cy) => {
+      const hit = boxes.find(b => { const q = b.getBoundingClientRect(); return cx > q.left && cx < q.right && cy > q.top && cy < q.bottom; });
+      if (hit && hit.dataset.cat === p.cat.name) {
+        it.remove();
+        const m = document.createElement("span"); m.textContent = p.x.e; m.style.fontSize = "5vmin"; hit.appendChild(m);
+        sound.win(); done++;
+        $("stars3").textContent = "⭐".repeat(done) + "☆".repeat(total - done);
+        if (done >= total) later(finish, 800);
+        return true;
+      }
+      sound.oops(); if (hit) say("Essaie encore !");
+      return false;
+    });
+    f.appendChild(it);
+  });
+};
+
+/* --- Panier : mettre le bon nombre d'objets (jusqu'à neuf) --- */
+ARENA.basket = function () {
+  const f = $("field");
+  const words = ["zéro", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix"];
+  const round = () => {
+    f.innerHTML = "";
+    const thing = rand(NUM_THINGS), n = 2 + Math.floor(Math.random() * Math.min(8, 4 + score));
+    setArena(`Mets ${n} ${thing.q} dans le panier !`, `Mets ${words[n]} ${thing.q} dans le panier !`);
+    const shelf = document.createElement("div");
+    shelf.style.cssText = "position:absolute;top:2%;left:0;right:0;height:56%;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:1vmin 2vmin;padding:0 4vw;";
+    const bottom = document.createElement("div");
+    bottom.style.cssText = "position:absolute;bottom:3%;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:5vw;";
+    const basket = document.createElement("div"); basket.className = "basket";
+    const empty = () => { basket.innerHTML = '<span class="ph">🧺</span>'; };
+    empty();
+    const ok = document.createElement("button");
+    ok.className = "round-btn"; ok.textContent = "👍"; ok.style.cssText += "width:clamp(70px,13vmin,120px);height:clamp(70px,13vmin,120px);font-size:clamp(36px,7vmin,64px);";
+    ok.addEventListener("mouseenter", sound.hover);
+    let count = 0, done = false;
+    const items = [];
+    for (let i = 0; i < n + 3; i++) {
+      const b = document.createElement("button");
+      b.className = "bigitem"; b.textContent = thing.e;
+      b.addEventListener("click", () => {
+        if (done || b.classList.contains("gone")) return;
+        b.classList.add("gone"); count++;
+        if (count === 1) basket.innerHTML = "";
+        const m = document.createElement("span"); m.className = "in"; m.textContent = thing.e; basket.appendChild(m);
+        tone(400 + count * 50, 0.12, "triangle"); say(words[count]);
+      });
+      shelf.appendChild(b); items.push(b);
+    }
+    ok.addEventListener("click", () => {
+      if (done) return;
+      if (count === n) {
+        done = true; score++; renderStars(); sound.win(); confetti(30);
+        later(() => say("Bravo !"), 400);
+        later(() => score >= ROUNDS ? finish() : round(), 1900);
+      } else {
+        sound.oops(); say("Essaie encore !");
+        count = 0; items.forEach(b => b.classList.remove("gone")); empty();
+      }
+    });
+    bottom.appendChild(basket); bottom.appendChild(ok);
+    f.appendChild(shelf); f.appendChild(bottom);
+  };
+  round();
+};
+
+/* --- Piano : jouer des notes --- */
+const NOTES = [["do", 262], ["ré", 294], ["mi", 330], ["fa", 349], ["sol", 392], ["la", 440], ["si", 494], ["do", 523]];
+const KEY_COLORS = ["#e53935", "#fb8c00", "#fdd835", "#43a047", "#00acc1", "#1e88e5", "#8e24aa", "#ec407a"];
+function makeKeys(count) {
+  const row = document.createElement("div");
+  row.style.cssText = "position:absolute;left:3vw;right:3vw;top:6%;bottom:8%;display:flex;gap:1.2vw;";
+  const keys = [];
+  for (let i = 0; i < count; i++) {
+    const k = document.createElement("button");
+    k.className = "key"; k.style.background = KEY_COLORS[i]; k.textContent = NOTES[i][0];
+    if (KEY_COLORS[i] === "#fdd835") k.style.color = "#5d4037";
+    row.appendChild(k); keys.push(k);
+  }
+  return { row, keys };
+}
+ARENA.piano = function () {
+  const f = $("field");
+  $("stars3").textContent = "";
+  setArena("Joue de la musique !", "Joue de la musique ! Touche les touches de couleur.");
+  const { row, keys } = makeKeys(8);
+  keys.forEach((k, i) => {
+    const play = () => { tone(NOTES[i][1], 0.8, "triangle", 0, 0.22); k.classList.add("down"); later(() => k.classList.remove("down"), 180); };
+    k.addEventListener("pointerdown", play);
+    k.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") play(); });
+  });
+  f.appendChild(row);
+};
+
+/* --- Mélodie : écouter puis rejouer (3, 3 puis 4 notes) --- */
+let melodySeq = [];
+ARENA.melody = function () {
+  const f = $("field");
+  const LENS = [3, 3, 4];
+  let round = 0, accepting = false, pos = 0;
+  $("stars3").textContent = "☆☆☆";
+  const { row, keys } = makeKeys(5);
+  f.appendChild(row);
+  const flash = i => { tone(NOTES[i][1], 0.6, "triangle", 0, 0.22); keys[i].classList.add("down"); later(() => keys[i].classList.remove("down"), 350); };
+  const playSeq = () => {
+    accepting = false; pos = 0;
+    setArena("Écoute la mélodie !", "Écoute bien la mélodie !");
+    melodySeq.forEach((k, j) => later(() => flash(k), 1500 + j * 700));
+    later(() => { accepting = true; $("promptText3").textContent = "À toi de jouer !"; say("À toi de jouer !"); }, 1500 + melodySeq.length * 700 + 100);
+  };
+  const newRound = () => {
+    melodySeq = Array.from({ length: LENS[round] }, () => Math.floor(Math.random() * 5));
+    playSeq();
+  };
+  keys.forEach((k, i) => k.addEventListener("pointerdown", () => {
+    if (!accepting) { tone(NOTES[i][1], 0.4, "triangle", 0, 0.1); return; }
+    flash(i);
+    if (i === melodySeq[pos]) {
+      pos++;
+      if (pos === melodySeq.length) {
+        accepting = false; round++;
+        $("stars3").textContent = "⭐".repeat(round) + "☆".repeat(3 - round);
+        later(() => { sound.win(); confetti(30); say("Bravo !"); }, 700);
+        later(() => round >= 3 ? finish() : newRound(), 2200);
+      }
+    } else {
+      accepting = false; sound.oops(); say("Essaie encore !");
+      later(playSeq, 1500);
+    }
+  }));
+  newRound();
+};
+
+function finish() {
+  if (!mode) return;
+  show("end"); sound.fanfare(); confetti(120);
+  say("Bravo ! Tu as gagné toutes les étoiles !");
+}
+document.addEventListener("pointerdown", () => {
+  ctx();
+  if ("speechSynthesis" in window) { try { speechSynthesis.speak(new SpeechSynthesisUtterance("")); } catch (e) {} }
+}, { once: true });
+</script>
+</body>
+</html>
