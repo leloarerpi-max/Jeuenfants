@@ -153,6 +153,80 @@
     to   { box-shadow: inset -8px -8px 18px rgba(0,0,0,.15), 0 0 0 22px rgba(255,235,59,0); }
   }
 
+  /* ---------- Profil : prénom, album, niveaux ---------- */
+  .profile-bar { display: flex; gap: 2vw; flex-wrap: wrap; justify-content: center; }
+  .pill { border: none; border-radius: 999px; padding: 10px 22px; font: inherit; font-weight: bold;
+    font-size: clamp(18px, 2.6vw, 28px); color: #fff; cursor: pointer; box-shadow: 0 5px 0 rgba(0,0,0,.2); }
+  #albumBtn { background: #ff8f00; }
+  #nameBtn { background: #26a69a; }
+  .pill:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.2); }
+  .menu-btn { position: relative; }
+  .menu-btn .lvl { position: absolute; top: 6px; right: 8px; font-size: clamp(12px, 1.6vw, 18px); line-height: 1;
+    background: rgba(255,255,255,.9); border-radius: 999px; padding: 3px 6px; }
+  .modal { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 50; }
+  .modal[hidden] { display: none; }
+  .modal-box { background: #fff; border-radius: 28px; padding: 24px; width: min(460px, 92vw); display: flex; flex-direction: column; gap: 16px; align-items: center; text-align: center; }
+  .modal-box h3 { margin: 0; font-size: clamp(22px, 4vw, 32px); color: #e65100; }
+  #nameInput { font: inherit; font-size: clamp(26px, 5vw, 40px); width: 100%; padding: 10px 14px; border: 4px solid #ffcc80;
+    border-radius: 18px; text-align: center; -webkit-user-select: text; user-select: text; }
+  .modal-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  #voiceBtn { background: #7e57c2; }
+  .voice-box { max-height: 92vh; overflow-y: auto; gap: 12px; width: min(560px, 94vw); }
+  .vsec { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+  .vlabel { font-weight: bold; color: #37474f; font-size: clamp(16px, 2.4vw, 22px); }
+  .vrow { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .vopt { border: 3px solid #d1c4e9; background: #f3e5f5; border-radius: 16px; padding: 8px 14px; font: inherit; font-weight: bold;
+    font-size: clamp(15px, 2.2vw, 20px); color: #4a148c; cursor: pointer; }
+  .vopt.on { background: #7e57c2; border-color: #7e57c2; color: #fff; }
+  .vhint { font-size: clamp(13px, 1.8vw, 16px); color: #607d8b; }
+  @media (max-height: 520px) {
+    .voice-box { padding: 12px 16px; gap: 6px; }
+    .voice-box h3 { font-size: 20px; }
+    .vopt { padding: 5px 10px; font-size: 15px; }
+  }
+  .modal-btns .pill { background: #66bb6a; }
+  .modal-btns .pill.secondary { background: #90a4ae; }
+  #album { justify-content: flex-start; overflow-y: auto; }
+  #albumTitle { font-size: clamp(22px, 4vw, 40px); font-weight: bold; color: #e65100; text-shadow: 2px 2px 0 #fff; text-align: center; }
+  .album-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(64px, 11vmin, 110px), 1fr)); gap: 2vmin;
+    width: min(900px, 94vw); padding: 2vh 0 6vh; }
+  .stk { aspect-ratio: 1; background: #fff; border-radius: 22px; display: flex; align-items: center; justify-content: center;
+    font-size: clamp(38px, 7vmin, 70px); box-shadow: 0 5px 0 rgba(0,0,0,.15); cursor: pointer; border: none; padding: 0; font-family: inherit; }
+  .stk.empty { background: rgba(255,255,255,.45); color: rgba(0,0,0,.18); font-weight: bold; cursor: default; box-shadow: none; }
+  .stk.wiggle { animation: wig .5s; }
+  @keyframes wig { 25% { transform: rotate(-12deg) scale(1.15); } 75% { transform: rotate(12deg) scale(1.15); } }
+  #reward { display: flex; flex-direction: column; align-items: center; gap: 1vh; }
+  .rw-label { font-size: clamp(20px, 3.5vw, 34px); font-weight: bold; color: #37474f; }
+  .rw-sticker { font-size: clamp(60px, 11vmin, 110px); line-height: 1; animation: popin .8s; }
+  .rw-level { font-size: clamp(18px, 3vw, 30px); font-weight: bold; color: #2e7d32; background: #fff; border-radius: 999px; padding: 6px 18px; }
+  @keyframes popin { 0% { transform: scale(0) rotate(-30deg); } 70% { transform: scale(1.3) rotate(8deg); } 100% { transform: scale(1); } }
+  @media (max-height: 520px) {
+    #end { gap: 2vh; }
+    #end .big { display: none; }
+    #end h2 { font-size: 40px; }
+    .rw-sticker { font-size: 60px; }
+    .end-btns .round-btn { width: 80px !important; height: 80px !important; font-size: 44px !important; }
+  }
+  /* ---------- Nouveaux jeux ---------- */
+  .addvis { display: flex; align-items: center; justify-content: center; gap: 2vw; flex-wrap: wrap; }
+  .addgrp { display: inline-flex; flex-wrap: wrap; justify-content: center; max-width: 34vw; font-size: .62em; line-height: 1.05;
+    background: rgba(255,255,255,.7); border-radius: 18px; padding: 4px 8px; }
+  .addvis b { color: #e65100; }
+  .maze { position: absolute; background: #fffde7; border: 6px solid #5d4037; border-radius: 10px; box-sizing: content-box; }
+  .mz { position: absolute; box-sizing: border-box; }
+  .mz.trail { background: #ffe082; }
+  .mz-tok { position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; line-height: 1; transition: left .08s, top .08s; }
+  .word-wrap { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; padding: 1vh 2vw; }
+  .word-pic { font-size: clamp(50px, 12vmin, 110px); line-height: 1; }
+  .slots { display: flex; gap: 1.2vmin; justify-content: center; }
+  .wslot { background: #fff; border-radius: 14px; border: 4px dashed #ffb74d; display: flex; align-items: center; justify-content: center;
+    font-weight: bold; color: rgba(0,0,0,.15); }
+  .wslot.filled { border-style: solid; border-color: #66bb6a; color: #2e7d32; }
+  .tiles { display: flex; flex-wrap: wrap; gap: 1.6vmin; justify-content: center; max-width: 94vw; }
+  .tile { border: none; border-radius: 16px; color: #fff; font: inherit; font-weight: bold; cursor: pointer; box-shadow: 0 6px 0 rgba(0,0,0,.2); padding: 0; }
+  .tile.used { visibility: hidden; }
+  .tile.bad { animation: shake .4s; }
+
   /* ---------- Version tactile (iPad / téléphone) ---------- */
   html, body { touch-action: manipulation; overscroll-behavior: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
   #stage, .bubble { touch-action: none; }
@@ -186,6 +260,11 @@
 <!-- MENU -->
 <div id="menu" class="screen active">
   <h1>👆 Le jeu des doigts magiques</h1>
+  <div class="profile-bar">
+    <button class="pill" id="albumBtn">📒 Mon album <span id="albumCount"></span></button>
+    <button class="pill" id="nameBtn">✏️ <span id="nameLabel">Ton prénom ?</span></button>
+    <button class="pill" id="voiceBtn">🔊 Voix</button>
+  </div>
   <div class="menu-section">
     <h2 class="menu-sub">👆 Je m'entraîne avec le doigt</h2>
     <div class="menu-grid">
@@ -201,6 +280,8 @@
       <button class="menu-btn" style="background:#d81b60" data-mode="basket"><span class="ico">🛒</span>Panier</button>
       <button class="menu-btn" style="background:#6d4c41" data-mode="piano"><span class="ico">🎹</span>Piano</button>
       <button class="menu-btn" style="background:#8e24aa" data-mode="melody"><span class="ico">🎼</span>Mélodie</button>
+      <button class="menu-btn" style="background:#00838f" data-mode="maze"><span class="ico">🐭</span>Labyrinthe</button>
+      <button class="menu-btn" style="background:#c0ca33" data-mode="word"><span class="ico">✏️</span>J'écris</button>
     </div>
   </div>
   <div class="menu-section">
@@ -220,6 +301,8 @@
       <button class="menu-btn" style="background:#455a64" data-mode="shadow"><span class="ico">🌑</span>Ombres</button>
       <button class="menu-btn" style="background:#f4511e" data-mode="mix"><span class="ico">🖌️</span>Mélanges</button>
       <button class="menu-btn" style="background:#7cb342" data-mode="initial"><span class="ico">🔠</span>1ère lettre</button>
+      <button class="menu-btn" style="background:#f9a825" data-mode="add"><span class="ico">➕</span>Additions</button>
+      <button class="menu-btn" style="background:#6d4c41" data-mode="where"><span class="ico">📦</span>Où est-il ?</button>
     </div>
   </div>
 </div>
@@ -257,10 +340,70 @@
   <div id="field"></div>
 </div>
 
+<!-- ALBUM -->
+<div id="album" class="screen">
+  <div class="topbar">
+    <button class="round-btn" id="homeBtn4" title="Menu">🏠</button>
+    <div id="albumTitle">📒 Mon album</div>
+    <div style="width:60px"></div>
+  </div>
+  <div class="album-grid" id="albumGrid"></div>
+</div>
+
+<!-- PRÉNOM -->
+<div class="modal" id="nameModal" hidden>
+  <div class="modal-box">
+    <h3>Comment tu t'appelles ?</h3>
+    <input id="nameInput" type="text" maxlength="12" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Prénom">
+    <div class="modal-btns">
+      <button class="pill" id="nameOk">✅ OK</button>
+      <button class="pill secondary" id="nameCancel">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- VOIX -->
+<div class="modal" id="voiceModal" hidden>
+  <div class="modal-box voice-box">
+    <h3>🔊 La voix du jeu</h3>
+    <div class="vsec">
+      <div class="vlabel">Voix</div>
+      <div class="vrow" id="voiceList"></div>
+      <div class="vhint" id="voiceHint"></div>
+    </div>
+    <div class="vsec">
+      <div class="vlabel">Hauteur</div>
+      <div class="vrow">
+        <button class="vopt" data-pitch="grave">🐻 Grave</button>
+        <button class="vopt" data-pitch="normale">🙂 Normale</button>
+        <button class="vopt" data-pitch="aigue">🐭 Aiguë</button>
+      </div>
+    </div>
+    <div class="vsec">
+      <div class="vlabel">Vitesse</div>
+      <div class="vrow">
+        <button class="vopt" data-rate="lente">🐢 Lente</button>
+        <button class="vopt" data-rate="normale">🙂 Normale</button>
+        <button class="vopt" data-rate="rapide">🐇 Rapide</button>
+      </div>
+    </div>
+    <div class="vsec">
+      <div class="vrow">
+        <button class="vopt" id="voiceToggle"></button>
+      </div>
+    </div>
+    <div class="modal-btns">
+      <button class="pill" id="voiceTest">▶️ Écouter</button>
+      <button class="pill" id="voiceOk">✅ OK</button>
+    </div>
+  </div>
+</div>
+
 <!-- FIN -->
 <div id="end" class="screen">
   <div class="big">🏆🌟🎉</div>
-  <h2>Bravo !</h2>
+  <h2 id="endTitle">Bravo !</h2>
+  <div id="reward"></div>
   <div class="end-btns">
     <button class="round-btn" id="againBtn" title="Rejouer" style="width:120px;height:120px;font-size:64px">🔄</button>
     <button class="round-btn" id="endHome" title="Menu" style="width:120px;height:120px;font-size:64px">🏠</button>
@@ -294,18 +437,33 @@ const sound = {
   fanfare: () => { [523,659,784,1047,784,1047].forEach((f,i)=>tone(f,0.2,"triangle",i*0.14)); }
 };
 
-let frVoice = null;
+/* Voix : réglages gardés sur l'appareil (voix, hauteur, vitesse, marche/arrêt) */
+const VOICE_KEY = "jeuMagique_voix";
+const PITCHES = { grave: 0.8, normale: 1.15, aigue: 1.5 };
+const RATES = { lente: 0.7, normale: 0.85, rapide: 1.05 };
+let VOICE = { name: "", pitch: "normale", rate: "normale", on: true };
+try { const raw = localStorage.getItem(VOICE_KEY); if (raw) VOICE = Object.assign(VOICE, JSON.parse(raw)); } catch (e) {}
+if (!(VOICE.pitch in PITCHES)) VOICE.pitch = "normale";
+if (!(VOICE.rate in RATES)) VOICE.rate = "normale";
+function saveVoice() { try { localStorage.setItem(VOICE_KEY, JSON.stringify(VOICE)); } catch (e) {} }
+let frVoices = [], frVoice = null;
 function loadVoice() {
   if (!("speechSynthesis" in window)) return;
-  const vs = speechSynthesis.getVoices();
-  frVoice = vs.find(v => /^fr/i.test(v.lang)) || null;
+  let vs = [];
+  try { vs = speechSynthesis.getVoices() || []; } catch (e) {}
+  frVoices = vs.filter(v => /^fr/i.test(v.lang))
+    .sort((a, b) => (/^fr[-_]FR/i.test(b.lang) ? 1 : 0) - (/^fr[-_]FR/i.test(a.lang) ? 1 : 0));
+  frVoice = frVoices.find(v => v.name === VOICE.name) || frVoices[0] || null;
+  const vm = document.getElementById("voiceModal");
+  if (vm && !vm.hidden) renderVoiceList();
 }
 if ("speechSynthesis" in window) { loadVoice(); speechSynthesis.onvoiceschanged = loadVoice; }
 function say(text) {
-  if (!("speechSynthesis" in window)) return;
+  if (!("speechSynthesis" in window) || !VOICE.on) return;
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = "fr-FR"; u.rate = 0.85; u.pitch = 1.15;
+  u.lang = frVoice ? frVoice.lang : "fr-FR";
+  u.rate = RATES[VOICE.rate]; u.pitch = PITCHES[VOICE.pitch];
   if (frVoice) u.voice = frVoice;
   speechSynthesis.speak(u);
 }
@@ -374,9 +532,110 @@ function show(id) { document.querySelectorAll(".screen").forEach(s => s.classLis
 const ROUNDS = 5;
 let mode = null, score = 0, current = null, locked = false, lastTargetIdx = -1;
 
+/* ================== Profil : prénom, autocollants, niveaux ================== */
+const STORE_KEY = "jeuMagique_v1";
+let PROFILE = { name: "", stickers: [], wins: {} };
+try { const raw = localStorage.getItem(STORE_KEY); if (raw) PROFILE = Object.assign(PROFILE, JSON.parse(raw)); } catch (e) {}
+if (!Array.isArray(PROFILE.stickers)) PROFILE.stickers = [];
+if (!PROFILE.wins || typeof PROFILE.wins !== "object") PROFILE.wins = {};
+if (typeof PROFILE.name !== "string") PROFILE.name = "";
+function saveProfile() { try { localStorage.setItem(STORE_KEY, JSON.stringify(PROFILE)); } catch (e) {} }
+const nm = () => PROFILE.name ? " " + PROFILE.name : "";
+function levelOf(m) { const w = PROFILE.wins[m] || 0; return w >= 4 ? 3 : w >= 2 ? 2 : 1; }
+let BOOST = 0;
+const lv = () => score + BOOST;
+const FREE_PLAY = ["bubbles", "draw", "piano"];
+const STICKERS = [
+  { e: "🦁", n: "le lion" }, { e: "🐯", n: "le tigre" }, { e: "🦒", n: "la girafe" }, { e: "🐘", n: "l'éléphant" },
+  { e: "🦓", n: "le zèbre" }, { e: "🐼", n: "le panda" }, { e: "🐨", n: "le koala" }, { e: "🦊", n: "le renard" },
+  { e: "🐻", n: "l'ours" }, { e: "🐰", n: "le lapin" }, { e: "🦉", n: "la chouette" }, { e: "🐧", n: "le manchot" },
+  { e: "🐬", n: "le dauphin" }, { e: "🐳", n: "la baleine" }, { e: "🐙", n: "la pieuvre" }, { e: "🦀", n: "le crabe" },
+  { e: "🐢", n: "la tortue" }, { e: "🦋", n: "le papillon" }, { e: "🐞", n: "la coccinelle" }, { e: "🐝", n: "l'abeille" },
+  { e: "🦖", n: "le dinosaure" }, { e: "🦕", n: "le diplodocus" }, { e: "🐉", n: "le dragon" }, { e: "🦄", n: "la licorne" },
+  { e: "🚀", n: "la fusée" }, { e: "🛸", n: "la soucoupe volante" }, { e: "🌈", n: "l'arc-en-ciel" }, { e: "🌙", n: "la lune" },
+  { e: "☀️", n: "le soleil" }, { e: "🪐", n: "la planète" }, { e: "🚒", n: "le camion de pompiers" }, { e: "🚜", n: "le tracteur" },
+  { e: "🚂", n: "le train" }, { e: "✈️", n: "l'avion" }, { e: "⛵", n: "le bateau" }, { e: "🏰", n: "le château" },
+  { e: "🎈", n: "le ballon" }, { e: "🍦", n: "la glace" }, { e: "🍰", n: "le gâteau" }, { e: "🎸", n: "la guitare" },
+  { e: "🥁", n: "le tambour" }, { e: "👑", n: "la couronne" }, { e: "🦜", n: "le perroquet" }, { e: "🐸", n: "la grenouille" },
+  { e: "🦔", n: "le hérisson" }, { e: "🐿️", n: "l'écureuil" }, { e: "🦩", n: "le flamant rose" }, { e: "🐠", n: "le poisson clown" }
+];
+function renderMenuInfo() {
+  $("albumCount").textContent = `${PROFILE.stickers.length}/${STICKERS.length}`;
+  $("nameLabel").textContent = PROFILE.name || "Ton prénom ?";
+  document.querySelectorAll(".menu-btn").forEach(b => {
+    const m = b.dataset.mode;
+    let badge = b.querySelector(".lvl");
+    if (FREE_PLAY.includes(m) || !PROFILE.wins[m]) { if (badge) badge.remove(); return; }
+    if (!badge) { badge = document.createElement("span"); badge.className = "lvl"; b.appendChild(badge); }
+    badge.textContent = "⭐".repeat(levelOf(m));
+  });
+}
+function openAlbum() {
+  ctx();
+  const g = $("albumGrid"); g.innerHTML = "";
+  STICKERS.forEach((st, i) => {
+    const b = document.createElement("button");
+    if (PROFILE.stickers.includes(i)) {
+      b.className = "stk"; b.textContent = st.e;
+      b.addEventListener("click", () => { b.classList.remove("wiggle"); void b.offsetWidth; b.classList.add("wiggle"); tone(600, 0.12, "triangle"); say(st.n); });
+    } else { b.className = "stk empty"; b.textContent = "?"; }
+    g.appendChild(b);
+  });
+  const n = PROFILE.stickers.length;
+  $("albumTitle").textContent = `📒 Mon album : ${n} / ${STICKERS.length}`;
+  show("album");
+  say(n === 0 ? "Ton album est vide. Gagne des parties pour avoir des autocollants !"
+    : `Tu as ${n} autocollant${n > 1 ? "s" : ""}${nm()} ! Touche-les pour entendre leur nom.`);
+}
+function cleanName(v) {
+  v = (v || "").replace(/[^A-Za-zÀ-ÖØ-öø-ÿ' -]/g, "").replace(/\s+/g, " ").trim().slice(0, 12);
+  return v ? v.charAt(0).toUpperCase() + v.slice(1) : "";
+}
+function renderVoiceList() {
+  const box = $("voiceList"); box.innerHTML = "";
+  frVoices.forEach(v => {
+    const b = document.createElement("button");
+    b.className = "vopt" + (frVoice && v.name === frVoice.name ? " on" : "");
+    b.textContent = v.name.replace(/\s*\(.*\)\s*$/, "").replace(/^(Microsoft|Google)\s+/, "") + (/CA/i.test(v.lang) ? " 🇨🇦" : /BE/i.test(v.lang) ? " 🇧🇪" : /CH/i.test(v.lang) ? " 🇨🇭" : "");
+    b.addEventListener("click", () => { VOICE.name = v.name; frVoice = v; saveVoice(); renderVoiceList(); voiceDemo(); });
+    box.appendChild(b);
+  });
+  $("voiceHint").textContent = frVoices.length > 1 ? "Touche une voix pour l'écouter."
+    : frVoices.length === 1 ? "Une seule voix française sur cet appareil. Sur iPad : Réglages › Accessibilité › Contenu énoncé › Voix › Français pour en ajouter."
+    : "Aucune voix française trouvée. Sur iPad : Réglages › Accessibilité › Contenu énoncé › Voix › Français.";
+  document.querySelectorAll("[data-pitch]").forEach(b => b.classList.toggle("on", b.dataset.pitch === VOICE.pitch));
+  document.querySelectorAll("[data-rate]").forEach(b => b.classList.toggle("on", b.dataset.rate === VOICE.rate));
+  $("voiceToggle").textContent = VOICE.on ? "🔊 Voix activée" : "🔇 Voix coupée";
+  $("voiceToggle").classList.toggle("on", VOICE.on);
+}
+function voiceDemo() { say("Bonjour" + nm() + " ! C'est moi, la voix du jeu."); }
+function openVoice() { ctx(); loadVoice(); renderVoiceList(); $("voiceModal").hidden = false; }
+function openName() { $("nameInput").value = PROFILE.name; $("nameModal").hidden = false; setTimeout(() => $("nameInput").focus(), 50); }
+function closeName(save) {
+  if (save) {
+    PROFILE.name = cleanName($("nameInput").value); saveProfile(); renderMenuInfo();
+    if (PROFILE.name) say("Bonjour " + PROFILE.name + " !");
+  }
+  $("nameInput").blur(); $("nameModal").hidden = true;
+}
+
 /* ================== Navigation ================== */
 document.querySelectorAll(".menu-btn").forEach(b => b.addEventListener("click", () => start(b.dataset.mode)));
-["homeBtn", "homeBtn2", "endHome"].forEach(id => $(id).addEventListener("click", goMenu));
+["homeBtn", "homeBtn2", "endHome", "homeBtn4"].forEach(id => $(id).addEventListener("click", goMenu));
+$("albumBtn").addEventListener("click", openAlbum);
+$("nameBtn").addEventListener("click", openName);
+$("voiceBtn").addEventListener("click", openVoice);
+$("voiceOk").addEventListener("click", () => { $("voiceModal").hidden = true; });
+$("voiceTest").addEventListener("click", voiceDemo);
+$("voiceToggle").addEventListener("click", () => {
+  VOICE.on = !VOICE.on; saveVoice(); renderVoiceList();
+  if (VOICE.on) voiceDemo(); else if ("speechSynthesis" in window) speechSynthesis.cancel();
+});
+document.querySelectorAll("[data-pitch]").forEach(b => b.addEventListener("click", () => { VOICE.pitch = b.dataset.pitch; saveVoice(); renderVoiceList(); voiceDemo(); }));
+document.querySelectorAll("[data-rate]").forEach(b => b.addEventListener("click", () => { VOICE.rate = b.dataset.rate; saveVoice(); renderVoiceList(); voiceDemo(); }));
+$("nameOk").addEventListener("click", () => closeName(true));
+$("nameCancel").addEventListener("click", () => closeName(false));
+$("nameInput").addEventListener("keydown", e => { if (e.key === "Enter") closeName(true); });
 $("againBtn").addEventListener("click", () => start(mode));
 $("speakBtn").addEventListener("click", () => current && say(current.speech));
 $("speakBtn2").addEventListener("click", () => say("Touche les bulles avec ton doigt, dans l'ordre : 1, 2, 3 !"));
@@ -387,6 +646,7 @@ function goMenu() { clearArena(); mode = null; if ("speechSynthesis" in window) 
 function start(m) {
   ctx();
   mode = m; score = 0; locked = false; lastTargetIdx = -1; clearArena();
+  BOOST = (levelOf(m) - 1) * 2;
   if (m === "bubbles") { show("bubblesScreen"); spawnBubbles(); say("Touche les bulles avec ton doigt, dans l'ordre : 1, 2, 3 !"); }
   else if (ARENA[m]) { show("arena"); renderStars(); ARENA[m](); }
   else { show("game"); renderStars(); nextQuestion(); }
@@ -463,9 +723,12 @@ function nextQuestion() {
   if (mode === "shadow")   q = buildShadow();
   if (mode === "mix")      q = buildMix();
   if (mode === "initial")  q = buildInitial();
+  if (mode === "add")      q = buildAdd();
+  if (mode === "where")    q = buildWhere();
   current = q;
   $("promptText").textContent = q.text;
   if (q.visual) $("promptVisual").textContent = q.visual;
+  if (q.visualHTML) $("promptVisual").innerHTML = q.visualHTML;
   q.options.forEach(o => {
     const btn = document.createElement("button");
     btn.className = "card";
@@ -483,7 +746,7 @@ function pickThree(pool, keyFn) {
   do { idx = Math.floor(Math.random() * pool.length); } while (idx === lastTargetIdx && pool.length > 1);
   lastTargetIdx = idx;
   const target = pool[idx];
-  const others = shuffle(pool.filter((_, i) => i !== idx)).slice(0, score >= 2 ? 3 : 2);
+  const others = shuffle(pool.filter((_, i) => i !== idx)).slice(0, lv() >= 2 ? 3 : 2);
   return { target, options: shuffle([target, ...others]) };
 }
 
@@ -522,14 +785,14 @@ function buildAnimals() {
 }
 
 function buildNumbers() {
-  const max = Math.min(9, 5 + score);
+  const max = Math.min(9, 5 + lv());
   const { target, options } = pickThree(Array.from({ length: max }, (_, i) => ({ n: i + 1 })));
   const palette = shuffle(["#e53935", "#1e88e5", "#43a047", "#fb8c00", "#8e24aa", "#00acc1"]);
   const cards = options.map((o, i) => ({
     html: `<span style="color:${palette[i]}">${o.n}</span>`,
     correct: o === target
   }));
-  if (score >= 2 && Math.random() < 0.5) {
+  if (lv() >= 2 && Math.random() < 0.5) {
     return {
       text: `Où est le chiffre ${target.n} ?`,
       speech: `Où est le chiffre ${target.n} ? Touche dessus !`,
@@ -552,7 +815,7 @@ function answer(btn, ok) {
     btn.classList.add("good");
     score++; renderStars();
     sound.win(); confetti(35);
-    say(rand(["Bravo !", "Super !", "Bien joué !", "Génial !"]));
+    say(rand(["Bravo", "Super", "Bien joué", "Génial"]) + (Math.random() < 0.5 ? nm() : "") + " !");
     setTimeout(() => {
       if (score >= ROUNDS) finish(); else nextQuestion();
     }, 1700);
@@ -586,7 +849,7 @@ function buildEmoji(pool) {
   };
 }
 function buildLetters() {
-  const letters = score >= 2 ? "ABCDEFGHIJLMNOPQRSTUV" : "ABCDEFLMOPST";
+  const letters = lv() >= 2 ? "ABCDEFGHIJLMNOPQRSTUV" : "ABCDEFLMOPST";
   const pool = letters.split("").map(l => ({ l }));
   const { target, options } = pickThree(pool);
   const pal = shuffle(LETTER_COLORS);
@@ -598,7 +861,7 @@ function buildLetters() {
 }
 function buildOdd() {
   const pool = shuffle([...ANIMALS, ...FRUITS, ...VEHICLES]);
-  const a = pool[0], b = pool[1], same = score >= 2 ? 4 : 3;
+  const a = pool[0], b = pool[1], same = lv() >= 2 ? 4 : 3;
   return {
     text: "Trouve celui qui n'est pas pareil !",
     speech: "Trouve celui qui n'est pas pareil ! Touche dessus !",
@@ -607,7 +870,7 @@ function buildOdd() {
 }
 function buildSize() {
   const big = Math.random() > 0.5, a = rand(ANIMALS);
-  const sizes = shuffle(score >= 2 ? [0.45, 0.7, 0.95, 1.2] : [0.5, 0.85, 1.2]);
+  const sizes = shuffle(lv() >= 2 ? [0.45, 0.7, 0.95, 1.2] : [0.5, 0.85, 1.2]);
   const text = big ? "Où est le plus gros ?" : "Où est le plus petit ?";
   const hi = Math.max(...sizes), lo = Math.min(...sizes);
   return {
@@ -647,13 +910,13 @@ ARENA.catch = function () {
   ];
   const place = () => {
     f.innerHTML = "";
-    const k = 1 + Math.min(score, 3);
+    const k = 1 + Math.min(lv(), 3);
     const picks = shuffle(items).slice(0, k), it = picks[0];
     setArena(`Touche ${it.art} !`);
     const W = f.clientWidth, H = f.clientHeight, portrait = H > W;
     const cols = portrait ? 2 : 4, rows = portrait ? 4 : 2, cw = W / cols, ch = H / rows;
     const cells = shuffle([...Array(cols * rows).keys()]).slice(0, k);
-    const size = Math.round(Math.max(56, Math.min(cw, ch, 130) * (1 - 0.08 * score)));
+    const size = Math.round(Math.max(56, Math.min(cw, ch, 130) * (1 - 0.08 * Math.min(lv(), 6))));
     let won = false;
     picks.forEach((p, i) => {
       const b = document.createElement("button");
@@ -821,7 +1084,7 @@ ARENA.clicks = function () {
   const words = ["zéro", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit"];
   const round = () => {
     f.innerHTML = "";
-    const it = rand(items), n = 1 + Math.floor(Math.random() * Math.min(7, 3 + score));
+    const it = rand(items), n = 1 + Math.floor(Math.random() * Math.min(7, 3 + lv()));
     setArena(`Touche ${n} fois ${it.art} !`, `Touche ${n === 1 ? "une" : words[n]} fois ${it.art} !`);
     const wrap = document.createElement("div");
     wrap.style.cssText = "display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:3vh;";
@@ -852,7 +1115,7 @@ function stripArt(s) { return s.replace(/^(le |la |l')/, ""); }
 function buildPattern() {
   const sets = [["🔴", "🔵", "🟡", "🟢", "🟠", "🟣"], ["🐶", "🐱", "🐸", "🐰", "🐷"], ["⭐", "❤️", "🌙", "☀️"]];
   const [A, B, C, D] = shuffle(rand(sets));
-  const hard = score >= 2;
+  const hard = lv() >= 2;
   const kind = rand(hard ? ["ABB", "AABB", "ABC", "AAB"] : ["AB", "AAB", "ABC"]);
   let seq, answer;
   if (kind === "AB")   { seq = [A, B, A, B, A];       answer = B; }
@@ -871,7 +1134,7 @@ function buildPattern() {
 
 function buildCompare() {
   const thing = rand(NUM_THINGS), more = Math.random() > 0.5;
-  const max = Math.min(9, 5 + score);
+  const max = Math.min(9, 5 + lv());
   const a = 1 + Math.floor(Math.random() * max);
   let b; do { b = 1 + Math.floor(Math.random() * max); } while (b === a);
   const text = more ? "Où y en a-t-il le plus ?" : "Où y en a-t-il le moins ?";
@@ -904,9 +1167,9 @@ function buildMix() {
     { a: "🔵", an: "le bleu",  b: "🟡", bn: "le jaune", hex: "#43a047" },
     { a: "🔴", an: "le rouge", b: "🔵", bn: "le bleu",  hex: "#8e24aa" }
   ];
-  if (score >= 2) MIXES.push({ a: "⚪", an: "le blanc", b: "🔴", bn: "le rouge", hex: "#f06292" });
+  if (lv() >= 2) MIXES.push({ a: "⚪", an: "le blanc", b: "🔴", bn: "le rouge", hex: "#f06292" });
   const m = rand(MIXES);
-  const others = shuffle(COLORS.filter(c => c.hex !== m.hex)).slice(0, score >= 2 ? 3 : 2).map(c => c.hex);
+  const others = shuffle(COLORS.filter(c => c.hex !== m.hex)).slice(0, lv() >= 2 ? 3 : 2).map(c => c.hex);
   return {
     text: "Quelle couleur obtient-on ?",
     visual: `${m.a} + ${m.b} = ❓`,
@@ -923,7 +1186,7 @@ function buildInitial() {
   const t = rand(pool), name = stripArt(t.art);
   const flat = s => s[0].normalize("NFD").replace(/[̀-ͯ]/g, "").toUpperCase();
   const letter = flat(name);
-  const others = shuffle("ABCDEFGHILMOPRSTV".split("").filter(l => l !== letter)).slice(0, score >= 2 ? 3 : 2);
+  const others = shuffle("ABCDEFGHILMOPRSTV".split("").filter(l => l !== letter)).slice(0, lv() >= 2 ? 3 : 2);
   const pal = shuffle(LETTER_COLORS);
   return {
     text: `Par quelle lettre commence « ${name} » ?`,
@@ -964,9 +1227,9 @@ ARENA.path = function () {
   const f = $("field");
   let round = 0;
   $("stars3").textContent = "☆☆☆";
-  const play = () => {
+  const play = (retry = 0) => {
     f.innerHTML = "";
-    setArena("Suis le chemin jusqu'à la carotte !", "Suis le chemin jusqu'à la carotte ! Glisse ton doigt sur les étoiles dans l'ordre.");
+    if (!retry) setArena("Suis le chemin jusqu'à la carotte !", "Suis le chemin jusqu'à la carotte ! Glisse ton doigt sur les étoiles dans l'ordre.");
     const W = f.clientWidth, H = f.clientHeight, portrait = H > W;
     const along = portrait ? H : W, across = portrait ? W : H;
     const n = 5 + round, m = 5 + round, flip = Math.random() < 0.5, pts = [];
@@ -997,6 +1260,9 @@ ARENA.path = function () {
       f.appendChild(el);
       return { el, x: p.x, y: p.y, r: size * 0.7 };
     };
+    const lens = [...Array.from({ length: m }, (_, i) => total * (0.12 + 0.72 * i / (m - 1))), total].map(l => pathEl.getPointAtLength(l));
+    const tight = lens.some((a, i) => lens.some((b, j) => j > i && Math.hypot(a.x - b.x, a.y - b.y) < size * 1.05));
+    if (tight && retry < 25) return play(retry + 1);
     mk(0, "🐰");
     const cps = Array.from({ length: m }, (_, i) => mk(total * (0.12 + 0.72 * i / (m - 1)), "⭐")).concat([mk(total, "🥕")]);
     let idx = 0;
@@ -1134,7 +1400,7 @@ ARENA.basket = function () {
   const words = ["zéro", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix"];
   const round = () => {
     f.innerHTML = "";
-    const thing = rand(NUM_THINGS), n = 2 + Math.floor(Math.random() * Math.min(8, 4 + score));
+    const thing = rand(NUM_THINGS), n = 2 + Math.floor(Math.random() * Math.min(8, 4 + lv()));
     setArena(`Mets ${n} ${thing.q} dans le panier !`, `Mets ${words[n]} ${thing.q} dans le panier !`);
     const shelf = document.createElement("div");
     shelf.style.cssText = "position:absolute;top:2%;left:0;right:0;height:56%;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:1vmin 2vmin;padding:0 4vw;";
@@ -1246,9 +1512,226 @@ ARENA.melody = function () {
 
 function finish() {
   if (!mode) return;
+  const before = levelOf(mode);
+  PROFILE.wins[mode] = (PROFILE.wins[mode] || 0) + 1;
+  const after = levelOf(mode), up = after > before;
+  const missing = STICKERS.map((_, i) => i).filter(i => !PROFILE.stickers.includes(i));
+  const got = missing.length ? rand(missing) : null;
+  if (got !== null) PROFILE.stickers.push(got);
+  saveProfile(); renderMenuInfo();
+  $("endTitle").textContent = "Bravo" + nm() + " !";
+  let html = got !== null
+    ? `<div class="rw-label">Nouvel autocollant !</div><div class="rw-sticker">${STICKERS[got].e}</div>`
+    : `<div class="rw-label">Tu as tous les autocollants !</div>`;
+  if (up) html += `<div class="rw-level">🔓 Niveau ${after} débloqué !</div>`;
+  $("reward").innerHTML = html;
   show("end"); sound.fanfare(); confetti(120);
-  say("Bravo ! Tu as gagné toutes les étoiles !");
+  let sp = "Bravo" + nm() + " ! Tu as gagné toutes les étoiles !";
+  if (got !== null) sp += " Tu gagnes un autocollant : " + STICKERS[got].n + " !";
+  if (up) sp += " Et tu passes au niveau " + after + " !";
+  say(sp);
 }
+
+/* ================== Nouveaux jeux 4-5 ans ================== */
+function buildAdd() {
+  const thing = rand(NUM_THINGS);
+  const maxSum = Math.min(10, 4 + lv());
+  const sum = 2 + Math.floor(Math.random() * (maxSum - 1));
+  const a = 1 + Math.floor(Math.random() * (sum - 1)), b = sum - a;
+  const opts = new Set([sum]);
+  const want = lv() >= 2 ? 4 : 3;
+  while (opts.size < want) { const v = sum + rand([-3, -2, -1, 1, 2, 3]); if (v >= 1 && v <= 10) opts.add(v); }
+  const pal = shuffle(LETTER_COLORS);
+  const grp = n => `<span class="addgrp">${Array(n).fill(thing.e).join("")}</span>`;
+  return {
+    text: "Combien ça fait en tout ?",
+    visualHTML: `<span class="addvis">${grp(a)}<b>+</b>${grp(b)}<b>=</b><span>❓</span></span>`,
+    speech: `${a} plus ${b}, ça fait combien ? Compte les ${thing.q} et touche le bon chiffre !`,
+    sum,
+    options: shuffle([...opts]).map((n, i) => ({ html: `<span style="color:${pal[i % pal.length]}">${n}</span>`, correct: n === sum }))
+  };
+}
+
+const WHERE_POS = {
+  sur:    { label: "sur",         a: [50, 24], b: [50, 68] },
+  sous:   { label: "sous",        a: [50, 78], b: [50, 32] },
+  cote:   { label: "à côté de",   a: null,     b: null },
+  gauche: { label: "à gauche de", a: [22, 54], b: [70, 54] },
+  droite: { label: "à droite de", a: [78, 54], b: [30, 54] }
+};
+function whereSVG(key, animal) {
+  let p = WHERE_POS[key];
+  if (key === "cote") p = WHERE_POS[rand(["gauche", "droite"])];
+  const t = (xy, e, fs) => `<text x="${xy[0]}" y="${xy[1]}" font-size="${fs}" text-anchor="middle" dominant-baseline="central">${e}</text>`;
+  return `<svg viewBox="0 0 100 100">${t(p.b, "📦", 46)}${t(p.a, animal.e, 38)}</svg>`;
+}
+function buildWhere() {
+  const animal = rand(ANIMALS);
+  const keys = lv() >= 2 ? ["sur", "sous", "gauche", "droite"] : ["sur", "sous", "cote"];
+  const target = rand(keys);
+  const label = WHERE_POS[target].label;
+  const cap = animal.art.charAt(0).toUpperCase() + animal.art.slice(1);
+  return {
+    text: `${cap} est ${label} la boîte`,
+    visual: (target === "gauche" || target === "droite") ? "⬅️ gauche · droite ➡️" : "",
+    speech: `Trouve l'image où ${animal.art} est ${label} la boîte. Touche dessus !`,
+    target,
+    options: shuffle(keys).map(k => ({ html: whereSVG(k, animal), correct: k === target, key: k }))
+  };
+}
+
+/* --- Labyrinthe : guider la souris jusqu'au fromage --- */
+ARENA.maze = function () {
+  const f = $("field");
+  let round = 0;
+  $("stars3").textContent = "☆☆☆";
+  const play = () => {
+    f.innerHTML = "";
+    setArena("Emmène la souris jusqu'au fromage !", "Emmène la petite souris jusqu'au fromage ! Glisse ton doigt dans les couloirs, sans traverser les murs.");
+    const W = f.clientWidth, H = f.clientHeight, portrait = H > W;
+    const n = Math.min(7, 4 + round + BOOST);
+    const R = portrait ? n + 2 : n, C = portrait ? n : n + 2;
+    const cell = Math.floor(Math.min((W - 30) / C, (H - 30) / R));
+    // génération (parcours en profondeur)
+    const open = Array.from({ length: R }, () => Array.from({ length: C }, () => ({ t: false, b: false, l: false, r: false })));
+    const seen = Array.from({ length: R }, () => Array(C).fill(false));
+    const stack = [[0, 0]]; seen[0][0] = true;
+    const DIRS = [[-1, 0, "t", "b"], [1, 0, "b", "t"], [0, -1, "l", "r"], [0, 1, "r", "l"]];
+    while (stack.length) {
+      const [r, c] = stack[stack.length - 1];
+      const nb = shuffle(DIRS).filter(([dr, dc]) => { const rr = r + dr, cc = c + dc; return rr >= 0 && rr < R && cc >= 0 && cc < C && !seen[rr][cc]; });
+      if (!nb.length) { stack.pop(); continue; }
+      const [dr, dc, a, b] = nb[0], rr = r + dr, cc = c + dc;
+      open[r][c][a] = true; open[rr][cc][b] = true; seen[rr][cc] = true; stack.push([rr, cc]);
+    }
+    const maze = document.createElement("div");
+    maze.className = "maze";
+    const left = Math.round((W - C * cell) / 2) - 6, top = Math.round((H - R * cell) / 2) - 6;
+    maze.style.cssText = `left:${left}px;top:${top}px;width:${C * cell}px;height:${R * cell}px`;
+    const cells = [];
+    const wall = "5px solid #5d4037";
+    for (let r = 0; r < R; r++) {
+      cells.push([]);
+      for (let c = 0; c < C; c++) {
+        const d = document.createElement("div");
+        d.className = "mz";
+        d.style.cssText = `left:${c * cell}px;top:${r * cell}px;width:${cell}px;height:${cell}px;` +
+          (r > 0 && !open[r][c].t ? `border-top:${wall};` : "") + (c > 0 && !open[r][c].l ? `border-left:${wall};` : "");
+        maze.appendChild(d); cells[r].push(d);
+      }
+    }
+    const tok = (e) => { const t = document.createElement("div"); t.className = "mz-tok"; t.textContent = e;
+      t.style.cssText = `width:${cell}px;height:${cell}px;font-size:${cell * 0.72}px`; maze.appendChild(t); return t; };
+    const goal = tok("🧀"); goal.style.left = (C - 1) * cell + "px"; goal.style.top = (R - 1) * cell + "px";
+    const mouse = tok("🐭");
+    f.appendChild(maze);
+    let pos = [0, 0], done = false, armed = false;
+    const place = () => { mouse.style.left = pos[1] * cell + "px"; mouse.style.top = pos[0] * cell + "px"; cells[pos[0]][pos[1]].classList.add("trail"); };
+    place();
+    const canGo = (r, c, dr, dc) => {
+      const k = dr === -1 ? "t" : dr === 1 ? "b" : dc === -1 ? "l" : "r";
+      return open[r][c][k];
+    };
+    const move = e => {
+      if (done) return;
+      const rect = maze.getBoundingClientRect();
+      const x = e.clientX - rect.left - 6, y = e.clientY - rect.top - 6;
+      if (x < 0 || y < 0 || x >= C * cell || y >= R * cell) return;
+      const tr = Math.floor(y / cell), tc = Math.floor(x / cell);
+      const dist = Math.abs(tr - pos[0]) + Math.abs(tc - pos[1]);
+      // on prend la souris en passant dessus (au doigt : en posant le doigt dessus)
+      if (!armed) {
+        if (dist <= 1 && (e.type === "pointerdown" || e.pointerType !== "touch")) armed = true;
+        else return;
+      }
+      if (dist > 3) return;
+      let guard = 0, moved = false;
+      while ((pos[0] !== tr || pos[1] !== tc) && guard++ < 20) {
+        const [r, c] = pos;
+        const steps = [[Math.sign(tr - r), 0], [0, Math.sign(tc - c)]].filter(([dr, dc]) => (dr || dc) && canGo(r, c, dr, dc));
+        if (!steps.length) break;
+        const [dr, dc] = steps[0];
+        pos = [r + dr, c + dc]; moved = true; place();
+      }
+      if (moved) tone(420 + (pos[0] + pos[1]) * 25, 0.06, "triangle", 0, 0.08);
+      if (pos[0] === R - 1 && pos[1] === C - 1) {
+        done = true; round++;
+        $("stars3").textContent = "⭐".repeat(round) + "☆".repeat(3 - round);
+        sound.win(); confetti(50); say(rand(["Miam ! Bravo", "Super", "Génial"]) + nm() + " !");
+        later(() => round >= 3 ? finish() : play(), 1800);
+      }
+    };
+    f.onpointermove = move; f.onpointerdown = move;
+  };
+  play();
+};
+
+/* --- J'écris : son prénom et des petits mots --- */
+const WORDS = [
+  { w: "CHAT", e: "🐱" }, { w: "LUNE", e: "🌙" }, { w: "LION", e: "🦁" }, { w: "PAPA", e: "👨" }, { w: "MAMAN", e: "👩" },
+  { w: "POMME", e: "🍎" }, { w: "LAPIN", e: "🐰" }, { w: "TRAIN", e: "🚂" }, { w: "AVION", e: "✈️" }, { w: "ROBOT", e: "🤖" },
+  { w: "BATEAU", e: "⛵" }, { w: "SOLEIL", e: "☀️" }, { w: "POULE", e: "🐔" }, { w: "FUSEE", e: "🚀" }
+];
+function nameWord() {
+  return (PROFILE.name || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, 10);
+}
+ARENA.word = function () {
+  const f = $("field");
+  let round = 0, lastW = "";
+  $("stars3").textContent = "☆☆☆";
+  const play = () => {
+    f.innerHTML = "";
+    const nw = nameWord();
+    let item;
+    if (round === 0 && nw.length >= 2) item = { w: nw, e: "🧒", isName: true };
+    else {
+      const maxLen = lv() >= 2 ? 6 : 5;
+      item = rand(WORDS.filter(x => x.w.length <= maxLen && x.w !== lastW && (round > 0 || x.w.length <= 4 + BOOST)));
+    }
+    lastW = item.w;
+    const word = item.w;
+    if (item.isName) setArena("Écris ton prénom !", "Écris ton prénom ! Touche les lettres dans l'ordre.");
+    else setArena("Écris le mot !", `Écris le mot ${word.toLowerCase()} ! Touche les lettres dans l'ordre.`);
+    const W = f.clientWidth, H = f.clientHeight;
+    const extra = lv() >= 2 ? 2 : 0;
+    const pool = "ABCDEFGILMNOPRSTU".split("").filter(l => !word.includes(l));
+    const letters = shuffle([...word.split(""), ...shuffle(pool).slice(0, extra)]);
+    const slotSize = Math.floor(Math.min(H * 0.17, (W * 0.92) / word.length - 10, 110));
+    const tileSize = Math.floor(Math.min(H * 0.2, (W * 0.94) / Math.min(letters.length, 7) - 14, 120));
+    const wrap = document.createElement("div"); wrap.className = "word-wrap";
+    wrap.innerHTML = `<div class="word-pic">${item.e}</div><div class="slots"></div><div class="tiles"></div>`;
+    f.appendChild(wrap);
+    const slots = word.split("").map(ch => {
+      const d = document.createElement("div"); d.className = "wslot"; d.textContent = ch;
+      d.style.cssText = `width:${slotSize}px;height:${slotSize}px;font-size:${slotSize * 0.62}px`;
+      wrap.children[1].appendChild(d); return d;
+    });
+    let idx = 0;
+    letters.forEach((ch, i) => {
+      const t = document.createElement("button"); t.className = "tile"; t.textContent = ch;
+      t.style.cssText = `width:${tileSize}px;height:${tileSize}px;font-size:${tileSize * 0.6}px;background:${LETTER_COLORS[i % LETTER_COLORS.length]}`;
+      t.addEventListener("click", () => {
+        if (idx >= word.length || t.classList.contains("used")) return;
+        if (ch === word[idx]) {
+          t.classList.add("used"); slots[idx].classList.add("filled"); idx++;
+          tone(500 + idx * 50, 0.12, "triangle"); say(ch.toLowerCase());
+          if (idx === word.length) {
+            round++;
+            $("stars3").textContent = "⭐".repeat(round) + "☆".repeat(3 - round);
+            sound.win(); confetti(50);
+            later(() => say(item.isName ? `Bravo ! Tu as écrit ton prénom, ${PROFILE.name} !` : `Bravo${nm()} ! Tu as écrit ${word.toLowerCase()} !`), 500);
+            later(() => round >= 3 ? finish() : play(), 2600);
+          }
+        } else {
+          t.classList.remove("bad"); void t.offsetWidth; t.classList.add("bad"); sound.oops();
+        }
+      });
+      wrap.children[2].appendChild(t);
+    });
+  };
+  play();
+};
+renderMenuInfo();
 document.addEventListener("pointerdown", () => {
   ctx();
   if ("speechSynthesis" in window) { try { speechSynthesis.speak(new SpeechSynthesisUtterance("")); } catch (e) {} }
