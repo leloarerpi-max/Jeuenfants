@@ -186,6 +186,41 @@
   }
   .modal-btns .pill { background: #66bb6a; }
   .modal-btns .pill.secondary { background: #90a4ae; }
+  /* ---------- Contrôle parental ---------- */
+  #parentBtn { background: #546e7a; }
+  #timeChip { background: #fff; color: #37474f; border-radius: 999px; padding: 10px 18px; font-weight: bold;
+    font-size: clamp(16px, 2.2vw, 24px); box-shadow: 0 5px 0 rgba(0,0,0,.15); }
+  #lockScreen { z-index: 90; background: linear-gradient(#5c6bc0, #1a237e); }
+  .lock-box { background: #fff; border-radius: 32px; padding: 28px; width: min(480px, 92vw); display: flex; flex-direction: column;
+    gap: 14px; align-items: center; text-align: center; max-height: 94vh; overflow-y: auto; }
+  .lock-box h3 { margin: 0; font-size: clamp(24px, 5vw, 38px); color: #283593; }
+  .lock-box .big { font-size: clamp(56px, 14vmin, 110px); line-height: 1; }
+  .lock-box p { margin: 0; font-size: clamp(16px, 2.6vw, 24px); color: #455a64; }
+  #parentModal { z-index: 100; }
+  .pm-box { background: #fff; border-radius: 28px; padding: 20px; width: min(520px, 94vw); max-height: 94vh; overflow-y: auto;
+    display: flex; flex-direction: column; gap: 12px; align-items: center; text-align: center; }
+  .pm-box h3 { margin: 0; font-size: clamp(20px, 3.6vw, 30px); color: #37474f; }
+  #pmQ { font-size: clamp(32px, 7vw, 52px); font-weight: bold; color: #263238; }
+  #pmDots { font-size: clamp(30px, 6vw, 44px); letter-spacing: 8px; min-height: 1.2em; color: #263238; }
+  .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: min(300px, 80vw); }
+  .keypad button { border: none; border-radius: 16px; background: #eceff1; font: inherit; font-weight: bold; color: #263238;
+    font-size: clamp(22px, 5vmin, 34px); padding: 10px 0; box-shadow: 0 4px 0 rgba(0,0,0,.18); cursor: pointer; }
+  .keypad button:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,.18); }
+  .keypad .ok { background: #66bb6a; color: #fff; }
+  .shake { animation: shake .4s; }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+  .pm-remain { font-size: clamp(18px, 3vw, 26px); font-weight: bold; color: #283593; }
+  @media (max-height: 520px) {
+    .lock-box, .pm-box { padding: 12px 16px; gap: 6px; }
+    .lock-box .big { font-size: 44px; }
+    .keypad { grid-template-columns: repeat(6, 1fr); width: min(520px, 90vw); }
+    .keypad button { padding: 4px 0; font-size: 20px; }
+    #pmQ, #pmDots { font-size: 26px; min-height: 0; }
+  }
+  #warnBanner { position: fixed; top: 8px; left: 50%; transform: translateX(-50%); z-index: 60; background: #ffeb3b; color: #5d4037;
+    font-weight: bold; border-radius: 999px; padding: 8px 20px; font-size: clamp(16px, 2.6vw, 24px); box-shadow: 0 4px 0 rgba(0,0,0,.2);
+    pointer-events: none; }
+  #warnBanner[hidden] { display: none; }
   #album { justify-content: flex-start; overflow-y: auto; }
   #albumTitle { font-size: clamp(22px, 4vw, 40px); font-weight: bold; color: #e65100; text-shadow: 2px 2px 0 #fff; text-align: center; }
   .album-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(64px, 11vmin, 110px), 1fr)); gap: 2vmin;
@@ -305,6 +340,8 @@
     <button class="pill" id="albumBtn">📒 Mon album <span id="albumCount"></span></button>
     <button class="pill" id="nameBtn">✏️ <span id="nameLabel">Ton prénom ?</span></button>
     <button class="pill" id="voiceBtn">🔊 Voix</button>
+    <button class="pill" id="parentBtn">🔒 Parents</button>
+    <span id="timeChip" hidden></span>
   </div>
   <div class="menu-section">
     <h2 class="menu-sub">👆 Je m'entraîne avec le doigt</h2>
@@ -455,6 +492,20 @@
       <button class="pill" id="voiceOk">✅ OK</button>
     </div>
   </div>
+</div>
+
+<!-- CONTROLE PARENTAL -->
+<div id="warnBanner" hidden></div>
+<div class="modal" id="lockScreen" hidden>
+  <div class="lock-box">
+    <div class="big">😴</div>
+    <h3>C'est fini pour aujourd'hui !</h3>
+    <p>Tu as bien joué. À demain pour de nouveaux jeux !</p>
+    <button class="pill" id="lockParentBtn" style="background:#546e7a">🔒 Parents</button>
+  </div>
+</div>
+<div class="modal" id="parentModal" hidden>
+  <div class="pm-box" id="pmBox"></div>
 </div>
 
 <!-- FIN -->
@@ -699,10 +750,154 @@ $("speakBtn").addEventListener("click", () => current && say(current.speech));
 $("speakBtn2").addEventListener("click", () => say("Touche les bulles avec ton doigt, dans l'ordre : 1, 2, 3 !"));
 document.querySelectorAll(".menu-btn, .round-btn, .card").forEach(el => el.addEventListener("mouseenter", sound.hover));
 
+/* ================== Contrôle parental ================== */
+const PK = "jeuMagique_parents";
+const DEF_LIMIT = 15 * 60;
+let PAR = { on: true, limit: DEF_LIMIT, bonus: 0, used: 0, day: "", pin: "" };
+try { const raw = localStorage.getItem(PK); if (raw) PAR = Object.assign(PAR, JSON.parse(raw)); } catch (e) {}
+function todayKey() { const d = new Date(); return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); }
+function savePar() { try { localStorage.setItem(PK, JSON.stringify(PAR)); } catch (e) {} }
+if (PAR.day !== todayKey()) { PAR.day = todayKey(); PAR.used = 0; PAR.bonus = 0; savePar(); }
+if (!(PAR.limit >= 60)) PAR.limit = DEF_LIMIT;
+function leftSec() { return PAR.on ? Math.max(0, PAR.limit + PAR.bonus - PAR.used) : Infinity; }
+function timeLocked() { return PAR.on && leftSec() <= 0; }
+function minTxt(sec) { const m = Math.ceil(sec / 60); return m + " min"; }
+function updateChip() {
+  const c = $("timeChip");
+  if (!PAR.on) { c.hidden = true; return; }
+  c.hidden = false; c.textContent = "⏱️ " + (timeLocked() ? "0 min" : minTxt(leftSec()));
+}
+function showLock() {
+  clearArena(); mode = null;
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  $("warnBanner").hidden = true;
+  show("menu"); updateChip();
+  $("lockScreen").hidden = false;
+  say("C'est fini pour aujourd'hui. À demain !");
+}
+let lastTick = Date.now(), warned = false;
+function tick() {
+  const now = Date.now(), dt = Math.min(2, (now - lastTick) / 1000); lastTick = now;
+  if (PAR.day !== todayKey()) { PAR.day = todayKey(); PAR.used = 0; PAR.bonus = 0; savePar(); warned = false; }
+  if (!PAR.on) { $("warnBanner").hidden = true; return; }
+  if (mode !== null && !document.hidden && $("lockScreen").hidden && $("parentModal").hidden) {
+    PAR.used += dt;
+    if (Math.floor(PAR.used) % 5 === 0) savePar();
+    const left = leftSec();
+    if (left <= 0) { savePar(); showLock(); return; }
+    if (left <= 60 && !warned) {
+      warned = true; savePar();
+      const w = $("warnBanner"); w.textContent = "⏱️ Encore 1 minute !"; w.hidden = false;
+      say("Encore une minute !");
+      setTimeout(() => { w.hidden = true; }, 5000);
+    }
+    if (left > 60) warned = false;
+  }
+  updateChip();
+}
+setInterval(tick, 1000);
+updateChip();
+if (timeLocked()) $("lockScreen").hidden = false;
+
+/* --- accès parent : question de calcul ou code --- */
+let pmEntry = "", pmAnswer = 0, pmStage = "gate", pmNeed = 0, pmTmp = "";
+function pmClose() { $("parentModal").hidden = true; pmEntry = ""; afterParent(); }
+function afterParent() {
+  updateChip();
+  if (!timeLocked()) $("lockScreen").hidden = true;
+}
+function openParent() {
+  if (!PAR.on) { renderPanel(); $("parentModal").hidden = false; return; }
+  pmEntry = "";
+  if (PAR.pin) { pmStage = "pin"; pmNeed = 4; }
+  else {
+    const a = 6 + Math.floor(Math.random() * 4), b = 6 + Math.floor(Math.random() * 4);
+    pmAnswer = a * b; pmStage = "math"; pmQ = a + " × " + b + " = ?";
+  }
+  renderGate(); $("parentModal").hidden = false;
+}
+let pmQ = "";
+function keypadHtml(withOk) {
+  let h = '<div class="keypad">';
+  for (let i = 1; i <= 9; i++) h += '<button data-k="' + i + '">' + i + '</button>';
+  h += '<button data-k="back">⌫</button><button data-k="0">0</button>' +
+    (withOk ? '<button class="ok" data-k="ok">✅</button>' : '<button data-k="x" style="visibility:hidden">·</button>') + '</div>';
+  return h;
+}
+function renderGate(msg) {
+  const isPin = pmStage === "pin" || pmStage === "setpin";
+  const title = pmStage === "setpin" ? "Choisis un code à 4 chiffres" : isPin ? "Entre ton code parent" : "Espace parents : réponds pour entrer";
+  $("pmBox").innerHTML = '<h3>🔒 ' + title + '</h3>' +
+    (pmStage === "math" ? '<div id="pmQ">' + pmQ + '</div>' : '') +
+    '<div id="pmDots">' + (isPin ? "●".repeat(pmEntry.length) + "○".repeat(Math.max(0, 4 - pmEntry.length)) : pmEntry || "&nbsp;") + '</div>' +
+    (msg ? '<div class="vhint">' + msg + '</div>' : '') +
+    keypadHtml(!isPin) +
+    '<div class="modal-btns"><button class="pill secondary" data-k="cancel">Annuler</button></div>';
+}
+function pmKey(k) {
+  if (k === "cancel") { if (pmStage === "setpin") { renderPanel(); return; } pmClose(); return; }
+  if (k === "back") pmEntry = pmEntry.slice(0, -1);
+  else if (/^\d$/.test(k)) { if (pmEntry.length < (pmStage === "math" ? 3 : 4)) pmEntry += k; }
+  else if (k !== "ok") return;
+  if (pmStage === "math" && k === "ok") {
+    if (parseInt(pmEntry, 10) === pmAnswer) { renderPanel(); return; }
+    pmEntry = ""; renderGate("Ce n'est pas ça, essaie encore."); const b = $("pmBox"); b.classList.remove("shake"); void b.offsetWidth; b.classList.add("shake"); return;
+  }
+  if (pmStage === "pin" && pmEntry.length === 4) {
+    if (pmEntry === PAR.pin) { renderPanel(); return; }
+    pmEntry = ""; renderGate("Code incorrect."); const b = $("pmBox"); b.classList.remove("shake"); void b.offsetWidth; b.classList.add("shake"); return;
+  }
+  if (pmStage === "setpin" && pmEntry.length === 4) {
+    PAR.pin = pmEntry; savePar(); pmEntry = ""; renderPanel("Code enregistré ✅"); return;
+  }
+  renderGate();
+}
+function renderPanel(msg) {
+  pmStage = "panel"; pmEntry = "";
+  const lims = [5, 10, 15, 20, 30, 45, 60];
+  $("pmBox").innerHTML = '<h3>👨‍👩‍👦 Espace parents</h3>' +
+    '<div class="pm-remain">' + (PAR.on ? (timeLocked() ? "Temps écoulé aujourd'hui" : "Il reste " + minTxt(leftSec()) + " aujourd'hui") : "Contrôle désactivé") + '</div>' +
+    (msg ? '<div class="vhint">' + msg + '</div>' : '') +
+    '<div class="vsec"><div class="vlabel">Donner du temps en plus</div><div class="vrow">' +
+    '<button class="vopt" data-add="5">➕ 5 min</button><button class="vopt" data-add="15">➕ 15 min</button><button class="vopt" data-add="30">➕ 30 min</button></div></div>' +
+    '<div class="vsec"><div class="vlabel">Durée par jour</div><div class="vrow">' +
+    lims.map(m => '<button class="vopt' + (PAR.limit === m * 60 ? ' on' : '') + '" data-lim="' + m + '">' + m + ' min</button>').join("") + '</div></div>' +
+    '<div class="vsec"><div class="vrow">' +
+    '<button class="vopt' + (PAR.on ? ' on' : '') + '" data-pm="toggle">' + (PAR.on ? "⏱️ Contrôle activé" : "⏱️ Contrôle désactivé") + '</button>' +
+    '<button class="vopt" data-pm="pin">🔑 ' + (PAR.pin ? "Changer le code" : "Définir un code") + '</button>' +
+    (PAR.pin ? '<button class="vopt" data-pm="nopin">🗑️ Retirer le code</button>' : '') +
+    '<button class="vopt" data-pm="reset">↺ Remettre le compteur à zéro</button></div></div>' +
+    '<div class="modal-btns"><button class="pill" data-pm="close">✅ Terminé</button></div>';
+}
+function pmPanelClick(el) {
+  if (el.dataset.add) { PAR.bonus += parseInt(el.dataset.add, 10) * 60; savePar(); warned = false; renderPanel("Temps ajouté ✅"); }
+  else if (el.dataset.lim) { PAR.limit = parseInt(el.dataset.lim, 10) * 60; savePar(); warned = false; renderPanel("Durée enregistrée ✅"); }
+  else if (el.dataset.pm === "toggle") { PAR.on = !PAR.on; savePar(); renderPanel(); }
+  else if (el.dataset.pm === "pin") { pmStage = "setpin"; pmEntry = ""; renderGate(); }
+  else if (el.dataset.pm === "nopin") { PAR.pin = ""; savePar(); renderPanel("Code retiré."); }
+  else if (el.dataset.pm === "reset") { PAR.used = 0; PAR.bonus = 0; savePar(); warned = false; renderPanel("Compteur remis à zéro ✅"); }
+  else if (el.dataset.pm === "close") pmClose();
+}
+$("pmBox").addEventListener("click", e => {
+  const el = e.target.closest("button"); if (!el) return;
+  if (pmStage === "panel") pmPanelClick(el);
+  else if (el.dataset.k) pmKey(el.dataset.k);
+});
+document.addEventListener("keydown", e => {
+  if ($("parentModal").hidden || pmStage === "panel") return;
+  if (/^\d$/.test(e.key)) pmKey(e.key);
+  else if (e.key === "Backspace") pmKey("back");
+  else if (e.key === "Enter") pmKey("ok");
+  else if (e.key === "Escape") pmKey("cancel");
+});
+$("parentBtn").addEventListener("click", openParent);
+$("lockParentBtn").addEventListener("click", openParent);
+
 function goMenu() { clearArena(); mode = null; if ("speechSynthesis" in window) speechSynthesis.cancel(); show("menu"); }
 
 function start(m) {
   ctx();
+  if (timeLocked()) { showLock(); return; }
   mode = m; score = 0; locked = false; lastTargetIdx = -1; clearArena();
   BOOST = (levelOf(m) - 1) * 2;
   if (m === "bubbles") { show("bubblesScreen"); spawnBubbles(); say("Touche les bulles avec ton doigt, dans l'ordre : 1, 2, 3 !"); }
