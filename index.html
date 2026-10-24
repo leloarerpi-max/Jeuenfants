@@ -186,6 +186,24 @@
   }
   .modal-btns .pill { background: #66bb6a; }
   .modal-btns .pill.secondary { background: #90a4ae; }
+  /* ---------- Programme MS / GS ---------- */
+  .gridv { border-collapse: collapse; margin: 0 auto; }
+  .gridv td { font-size: .68em; width: 1.5em; height: 1.25em; border: 2px solid #90a4ae; background: #fff; text-align: center; line-height: 1; padding: 0; }
+  .gridv th { font-size: .42em; color: #e65100; padding: 0 .3em; font-weight: bold; }
+  .cntgrp { display: inline-flex; flex-wrap: wrap; justify-content: center; max-width: 70vw; font-size: .55em; line-height: 1.05; }
+  .storytxt { font-size: clamp(13px, 1.9vw, 19px); font-weight: normal; color: #455a64; max-width: 84vw; margin: 0 auto; line-height: 1.25; }
+  .mv { border: none; border-radius: 28px; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-family: inherit; box-shadow: 0 8px 0 rgba(0,0,0,.2); cursor: pointer; touch-action: manipulation; }
+  .mv small { font-size: .2em; font-weight: bold; }
+  .mv.on { transform: scale(1.06); filter: brightness(1.3); box-shadow: 0 0 40px #fff; }
+  .mv.bad { animation: shake .45s; }
+  .bpart { border: none; border-radius: 18px; background: #fff; box-shadow: 0 5px 0 rgba(0,0,0,.18); padding: 4px; display: flex;
+    flex-direction: column; align-items: center; justify-content: center; font-family: inherit; cursor: pointer; }
+  .bpart span { font-size: clamp(24px, 5vmin, 42px); line-height: 1.1; }
+  .bpart small { font-size: clamp(10px, 1.7vmin, 14px); font-weight: bold; color: #37474f; line-height: 1.1; }
+  .bpart.used { opacity: .35; }
+  .bpart.bad { animation: shake .45s; }
+  @media (max-height: 520px) { .gridv td { font-size: .46em; } .storytxt { display: none; } }
   /* ---------- Contrôle parental ---------- */
   #parentBtn { background: #546e7a; }
   #timeChip { background: #fff; color: #37474f; border-radius: 999px; padding: 10px 18px; font-weight: bold;
@@ -344,12 +362,50 @@
     <span id="timeChip" hidden></span>
   </div>
   <div class="menu-section">
+    <h2 class="menu-sub">🗣️ Je parle et j'écris</h2>
+    <div class="menu-grid">
+      <button class="menu-btn" style="background:#e65100" data-mode="prenom"><span class="ico">🏷️</span>Mon prénom</button>
+      <button class="menu-btn" style="background:#5e35b1" data-mode="lettres3"><span class="ico">🔡</span>Mes lettres</button>
+      <button class="menu-btn" style="background:#00897b" data-mode="syllstart"><span class="ico">🧩</span>Début de mot</button>
+      <button class="menu-btn" style="background:#c2185b" data-mode="compris"><span class="ico">🎧</span>J'écoute</button>
+      <button class="menu-btn" style="background:#ef6c00" data-mode="graphisme"><span class="ico">〰️</span>Graphisme</button>
+    </div>
+  </div>
+  <div class="menu-section">
+    <h2 class="menu-sub">🔢 Je compte et je réfléchis</h2>
+    <div class="menu-grid">
+      <button class="menu-btn" style="background:#1e88e5" data-mode="compte"><span class="ico">🧮</span>Je compte</button>
+      <button class="menu-btn" style="background:#43a047" data-mode="nbsuite"><span class="ico">➡️</span>Et après ?</button>
+      <button class="menu-btn" style="background:#8e24aa" data-mode="decomp"><span class="ico">✂️</span>Il manque</button>
+      <button class="menu-btn" style="background:#f4511e" data-mode="probleme"><span class="ico">💭</span>Problèmes</button>
+      <button class="menu-btn" style="background:#00acc1" data-mode="longueur"><span class="ico">📏</span>Long / court</button>
+      <button class="menu-btn" style="background:#6d4c41" data-mode="grille"><span class="ico">🗺️</span>Quadrillage</button>
+    </div>
+  </div>
+  <div class="menu-section">
+    <h2 class="menu-sub">🌍 Je découvre le monde</h2>
+    <div class="menu-grid">
+      <button class="menu-btn" style="background:#3949ab" data-mode="temps"><span class="ico">📅</span>Les jours</button>
+      <button class="menu-btn" style="background:#f9a825" data-mode="journee"><span class="ico">🌅</span>Ma journée</button>
+      <button class="menu-btn" style="background:#2e7d32" data-mode="grandit"><span class="ico">🌱</span>Ça grandit</button>
+      <button class="menu-btn" style="background:#d81b60" data-mode="sens"><span class="ico">🧍</span>Mon corps</button>
+      <button class="menu-btn" style="background:#0288d1" data-mode="sante"><span class="ico">🧼</span>Santé</button>
+      <button class="menu-btn" style="background:#0277bd" data-mode="flotte"><span class="ico">🌊</span>Flotte / coule</button>
+    </div>
+  </div>
+  <div class="menu-section">
+    <h2 class="menu-sub">🎨 Je bouge et je vis ensemble</h2>
+    <div class="menu-grid">
+      <button class="menu-btn" style="background:#e53935" data-mode="danse"><span class="ico">💃</span>Danse</button>
+      <button class="menu-btn" style="background:#7cb342" data-mode="bonhomme"><span class="ico">🙂</span>Bonhomme</button>
+      <button class="menu-btn" style="background:#fb8c00" data-mode="vivre"><span class="ico">🤝</span>Ensemble</button>
+      <button class="menu-btn" style="background:#5c6bc0" data-mode="aigu"><span class="ico">🎵</span>Aigu / grave</button>
+    </div>
+  </div>
+  <div class="menu-section">
     <h2 class="menu-sub">👆 Je m'entraîne avec le doigt</h2>
     <div class="menu-grid">
-      <button class="menu-btn" style="background:#29b6f6" data-mode="bubbles"><span class="ico">🫧</span>Bulles</button>
-      <button class="menu-btn" style="background:#ff7043" data-mode="catch"><span class="ico">🎯</span>Attrape</button>
       <button class="menu-btn" style="background:#8d6e63" data-mode="draw"><span class="ico">🖍️</span>Dessin</button>
-      <button class="menu-btn" style="background:#26a69a" data-mode="drag"><span class="ico">🧺</span>Rangement</button>
       <button class="menu-btn" style="background:#5c6bc0" data-mode="memory"><span class="ico">🃏</span>Mémoire</button>
       <button class="menu-btn" style="background:#ec407a" data-mode="clicks"><span class="ico">👆</span>Compte-touches</button>
       <button class="menu-btn" style="background:#fb8c00" data-mode="path"><span class="ico">🥕</span>Chemin</button>
@@ -366,14 +422,9 @@
     <h2 class="menu-sub">🧠 J'apprends</h2>
     <div class="menu-grid">
       <button class="menu-btn" style="background:#ab47bc" data-mode="shapes"><span class="ico">⭐</span>Formes</button>
-      <button class="menu-btn" style="background:#ef5350" data-mode="colors"><span class="ico">🎨</span>Couleurs</button>
       <button class="menu-btn" style="background:#66bb6a" data-mode="numbers"><span class="ico">🔢</span>Chiffres</button>
-      <button class="menu-btn" style="background:#ffa726" data-mode="animals"><span class="ico">🐶</span>Animaux</button>
       <button class="menu-btn" style="background:#42a5f5" data-mode="letters"><span class="ico">🔤</span>Lettres</button>
-      <button class="menu-btn" style="background:#e53935" data-mode="fruits"><span class="ico">🍎</span>Fruits</button>
-      <button class="menu-btn" style="background:#78909c" data-mode="vehicles"><span class="ico">🚗</span>Véhicules</button>
       <button class="menu-btn" style="background:#7e57c2" data-mode="odd"><span class="ico">🔍</span>L'intrus</button>
-      <button class="menu-btn" style="background:#009688" data-mode="size"><span class="ico">🐘</span>Gros / petit</button>
       <button class="menu-btn" style="background:#5e35b1" data-mode="pattern"><span class="ico">🔁</span>Suite</button>
       <button class="menu-btn" style="background:#039be5" data-mode="compare"><span class="ico">⚖️</span>Plus / moins</button>
       <button class="menu-btn" style="background:#455a64" data-mode="shadow"><span class="ico">🌑</span>Ombres</button>
@@ -666,7 +717,25 @@ const STICKERS = [
   { e: "🚂", n: "le train" }, { e: "✈️", n: "l'avion" }, { e: "⛵", n: "le bateau" }, { e: "🏰", n: "le château" },
   { e: "🎈", n: "le ballon" }, { e: "🍦", n: "la glace" }, { e: "🍰", n: "le gâteau" }, { e: "🎸", n: "la guitare" },
   { e: "🥁", n: "le tambour" }, { e: "👑", n: "la couronne" }, { e: "🦜", n: "le perroquet" }, { e: "🐸", n: "la grenouille" },
-  { e: "🦔", n: "le hérisson" }, { e: "🐿️", n: "l'écureuil" }, { e: "🦩", n: "le flamant rose" }, { e: "🐠", n: "le poisson clown" }
+  { e: "🦔", n: "le hérisson" }, { e: "🐿️", n: "l'écureuil" }, { e: "🦩", n: "le flamant rose" }, { e: "🐠", n: "le poisson clown" },
+  { e: "🦈", n: "le requin" }, { e: "🐊", n: "le crocodile" }, { e: "🦛", n: "l'hippopotame" }, { e: "🦏", n: "le rhinocéros" },
+  { e: "🐪", n: "le dromadaire" }, { e: "🦘", n: "le kangourou" }, { e: "🦥", n: "le paresseux" }, { e: "🦦", n: "la loutre" },
+  { e: "🦇", n: "la chauve-souris" }, { e: "🐺", n: "le loup" }, { e: "🐗", n: "le sanglier" }, { e: "🐴", n: "le cheval" },
+  { e: "🐄", n: "la vache" }, { e: "🐖", n: "le cochon" }, { e: "🐑", n: "le mouton" }, { e: "🐓", n: "le coq" },
+  { e: "🐣", n: "le poussin" }, { e: "🦆", n: "le canard" }, { e: "🦢", n: "le cygne" }, { e: "🦅", n: "l'aigle" },
+  { e: "🦚", n: "le paon" }, { e: "🐌", n: "l'escargot" }, { e: "🐛", n: "la chenille" }, { e: "🕷️", n: "l'araignée" },
+  { e: "🦂", n: "le scorpion" }, { e: "🐍", n: "le serpent" }, { e: "🦎", n: "le lézard" }, { e: "🐡", n: "le poisson-globe" },
+  { e: "🦑", n: "le calamar" }, { e: "🦞", n: "le homard" }, { e: "🐈", n: "le chat" }, { e: "🐕", n: "le chien" },
+  { e: "🐹", n: "le hamster" }, { e: "🐭", n: "la souris" }, { e: "🦙", n: "le lama" }, { e: "🦌", n: "le cerf" },
+  { e: "🚓", n: "la voiture de police" }, { e: "🚑", n: "l'ambulance" }, { e: "🚌", n: "le bus" }, { e: "🚲", n: "le vélo" },
+  { e: "🛵", n: "le scooter" }, { e: "🏍️", n: "la moto" }, { e: "🚁", n: "l'hélicoptère" }, { e: "🚤", n: "le hors-bord" },
+  { e: "🚢", n: "le paquebot" }, { e: "🏎️", n: "la voiture de course" }, { e: "🛴", n: "la trottinette" }, { e: "🍎", n: "la pomme" },
+  { e: "🍌", n: "la banane" }, { e: "🍓", n: "la fraise" }, { e: "🍉", n: "la pastèque" }, { e: "🍒", n: "les cerises" },
+  { e: "🥕", n: "la carotte" }, { e: "🍕", n: "la pizza" }, { e: "🍪", n: "le biscuit" }, { e: "🧁", n: "le petit gâteau" },
+  { e: "🍭", n: "la sucette" }, { e: "🌻", n: "le tournesol" }, { e: "🌳", n: "l'arbre" }, { e: "🍄", n: "le champignon" },
+  { e: "⛄", n: "le bonhomme de neige" }, { e: "⭐", n: "l'étoile" }, { e: "🌊", n: "la vague" }, { e: "⚽", n: "le ballon de foot" },
+  { e: "🎨", n: "la palette de peinture" }, { e: "🎁", n: "le cadeau" }, { e: "🧸", n: "l'ourson en peluche" }, { e: "🪁", n: "le cerf-volant" },
+  { e: "🎺", n: "la trompette" }, { e: "🎹", n: "le piano" }, { e: "🏆", n: "la coupe" }, { e: "🎠", n: "le manège" }
 ];
 function renderMenuInfo() {
   $("albumCount").textContent = `${PROFILE.stickers.length}/${STICKERS.length}`;
@@ -746,7 +815,7 @@ $("nameOk").addEventListener("click", () => closeName(true));
 $("nameCancel").addEventListener("click", () => closeName(false));
 $("nameInput").addEventListener("keydown", e => { if (e.key === "Enter") closeName(true); });
 $("againBtn").addEventListener("click", () => start(mode));
-$("speakBtn").addEventListener("click", () => current && say(current.speech));
+$("speakBtn").addEventListener("click", () => { if (!current) return; say(current.speech); if (current.onShow) setTimeout(current.onShow, 1500); });
 $("speakBtn2").addEventListener("click", () => say("Touche les bulles avec ton doigt, dans l'ordre : 1, 2, 3 !"));
 document.querySelectorAll(".menu-btn, .round-btn, .card").forEach(el => el.addEventListener("mouseenter", sound.hover));
 
@@ -985,6 +1054,7 @@ function nextQuestion() {
   if (mode === "habitat")  q = buildHabitat();
   if (mode === "emotion")  q = buildEmotion();
   if (mode === "season")   q = buildSeason();
+  if (QB[mode])            q = QB[mode]();
   current = q;
   $("promptText").textContent = q.text;
   if (q.visual) $("promptVisual").textContent = q.visual;
@@ -999,6 +1069,7 @@ function nextQuestion() {
     box.appendChild(btn);
   });
   setTimeout(() => say(q.speech), 250);
+  if (q.onShow) setTimeout(q.onShow, 1300);
 }
 
 function pickThree(pool, keyFn) {
@@ -1949,6 +2020,708 @@ function buildSeason() {
     options: shuffle([k, ...others]).map(x => ({ html: rwHTML(SEASONS[x].e, SEASONS[x].n), bg: SEASONS[x].bg, correct: x === k }))
   };
 }
+
+/* ================== Programme MS / GS : nouveaux mini-jeux ================== */
+const txtc = (t, em = 0.3, col = "#37474f", extra = "") =>
+  `<span style="font-size:${em}em;font-weight:bold;line-height:1.05;text-align:center;color:${col};${extra}">${t}</span>`;
+const SCRIPT_FONT = '"Segoe Script","Brush Script MT","Snell Roundhand","Comic Sans MS",cursive';
+const grpHTML = (n, e) => `<span class="addgrp">${Array(n).fill(e).join("")}</span>`;
+function numOpts(target, lo, hi) {
+  const want = nOthers() + 1, s = new Set([target]);
+  let guard = 0;
+  while (s.size < want && guard++ < 300) {
+    const v = target + rand([-3, -2, -1, 1, 2, 3]);
+    if (v >= lo && v <= hi) s.add(v);
+  }
+  for (let v = lo; s.size < want && v <= hi; v++) s.add(v);
+  return shuffle([...s]);
+}
+function numCards(arr, target) {
+  const pal = shuffle(LETTER_COLORS);
+  return arr.map((n, i) => ({ html: `<span style="color:${pal[i % pal.length]}">${n}</span>`, correct: n === target, key: n }));
+}
+let lastKey = {};
+function fresh(name, gen) {
+  let v, g = 0;
+  do { v = gen(); } while (JSON.stringify(v) === lastKey[name] && g++ < 20);
+  lastKey[name] = JSON.stringify(v);
+  return v;
+}
+
+/* --- Mon prénom : capitales / lettres attachées --- */
+const PRENOMS = ["TOM", "THÉO", "LÉA", "LOU", "MIA", "ZOÉ", "NINA", "LUCAS", "HUGO", "EMMA", "JADE", "LIAM", "INÈS", "NOÉ", "ADAM", "ALICE", "LINA", "MAËL"];
+const nomFmt = n => n.charAt(0) + n.slice(1).toLowerCase();
+function buildPrenom() {
+  const own = PROFILE.name ? PROFILE.name.toUpperCase() : "";
+  const target = own || "TOM";
+  const caps = lv() < 2;
+  const others = shuffle(PRENOMS.filter(p => p !== target)).slice(0, nOthers());
+  const names = shuffle([target, ...others]);
+  const em = n => Math.min(0.34, 2.1 / Math.max(5, n.length)) * (caps ? 1 : 0.85);
+  const who = own ? "ton prénom" : "le prénom " + nomFmt(target);
+  const text = caps ? `Trouve ${who} en lettres capitales !` : `Trouve ${who} en lettres attachées !`;
+  const pal = shuffle(LETTER_COLORS);
+  return {
+    text,
+    visualHTML: caps ? `<span style="font-weight:bold;color:#e65100">${nomFmt(target)}</span>` : `<span style="font-weight:bold;color:#e65100">${target}</span>`,
+    speech: `${text} ${nomFmt(target)}. Touche dessus !`,
+    target,
+    options: names.map((n, i) => ({
+      html: caps ? txtc(n, em(n), pal[i % pal.length]) : txtc(nomFmt(n), em(n), pal[i % pal.length], `font-family:${SCRIPT_FONT}`),
+      correct: n === target, key: n
+    }))
+  };
+}
+
+/* --- Mes lettres : capitale -> minuscule / attachée --- */
+const LET3 = "ABDEFGHJLMNOQRSTUVZ".split("");
+const LOOKALIKE = ["bdpq", "nu", "mw", "ij"];
+function buildLettres3() {
+  const t = fresh("let3", () => rand(LET3));
+  const low = t.toLowerCase(), grp = LOOKALIKE.find(g => g.includes(low)) || "";
+  const others = shuffle(LET3.filter(x => x !== t && !grp.includes(x.toLowerCase()))).slice(0, nOthers());
+  const script = lv() >= 2;
+  const pal = shuffle(LETTER_COLORS);
+  return {
+    text: `Quelle lettre va avec ${t} ?`,
+    visualHTML: `<span style="font-weight:bold;color:#e65100">${t}</span>`,
+    speech: script ? `Trouve la lettre attachée qui va avec la grande lettre ${t}. Touche dessus !` : `Trouve la petite lettre qui va avec la grande lettre ${t}. Touche dessus !`,
+    target: t,
+    options: shuffle([t, ...others]).map((x, i) => ({
+      html: txtc(x.toLowerCase(), 1, pal[i % pal.length], script ? `font-family:${SCRIPT_FONT}` : ""),
+      correct: x === t, key: x
+    }))
+  };
+}
+
+/* --- Début de mot : quelle image commence par cette syllabe ? --- */
+const SYLLW = [
+  { s: "ba", w: "banane", e: "🍌" }, { s: "ba", w: "bateau", e: "⛵" },
+  { s: "ca", w: "carotte", e: "🥕" }, { s: "ca", w: "canard", e: "🦆" }, { s: "ca", w: "camion", e: "🚚" },
+  { s: "ro", w: "robe", e: "👗" }, { s: "ro", w: "robot", e: "🤖" }, { s: "ro", w: "rose", e: "🌹" },
+  { s: "pi", w: "piano", e: "🎹" }, { s: "pi", w: "pizza", e: "🍕" },
+  { s: "pa", w: "papillon", e: "🦋" }, { s: "pa", w: "parapluie", e: "☂️" },
+  { s: "lu", w: "lune", e: "🌙" }, { s: "lu", w: "lunettes", e: "👓" },
+  { s: "sa", w: "sapin", e: "🌲" }, { s: "sa", w: "savon", e: "🧼" }, { s: "sa", w: "salade", e: "🥗" },
+  { s: "ci", w: "citron", e: "🍋" }, { s: "ci", w: "ciseaux", e: "✂️" },
+  { s: "sou", w: "souris", e: "🐭" }, { s: "sou", w: "soupe", e: "🍲" },
+  { s: "pou", w: "poule", e: "🐔" }, { s: "pou", w: "pouce", e: "👍" },
+  { s: "mo", w: "moto", e: "🏍️" }, { s: "to", w: "tomate", e: "🍅" }, { s: "ga", w: "gâteau", e: "🍰" },
+  { s: "fu", w: "fusée", e: "🚀" }, { s: "vé", w: "vélo", e: "🚲" }
+];
+function buildSyllStart() {
+  const t = fresh("syllstart", () => rand(SYLLW));
+  const others = [];
+  for (const x of shuffle(SYLLW)) {
+    if (x.s !== t.s && !others.some(o => o.s === x.s)) others.push(x);
+    if (others.length >= nOthers()) break;
+  }
+  return {
+    text: `Quel mot commence par « ${t.s.toUpperCase()} » ?`,
+    visualHTML: `<span style="font-weight:bold;color:#e65100">${t.s.toUpperCase()}</span>`,
+    speech: `Quel mot commence par ${t.s} ? Regarde bien les images. Touche dessus !`,
+    target: t.w,
+    options: shuffle([t, ...others]).map(x => ({ html: x.e, correct: x === t, key: x.w }))
+  };
+}
+
+/* --- Et après ? la suite des nombres --- */
+function buildNbSuite() {
+  const hi = lv() >= 2 ? 30 : 10;
+  const r = Math.random();
+  const kind = lv() >= 3 && r < 0.4 ? "entre" : lv() >= 2 && r < 0.7 ? "avant" : "apres";
+  const q = fresh("nbsuite", () => {
+    if (kind === "avant") { const n = 2 + Math.floor(Math.random() * (hi - 1)); return { n, ans: n - 1 }; }
+    if (kind === "entre") { const n = 1 + Math.floor(Math.random() * (hi - 2)); return { n, ans: n + 1 }; }
+    const n = 1 + Math.floor(Math.random() * (hi - 1)); return { n, ans: n + 1 };
+  });
+  let text, vis;
+  if (kind === "avant") { text = `Quel nombre vient avant ${q.n} ?`; vis = `❓ ➜ ${q.n}`; }
+  else if (kind === "entre") { text = `Quel nombre se cache entre ${q.n} et ${q.n + 2} ?`; vis = `${q.n} ❓ ${q.n + 2}`; }
+  else { text = `Quel nombre vient après ${q.n} ?`; vis = `${q.n} ➜ ❓`; }
+  return {
+    text, visual: vis, sum: q.ans, kind,
+    speech: `${text} Touche le bon chiffre !`,
+    options: numCards(numOpts(q.ans, 1, hi), q.ans)
+  };
+}
+
+/* --- Il manque combien ? décomposer un nombre --- */
+function buildDecomp() {
+  const thing = rand(NUM_THINGS);
+  const T = lv() >= 2 ? 4 + Math.floor(Math.random() * 7) : 3 + Math.floor(Math.random() * 4);
+  const q = fresh("decomp", () => { const a = 1 + Math.floor(Math.random() * (T - 1)); return { T, a }; });
+  const b = q.T - q.a;
+  return {
+    text: `${q.T}, c'est ${q.a} et combien ?`,
+    visualHTML: `<span class="addvis">${grpHTML(q.T, thing.e)}<b>=</b>${grpHTML(q.a, thing.e)}<b>+</b><span>❓</span></span>`,
+    speech: `${q.T}, c'est ${q.a} et combien ? Compte bien et touche le bon chiffre !`,
+    sum: b,
+    options: numCards(numOpts(b, 0, q.T), b)
+  };
+}
+
+/* --- Petits problèmes : ajouter, enlever, partager --- */
+const PB_NAMES = [{ n: "Tom", g: "m" }, { n: "Théo", g: "m" }, { n: "Hugo", g: "m" }, { n: "Léa", g: "f" }, { n: "Mia", g: "f" }, { n: "Nina", g: "f" }];
+const PB_THINGS = [{ e: "🍬", pl: "bonbons" }, { e: "🍪", pl: "gâteaux" }, { e: "🎈", pl: "ballons" }, { e: "🍎", pl: "pommes" }, { e: "🚗", pl: "voitures" }, { e: "🍓", pl: "fraises" }];
+function buildProbleme() {
+  const hard = lv() >= 2;
+  const kind = rand(hard ? ["ajout", "retrait", "partage"] : ["ajout", "retrait"]);
+  const who = rand(PB_NAMES), th = rand(PB_THINGS);
+  const il = who.g === "m" ? "il" : "elle", Il = il.charAt(0).toUpperCase() + il.slice(1);
+  let text, vis, ans, lo = 0, hi = 14;
+  if (kind === "ajout") {
+    const a = 1 + Math.floor(Math.random() * (hard ? 8 : 5)), b = 1 + Math.floor(Math.random() * (hard ? 5 : 3));
+    ans = a + b;
+    text = `${who.n} a ${a} ${th.pl}. ${Il} en reçoit ${b} de plus. Combien en a-t-${il} maintenant ?`;
+    vis = `<span class="addvis">${grpHTML(a, th.e)}<b>+</b>${grpHTML(b, th.e)}</span>`;
+  } else if (kind === "retrait") {
+    const a = 3 + Math.floor(Math.random() * (hard ? 8 : 5)), b = 1 + Math.floor(Math.random() * (a - 1));
+    ans = a - b;
+    text = `${who.n} a ${a} ${th.pl}. ${Il} en donne ${b}. Combien lui en reste-t-il ?`;
+    vis = `<span class="addvis">${grpHTML(a, th.e)}<b>−</b>${grpHTML(b, th.e)}</span>`;
+  } else {
+    const k = 2 + Math.floor(Math.random() * 4);
+    ans = k;
+    text = `${who.n} partage ${2 * k} ${th.pl} avec un ami, en parts égales. Combien chacun en a-t-il ?`;
+    vis = `<span class="addvis">${grpHTML(2 * k, th.e)}<b>➜</b><span>🧒🧒</span></span>`;
+  }
+  return {
+    text, visualHTML: vis, sum: ans, kind,
+    speech: `${text} Touche le bon chiffre !`,
+    options: numCards(numOpts(ans, lo, hi), ans)
+  };
+}
+
+/* --- Quadrillage : trouver la case --- */
+const GRID_ITEMS = [{ e: "🐱", art: "le chat" }, { e: "🐶", art: "le chien" }, { e: "🐸", art: "la grenouille" }, { e: "🌟", art: "l'étoile" },
+  { e: "🍎", art: "la pomme" }, { e: "🚗", art: "la voiture" }, { e: "🎈", art: "le ballon" }, { e: "🐟", art: "le poisson" }];
+function buildGrille() {
+  const cols = lv() >= 2 ? 4 : 3, rows = 3, total = cols * rows;
+  const items = shuffle(GRID_ITEMS).slice(0, 3);
+  const cells = shuffle(Array.from({ length: total }, (_, i) => i)).slice(0, 3);
+  const name = c => "ABCD"[c % cols] + (Math.floor(c / cols) + 1);
+  let html = '<table class="gridv"><tr><th></th>' + Array.from({ length: cols }, (_, i) => `<th>${"ABCD"[i]}</th>`).join("") + "</tr>";
+  for (let r = 0; r < rows; r++) {
+    html += `<tr><th>${r + 1}</th>`;
+    for (let c = 0; c < cols; c++) { const k = cells.indexOf(r * cols + c); html += `<td>${k >= 0 ? items[k].e : ""}</td>`; }
+    html += "</tr>";
+  }
+  html += "</table>";
+  const tc = cells[0], target = items[0];
+  const pool = shuffle(Array.from({ length: total }, (_, i) => i).filter(i => i !== tc));
+  const wrong = pool.slice(0, nOthers());
+  const pal = shuffle(LETTER_COLORS);
+  return {
+    text: `Dans quelle case est ${target.art} ?`,
+    visualHTML: html,
+    speech: `Dans quelle case est ${target.art} ? Cherche la lettre en haut et le chiffre sur le côté. Touche dessus !`,
+    target: name(tc),
+    options: shuffle([tc, ...wrong]).map((c, i) => ({ html: txtc(name(c), 0.42, pal[i % pal.length]), correct: c === tc, key: name(c) }))
+  };
+}
+
+/* --- Les jours et les mois --- */
+const JOURS = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"];
+const MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+function buildTemps() {
+  const hard = lv() >= 2;
+  const kind = rand(hard ? ["demain", "hier", "apresJ", "avantJ", "apresM", "avantM"] : ["demain", "hier"]);
+  const q = fresh("temps", () => ({ i: Math.floor(Math.random() * 7), m: Math.floor(Math.random() * 12) }));
+  let text, list, idx, ans;
+  if (kind === "demain") { text = `Aujourd'hui, c'est ${JOURS[q.i]}. Quel jour sera-t-on demain ?`; list = JOURS; ans = (q.i + 1) % 7; }
+  else if (kind === "hier") { text = `Aujourd'hui, c'est ${JOURS[q.i]}. Quel jour était-on hier ?`; list = JOURS; ans = (q.i + 6) % 7; }
+  else if (kind === "apresJ") { text = `Quel jour vient après ${JOURS[q.i]} ?`; list = JOURS; ans = (q.i + 1) % 7; }
+  else if (kind === "avantJ") { text = `Quel jour vient avant ${JOURS[q.i]} ?`; list = JOURS; ans = (q.i + 6) % 7; }
+  else if (kind === "apresM") { text = `Quel mois vient après ${MOIS[q.m]} ?`; list = MOIS; ans = (q.m + 1) % 12; }
+  else { text = `Quel mois vient avant ${MOIS[q.m]} ?`; list = MOIS; ans = (q.m + 11) % 12; }
+  const others = shuffle(list.map((_, i) => i).filter(i => i !== ans)).slice(0, nOthers());
+  const pal = shuffle(LETTER_COLORS);
+  return {
+    text, visual: "📅", kind, target: list[ans],
+    speech: `${text} Touche dessus !`,
+    options: shuffle([ans, ...others]).map((i, k) => ({ html: txtc(list[i], Math.min(0.3, 2.3 / list[i].length), pal[k % pal.length]), correct: i === ans, key: list[i] }))
+  };
+}
+
+/* --- Ma journée : quel moment ? --- */
+const MOMENTS = {
+  matin: { e: "🌅", n: "matin" }, midi: { e: "☀️", n: "midi" }, aprem: { e: "🌤️", n: "après-midi" },
+  soir: { e: "🌆", n: "soir" }, nuit: { e: "🌙", n: "nuit" }
+};
+const ACTIV = [
+  { t: "Le coq chante, c'est le réveil", e: "🐓", m: "matin" }, { t: "Je prends mon petit-déjeuner", e: "🥐", m: "matin" },
+  { t: "Je pars à l'école avec mon cartable", e: "🎒", m: "matin" },
+  { t: "C'est l'heure du déjeuner", e: "🍝", m: "midi" }, { t: "Le soleil est tout en haut du ciel", e: "☀️", m: "midi" },
+  { t: "C'est l'heure du goûter", e: "🍪", m: "aprem" }, { t: "Après la sieste, je joue dans le jardin", e: "🧸", m: "aprem" },
+  { t: "C'est l'heure du dîner", e: "🍲", m: "soir" }, { t: "Je prends mon bain avant de dormir", e: "🛁", m: "soir" },
+  { t: "Papa lit une histoire avant de dormir", e: "📖", m: "soir" },
+  { t: "Je dors profondément dans mon lit", e: "🛏️", m: "nuit" }, { t: "Les étoiles brillent dans le ciel noir", e: "🌟", m: "nuit" }
+];
+function buildJournee() {
+  const s = fresh("journee", () => rand(ACTIV));
+  const others = shuffle(Object.keys(MOMENTS).filter(k => k !== s.m)).slice(0, nOthers());
+  return {
+    text: `${s.t}. Quel moment de la journée ?`, visual: s.e, situation: s.t, target: s.m,
+    speech: `${s.t}. Quel moment de la journée est-ce ? Touche dessus !`,
+    options: shuffle([s.m, ...others]).map(k => ({ html: rwHTML(MOMENTS[k].e, MOMENTS[k].n), correct: k === s.m, key: k }))
+  };
+}
+
+/* --- Ça grandit : l'ordre de la vie --- */
+const SEQS = [["🌰", "🌱", "🌿", "🌻"], ["🥚", "🐣", "🐥", "🐔"], ["👶", "🧒", "🧑", "🧓"]];
+function buildGrandit() {
+  const si = fresh("grandit", () => Math.floor(Math.random() * SEQS.length));
+  const seq = SEQS[si], k = lv() >= 2 ? 3 : 2;
+  const ans = seq[k];
+  const pool = shuffle(SEQS.filter((_, i) => i !== si).flat()).slice(0, nOthers());
+  return {
+    text: "Qu'est-ce qui vient ensuite ?",
+    visual: seq.slice(0, k).join(" ➜ ") + " ➜ ❓", target: ans, seq: si, shown: k,
+    speech: "Regarde comment ça grandit. Qu'est-ce qui vient ensuite ? Touche dessus !",
+    options: shuffle([ans, ...pool]).map(e => ({ html: e, correct: e === ans, key: e }))
+  };
+}
+
+/* --- Mon corps : les cinq sens --- */
+const SENS = [
+  { q: "Avec quoi je regarde ?", e: "👀", n: "les yeux" }, { q: "Avec quoi j'écoute la musique ?", e: "👂", n: "les oreilles" },
+  { q: "Avec quoi je sens une fleur ?", e: "👃", n: "le nez" }, { q: "Avec quoi je goûte un bonbon ?", e: "👅", n: "la langue" },
+  { q: "Avec quoi je touche et je prends ?", e: "✋", n: "la main" }, { q: "Avec quoi je marche et je cours ?", e: "🦶", n: "les pieds" },
+  { q: "Avec quoi je croque une pomme ?", e: "🦷", n: "les dents" }, { q: "Avec quoi je réfléchis ?", e: "🧠", n: "le cerveau" },
+  { q: "Qu'est-ce qui bat dans ma poitrine ?", e: "❤️", n: "le cœur" }
+];
+function buildSens() {
+  const s = fresh("sens", () => rand(SENS));
+  const others = shuffle(SENS.filter(x => x !== s)).slice(0, nOthers());
+  return {
+    text: s.q, visual: "🧍", target: s.n,
+    speech: `${s.q} Touche dessus !`,
+    options: shuffle([s, ...others]).map(x => ({ html: rwHTML(x.e, x.n), correct: x === s, key: x.n }))
+  };
+}
+
+/* --- Santé et hygiène --- */
+const SANTE = [
+  { t: "Pour avoir les mains propres, j'utilise du...", e: "🧼", bad: ["🎈", "🧸", "🍬"] },
+  { t: "Pour garder des dents propres, j'utilise une...", e: "🪥", bad: ["🍬", "🍭", "🧸"] },
+  { t: "Il fait très froid dehors, je mets mon...", e: "🧥", bad: ["🕶️", "🧢", "🍦"] },
+  { t: "Le soleil brille fort, je mets ma...", e: "🧢", bad: ["🧤", "🧣", "🧥"] },
+  { t: "J'ai soif, je bois de l'...", e: "💧", bad: ["🍔", "🍟", "🍭"] },
+  { t: "Pour être fort et en bonne santé, je mange des...", e: "🥦", bad: ["🍭", "🍬", "🍩"] },
+  { t: "Je suis très fatigué, j'ai besoin de...", e: "🛏️", bad: ["⚽", "🥁", "🎢"] },
+  { t: "Je me suis fait mal au genou, il me faut un...", e: "🩹", bad: ["🎈", "🍬", "🧸"] }
+];
+function buildSante() {
+  const s = fresh("sante", () => rand(SANTE));
+  const bad = shuffle(s.bad).slice(0, nOthers());
+  return {
+    text: s.t, visual: "🏥", target: s.e,
+    speech: `${s.t} Quelle image choisis-tu ? Touche dessus !`,
+    options: shuffle([s.e, ...bad]).map(e => ({ html: e, correct: e === s.e, key: e }))
+  };
+}
+
+/* --- Ça flotte ou ça coule ? --- */
+const FLOTTE = [
+  { e: "🦆", art: "Le canard", f: true }, { e: "⛵", art: "Le bateau", f: true }, { e: "🍃", art: "La feuille", f: true },
+  { e: "🏀", art: "Le ballon", f: true }, { e: "🛶", art: "Le canoë", f: true },
+  { e: "🔑", art: "La clé", f: false }, { e: "⚓", art: "L'ancre", f: false }, { e: "🔨", art: "Le marteau", f: false },
+  { e: "🧱", art: "La brique", f: false }, { e: "🥄", art: "La cuillère", f: false }
+];
+function buildFlotte() {
+  const s = fresh("flotte", () => rand(FLOTTE));
+  return {
+    text: "Ça flotte ou ça coule ?", visual: s.e, target: s.f ? "flotte" : "coule", item: s.e,
+    speech: `${s.art} est mis dans l'eau. Est-ce que ça flotte ou est-ce que ça coule ? Touche dessus !`,
+    options: shuffle([{ k: "flotte", e: "🏊", n: "ça flotte" }, { k: "coule", e: "⚓", n: "ça coule" }]).map(o => ({ html: rwHTML(o.e, o.n), correct: o.k === (s.f ? "flotte" : "coule"), key: o.k }))
+  };
+}
+
+/* --- Vivre ensemble --- */
+const VIVRE = [
+  { t: "Un copain tombe et pleure. Que fais-tu ?", g: ["🤗", "Je console"], b: [["😂", "Je me moque"], ["🏃", "Je pars"], ["🙈", "J'ignore"]] },
+  { t: "Deux enfants veulent le même jouet. Que faire ?", g: ["🤝", "On partage"], b: [["😡", "Je me fâche"], ["🏃", "Je le prends"], ["😭", "Je pleure"]] },
+  { t: "Il y a une file pour le toboggan. Que fais-tu ?", g: ["🧍", "J'attends"], b: [["🏃", "Je double"], ["🦘", "Je saute"], ["💨", "Je pousse"]] },
+  { t: "La maîtresse raconte une histoire. Que fais-tu ?", g: ["👂", "J'écoute"], b: [["🗣️", "Je bavarde"], ["🎮", "Je joue"], ["😴", "Je dors"]] },
+  { t: "Tu as fini de jouer. Que fais-tu ?", g: ["🧹", "Je range"], b: [["🏃", "Je pars"], ["🙈", "J'oublie"], ["😴", "Je dors"]] },
+  { t: "Quelqu'un t'aide. Que dis-tu ?", g: ["🙏", "Merci"], b: [["😶", "Rien"], ["😡", "Non !"], ["🙈", "Je fuis"]] },
+  { t: "Un copain est triste, tout seul. Que fais-tu ?", g: ["👋", "Je l'invite"], b: [["🙈", "J'ignore"], ["😂", "Je ris"], ["🚶", "Je passe"]] },
+  { t: "Tu arrives en classe le matin. Que dis-tu ?", g: ["👋", "Bonjour"], b: [["😶", "Rien"], ["😠", "Je grogne"], ["🙈", "Je fuis"]] }
+];
+function buildVivre() {
+  const s = fresh("vivre", () => rand(VIVRE));
+  const bad = shuffle(s.b).slice(0, nOthers());
+  return {
+    text: s.t, visual: "🧒🧒", target: s.g[1],
+    speech: `${s.t} Touche dessus !`,
+    options: shuffle([[s.g, true], ...bad.map(x => [x, false])]).map(([x, good]) => ({ html: rwHTML(x[0], x[1]), correct: good, key: x[1] }))
+  };
+}
+
+/* --- J'écoute l'histoire : compréhension --- */
+const HISTOIRES = [
+  { s: "Tom va à la plage avec son seau. Il construit un grand château de sable.", q: "Que construit Tom ?", a: "🏰", w: ["⛵", "🚀", "🚗"] },
+  { s: "Mia a faim. Elle ouvre le frigo et prend une pomme. Elle croque dedans.", q: "Que mange Mia ?", a: "🍎", w: ["🍕", "🍔", "🍦"] },
+  { s: "Papa prend sa voiture pour aller au travail. Il met sa ceinture.", q: "Dans quoi voyage Papa ?", a: "🚗", w: ["🚂", "✈️", "⛵"] },
+  { s: "Le chat a peur du chien. Il grimpe très vite sur l'arbre.", q: "Où monte le chat ?", a: "🌳", w: ["🏠", "🚗", "⛰️"] },
+  { s: "Lou regarde le ciel la nuit. Elle voit la lune briller.", q: "Qu'est-ce que Lou voit dans le ciel ?", a: "🌙", w: ["☀️", "🌈", "⛄"] },
+  { s: "Théo fête son anniversaire. Il souffle les bougies de son gâteau.", q: "Que souffle Théo sur son gâteau ?", a: "🕯️", w: ["🌹", "🎸", "⚽"] },
+  { s: "Nina plante une graine dans la terre. Elle l'arrose chaque jour. Une fleur pousse !", q: "Qu'est-ce qui pousse ?", a: "🌻", w: ["🍕", "🚗", "🐟"] },
+  { s: "Le petit lapin a très froid. Il met son bonnet et son écharpe.", q: "Que met le lapin autour du cou ?", a: "🧣", w: ["🕶️", "🧢", "👙"] },
+  { s: "Hugo prend son vélo. Il roule jusqu'au parc.", q: "Comment Hugo va-t-il au parc ?", a: "🚲", w: ["🚁", "🚢", "🚀"] }
+];
+function buildCompris() {
+  const h = fresh("compris", () => rand(HISTOIRES));
+  const wrong = shuffle(h.w).slice(0, nOthers());
+  return {
+    text: h.q, visual: "🎧", story: h.s, target: h.a,
+    visualHTML: `<span>🎧</span><div class="storytxt">${h.s}</div>`,
+    speech: `Écoute bien l'histoire. ${h.s} ${h.q} Touche dessus !`,
+    options: shuffle([h.a, ...wrong]).map(e => ({ html: e, correct: e === h.a, key: e }))
+  };
+}
+
+/* --- Long ou court ? comparer des longueurs --- */
+function buildLongueur() {
+  const n = nOthers() + 1, longest = lv() < 2 || Math.random() < 0.5;
+  let L, g = 0;
+  do { L = Array.from({ length: n }, () => 22 + Math.floor(Math.random() * 68)); } while (!L.every((v, i) => L.every((w, j) => i === j || Math.abs(v - w) >= 14)) && g++ < 500);
+  const ti = longest ? L.indexOf(Math.max(...L)) : L.indexOf(Math.min(...L));
+  const cols = shuffle(["#e53935", "#1e88e5", "#43a047", "#fb8c00", "#8e24aa"]);
+  const text = `Lequel est le plus ${longest ? "long" : "court"} ?`;
+  return {
+    text, speech: `${text} Touche dessus !`, longest,
+    options: L.map((w, i) => ({ html: `<svg viewBox="0 0 100 100"><rect x="5" y="40" width="${w}" height="20" rx="10" fill="${cols[i]}"/></svg>`, correct: i === ti, key: w }))
+  };
+}
+
+/* --- Je compte jusqu'à 12 --- */
+function buildCompte() {
+  const thing = rand(NUM_THINGS);
+  const lo = lv() >= 2 ? 8 : 6, hi = lv() >= 2 ? 12 : 10;
+  const n = fresh("compte", () => lo + Math.floor(Math.random() * (hi - lo + 1)));
+  return {
+    text: `Combien de ${thing.q} y a-t-il ?`,
+    visualHTML: `<span class="cntgrp">${Array(n).fill(thing.e).join("")}</span>`,
+    speech: `Compte les ${thing.q}. Combien y en a-t-il ? Touche le bon chiffre !`,
+    sum: n, item: thing.e,
+    options: numCards(numOpts(n, 1, 14), n)
+  };
+}
+
+/* --- Aigu ou grave ? (écoute) --- */
+function buildAigu() {
+  if (lv() >= 2) {
+    const hiF = 900 + Math.floor(Math.random() * 500), loF = 200 + Math.floor(Math.random() * 150);
+    const firstHigh = Math.random() < 0.5;
+    const f1 = firstHigh ? hiF : loF, f2 = firstHigh ? loF : hiF;
+    return {
+      text: "Quel son est le plus aigu ?", visual: "🎵", firstHigh, f1, f2,
+      speech: "Écoute deux sons. Quel son est le plus aigu ? Le premier ou le deuxième ? Touche dessus !",
+      onShow: () => { tone(f1, 0.5, "sine", 0, 0.2); tone(f2, 0.5, "sine", 0.8, 0.2); },
+      options: [{ k: "premier", e: "1️⃣", n: "le premier" }, { k: "deuxième", e: "2️⃣", n: "le deuxième" }].map(o => ({ html: rwHTML(o.e, o.n), correct: (o.k === "premier") === firstHigh, key: o.k }))
+    };
+  }
+  const high = Math.random() < 0.5, f = high ? 900 + Math.floor(Math.random() * 500) : 160 + Math.floor(Math.random() * 90);
+  return {
+    text: "Ce son est-il aigu ou grave ?", visual: "🎵", high, f1: f,
+    speech: "Écoute bien le son. Est-il aigu, comme un petit oiseau, ou grave, comme un gros ours ? Touche dessus !",
+    onShow: () => { tone(f, 0.5, "sine", 0, 0.2); tone(f, 0.5, "sine", 0.8, 0.2); },
+    options: shuffle([{ k: "aigu", e: "🐦", n: "aigu" }, { k: "grave", e: "🐻", n: "grave" }]).map(o => ({ html: rwHTML(o.e, o.n), correct: (o.k === "aigu") === high, key: o.k }))
+  };
+}
+
+const QB = {
+  prenom: buildPrenom, lettres3: buildLettres3, syllstart: buildSyllStart, nbsuite: buildNbSuite, decomp: buildDecomp,
+  probleme: buildProbleme, grille: buildGrille, temps: buildTemps, journee: buildJournee, grandit: buildGrandit,
+  sens: buildSens, sante: buildSante, flotte: buildFlotte, vivre: buildVivre, compris: buildCompris,
+  longueur: buildLongueur, compte: buildCompte, aigu: buildAigu
+};
+
+/* ---------- Graphisme : suivre une ligne, des vagues, des ponts, des boucles ---------- */
+let GRAPH = null;
+const PATTERNS = {
+  ligne: { n: "la ligne droite", f: (W, H) => [[[W * 0.1, H * 0.5], [W * 0.9, H * 0.5]]] },
+  pente: { n: "la ligne penchée", f: (W, H) => [[[W * 0.12, H * 0.8], [W * 0.88, H * 0.2]]] },
+  vagues: {
+    n: "les vagues", f: (W, H) => {
+      const p = [], A = Math.min(H * 0.22, W * 0.12);
+      for (let i = 0; i <= 90; i++) { const t = i / 90; p.push([W * 0.08 + W * 0.84 * t, H * 0.5 + A * Math.sin(t * Math.PI * 4)]); }
+      return [p];
+    }
+  },
+  ponts: {
+    n: "les ponts", f: (W, H) => {
+      const n = 3, d = W * 0.84 / n, r = Math.min(d / 2, H * 0.36), base = H * 0.5 + r / 2, p = [];
+      for (let i = 0; i < n; i++) for (let k = 0; k <= 24; k++) { const a = Math.PI + Math.PI * k / 24; p.push([W * 0.08 + d * (i + 0.5) + (d / 2) * Math.cos(a), base + r * Math.sin(a)]); }
+      return [p];
+    }
+  },
+  cercle: {
+    n: "le cercle", f: (W, H) => {
+      const r = Math.min(W, H) * 0.33, p = [];
+      for (let i = 0; i <= 72; i++) { const a = -Math.PI / 2 + 2 * Math.PI * i / 72; p.push([W / 2 + r * Math.cos(a), H / 2 + r * Math.sin(a)]); }
+      return [p];
+    }
+  },
+  zigzag: {
+    n: "le zigzag", f: (W, H) => {
+      const p = [], n = 6;
+      for (let i = 0; i <= n; i++) p.push([W * 0.1 + W * 0.8 * i / n, i % 2 ? H * 0.72 : H * 0.28]);
+      return [p];
+    }
+  },
+  creneaux: {
+    n: "les créneaux", f: (W, H) => {
+      const p = [], n = 3, d = W * 0.8 / n;
+      let x = W * 0.1; p.push([x, H * 0.7]);
+      for (let i = 0; i < n; i++) { p.push([x, H * 0.3], [x + d / 2, H * 0.3], [x + d / 2, H * 0.7], [x + d, H * 0.7]); x += d; }
+      return [p];
+    }
+  },
+  boucles: {
+    n: "les boucles", f: (W, H) => {
+      const loops = W < 600 ? 2 : 3, c = 1, r = 1.6, raw = [];
+      for (let i = 0; i <= 40 * loops; i++) { const t = 2 * Math.PI * loops * i / (40 * loops); raw.push([c * t - r * Math.sin(t), -r * Math.cos(t)]); }
+      const xs = raw.map(a => a[0]), ys = raw.map(a => a[1]);
+      const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+      const s = Math.min(W * 0.8 / (x1 - x0), H * 0.55 / (y1 - y0));
+      const ox = W / 2 - s * (x0 + x1) / 2, oy = H / 2 - s * (y0 + y1) / 2;
+      return [raw.map(([x, y]) => [ox + s * x, oy + s * y])];
+    }
+  }
+};
+ARENA.graphisme = function () {
+  const f = $("field");
+  let round = 0;
+  $("stars3").textContent = "☆☆☆";
+  const play = () => {
+    f.innerHTML = ""; GRAPH = null;
+    const hard = lv() >= 2;
+    const sets = hard ? [["vagues", "zigzag"], ["ponts", "creneaux"], ["boucles", "cercle"]] : [["ligne", "pente"], ["vagues", "ponts"], ["cercle", "zigzag"]];
+    const k = rand(sets[round]);
+    setArena(`Suis ${PATTERNS[k].n} !`, `Suis ${PATTERNS[k].n} avec ton doigt ! Pose ton doigt et suis la forme !`);
+    const W = f.clientWidth, H = f.clientHeight, dpr = Math.min(2, window.devicePixelRatio || 1);
+    const polys = PATTERNS[k].f(W, H);
+    let w = Math.max(30, Math.min(W, H) * 0.13);
+    if (k === "boucles") w = Math.max(22, Math.min(w, H * 0.1));
+    const mk = () => {
+      const c = document.createElement("canvas");
+      c.width = Math.round(W * dpr); c.height = Math.round(H * dpr);
+      c.style.cssText = `position:absolute;left:0;top:0;width:${W}px;height:${H}px`;
+      const x = c.getContext("2d"); x.scale(dpr, dpr); return [c, x];
+    };
+    const strokeP = (x, lw, style, dash) => {
+      x.save(); x.lineCap = x.lineJoin = "round"; x.lineWidth = lw; x.strokeStyle = style; x.setLineDash(dash || []);
+      polys.forEach(p => { x.beginPath(); p.forEach(([a, b], i) => i ? x.lineTo(a, b) : x.moveTo(a, b)); x.stroke(); });
+      x.restore();
+    };
+    const [gc, gx] = mk(), [ic, ix] = mk();
+    strokeP(gx, w, "#ffe0b2"); strokeP(gx, 4, "#ff9800", [10, 12]);
+    const st = polys[0][0];
+    gx.fillStyle = "#43a047"; gx.beginPath(); gx.arc(st[0], st[1], Math.max(11, w * 0.36), 0, 7); gx.fill();
+    gx.fillStyle = "#fff"; gx.font = `bold ${Math.round(Math.max(12, w * 0.4))}px Arial`; gx.textAlign = "center"; gx.textBaseline = "middle"; gx.fillText("▶", st[0], st[1] + 1);
+    const mc = document.createElement("canvas"); mc.width = W; mc.height = H;
+    const mx = mc.getContext("2d");
+    mx.lineCap = mx.lineJoin = "round"; mx.lineWidth = w; mx.strokeStyle = "#000";
+    polys.forEach(p => { mx.beginPath(); p.forEach(([a, b], i) => i ? mx.lineTo(a, b) : mx.moveTo(a, b)); mx.stroke(); });
+    const data = mx.getImageData(0, 0, W, H).data;
+    const step = Math.max(4, Math.round(w / 6.5)), cols = Math.ceil(W / step), rows = Math.ceil(H / step);
+    const id = new Int32Array(cols * rows).fill(-1), samples = [];
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+      const x = Math.min(W - 1, Math.floor(i * step + step / 2)), y = Math.min(H - 1, Math.floor(j * step + step / 2));
+      if (data[(y * W + x) * 4 + 3] > 128) { id[j * cols + i] = samples.length; samples.push([x, y]); }
+    }
+    const covered = new Uint8Array(samples.length);
+    let nCov = 0, pts = 0, inside = 0, done = false, drawing = false, lx = 0, ly = 0;
+    const rb = Math.max(14, w * 0.5);
+    const touch = (x, y) => {
+      let hit = false;
+      const r = rb * 0.95, kk = Math.ceil(r / step), cx = Math.floor(x / step), cy = Math.floor(y / step);
+      for (let j = cy - kk; j <= cy + kk; j++) for (let i = cx - kk; i <= cx + kk; i++) {
+        if (i < 0 || j < 0 || i >= cols || j >= rows) continue;
+        const s = id[j * cols + i]; if (s < 0) continue;
+        const dx = samples[s][0] - x, dy = samples[s][1] - y;
+        if (dx * dx + dy * dy <= r * r) { hit = true; if (!covered[s]) { covered[s] = 1; nCov++; } }
+      }
+      return hit;
+    };
+    const dot = (x, y) => { pts++; if (touch(x, y)) inside++; };
+    const win = () => {
+      done = true; round++;
+      $("stars3").textContent = "⭐".repeat(round) + "☆".repeat(3 - round);
+      ix.clearRect(0, 0, W, H);
+      strokeP(gx, w, rand(["#66bb6a", "#42a5f5", "#ab47bc", "#ffa726"]));
+      sound.win(); confetti(40);
+      later(() => say(`Bravo${nm()} ! Tu as suivi ${PATTERNS[k].n} !`), 400);
+      later(() => round >= 3 ? finish() : play(), 2200);
+    };
+    const check = () => { if (!done && samples.length && nCov / samples.length >= 0.72 && pts && inside / pts >= 0.6) win(); };
+    const reset = () => { ix.clearRect(0, 0, W, H); covered.fill(0); nCov = 0; pts = 0; inside = 0; say("Essaie de rester sur la ligne !"); };
+    const pos = e => { const r = ic.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+    ic.style.touchAction = "none";
+    ic.addEventListener("pointerdown", e => {
+      if (done) return;
+      drawing = true; try { ic.setPointerCapture(e.pointerId); } catch (err) {}
+      [lx, ly] = pos(e);
+      ix.fillStyle = "#e53935"; ix.beginPath(); ix.arc(lx, ly, rb * 0.6, 0, 7); ix.fill(); dot(lx, ly); check();
+    });
+    ic.addEventListener("pointermove", e => {
+      if (!drawing || done) return;
+      const [x, y] = pos(e);
+      ix.lineCap = ix.lineJoin = "round"; ix.lineWidth = rb * 1.2; ix.strokeStyle = "#e53935";
+      ix.beginPath(); ix.moveTo(lx, ly); ix.lineTo(x, y); ix.stroke();
+      const d = Math.hypot(x - lx, y - ly), n = Math.max(1, Math.ceil(d / (rb * 0.5)));
+      for (let i = 1; i <= n; i++) dot(lx + (x - lx) * i / n, ly + (y - ly) * i / n);
+      lx = x; ly = y; check();
+    });
+    const up = () => {
+      if (!drawing) return; drawing = false;
+      check();
+      if (!done && pts > 150 && inside / pts < 0.5) reset();
+    };
+    ic.addEventListener("pointerup", up); ic.addEventListener("pointercancel", up);
+    f.appendChild(gc); f.appendChild(ic);
+    GRAPH = { g: k, round, W, H, samples, rb, step, fs: w };
+  };
+  play();
+};
+
+/* ---------- Danse : refais les mêmes mouvements ---------- */
+let DANSE = null;
+ARENA.danse = function () {
+  const f = $("field");
+  let round = 0;
+  $("stars3").textContent = "☆☆☆";
+  const MOVES = [
+    { e: "🙌", n: "les bras en l'air", c: "#ef5350", hz: 392 }, { e: "🦘", n: "sauter", c: "#42a5f5", hz: 440 },
+    { e: "🕺", n: "danser", c: "#66bb6a", hz: 523 }, { e: "🌀", n: "tourner", c: "#ab47bc", hz: 587 }
+  ];
+  const play = () => {
+    f.innerHTML = "";
+    const len = (lv() >= 2 ? 3 : 2) + round;
+    const seq = Array.from({ length: len }, () => Math.floor(Math.random() * 4));
+    DANSE = { seq, pos: 0, ready: false, round, len };
+    setArena("Regarde bien la danse !", "Regarde bien la danse, puis refais les mêmes mouvements, dans le même ordre !");
+    const W = f.clientWidth, H = f.clientHeight;
+    const grid = document.createElement("div");
+    grid.style.cssText = "position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:min(3vmin,18px);padding:min(2vmin,12px)";
+    const fs = Math.floor(Math.min(H / 4.2, W / 5.5));
+    const btns = MOVES.map((m, i) => {
+      const b = document.createElement("button"); b.className = "mv"; b.dataset.i = i;
+      b.style.cssText = `background:${m.c};font-size:${fs}px`;
+      b.innerHTML = `<span>${m.e}</span><small>${m.n}</small>`;
+      b.addEventListener("click", () => press(i));
+      grid.appendChild(b); return b;
+    });
+    f.appendChild(grid);
+    const flash = i => {
+      btns[i].classList.add("on"); tone(MOVES[i].hz, 0.35, "triangle");
+      later(() => btns[i].classList.remove("on"), 480);
+    };
+    const playSeq = (delay) => {
+      DANSE.ready = false; DANSE.pos = 0;
+      seq.forEach((m, k) => later(() => { flash(m); $("promptText3").textContent = MOVES[m].n; }, delay + k * 900));
+      later(() => { DANSE.ready = true; setArena("À toi de danser !", "À toi de danser ! Refais les mêmes mouvements."); }, delay + len * 900 + 200);
+    };
+    const press = i => {
+      if (!DANSE || !DANSE.ready) return;
+      if (i === seq[DANSE.pos]) {
+        flash(i); DANSE.pos++;
+        if (DANSE.pos >= len) {
+          DANSE.ready = false; round++;
+          $("stars3").textContent = "⭐".repeat(round) + "☆".repeat(3 - round);
+          later(() => { sound.win(); confetti(40); say(`Bravo${nm()} ! Quelle belle danse !`); }, 500);
+          later(() => round >= 3 ? finish() : play(), 2600);
+        }
+      } else {
+        btns[i].classList.remove("bad"); void btns[i].offsetWidth; btns[i].classList.add("bad");
+        sound.oops(); DANSE.ready = false;
+        setArena("Regarde encore !", "Essaie encore ! Regarde bien la danse.");
+        playSeq(1800);
+      }
+    };
+    playSeq(1800);
+  };
+  play();
+};
+
+/* ---------- Bonhomme : compléter le corps ---------- */
+let BONH = null;
+ARENA.bonhomme = function () {
+  const f = $("field");
+  let round = 0;
+  $("stars3").textContent = "☆☆☆";
+  const PARTS = {
+    tete: { n: "la tête", e: "🙂", z: 4, svg: () => `<circle cx="50" cy="32" r="17" fill="#ffcc80" stroke="#8d6e63" stroke-width="2"/>` },
+    cheveux: { n: "les cheveux", e: "💇", z: 5, svg: c => `<path d="M33 31 Q34 12 50 12 Q66 12 67 31 Q58 22 50 22 Q42 22 33 31Z" fill="${c.hair}"/>` },
+    yeux: { n: "les yeux", e: "👀", z: 6, svg: () => `<circle cx="44" cy="31" r="2.8" fill="#37474f"/><circle cx="56" cy="31" r="2.8" fill="#37474f"/>` },
+    bouche: { n: "la bouche", e: "👄", z: 6, svg: () => `<path d="M43 40 Q50 47 57 40" fill="none" stroke="#d84315" stroke-width="2.6" stroke-linecap="round"/>` },
+    corps: { n: "le corps", e: "👕", z: 3, svg: c => `<rect x="36" y="50" width="28" height="44" rx="10" fill="${c.shirt}"/>` },
+    bras: { n: "les bras", e: "💪", z: 2, svg: () => `<path d="M38 58 L16 82 M62 58 L84 82" stroke="#ffcc80" stroke-width="7" stroke-linecap="round" fill="none"/>` },
+    jambes: { n: "les jambes", e: "🦵", z: 1, svg: c => `<path d="M44 92 L38 130 M56 92 L62 130" stroke="${c.pants}" stroke-width="8" stroke-linecap="round" fill="none"/>` }
+  };
+  const FACE = ["cheveux", "yeux", "bouche"];
+  const play = () => {
+    f.innerHTML = "";
+    const hard = lv() >= 2;
+    let asked = hard ? shuffle(Object.keys(PARTS)) : shuffle(["tete", "corps", "bras", "jambes"]);
+    if (hard) { const ti = asked.indexOf("tete"); asked = asked.filter(x => x !== "tete"); const firstFace = asked.findIndex(x => FACE.includes(x)); asked.splice(firstFace < 0 ? 0 : firstFace, 0, "tete"); }
+    const colors = { shirt: rand(["#42a5f5", "#ef5350", "#66bb6a", "#ab47bc"]), pants: rand(["#3949ab", "#00897b", "#6d4c41"]), hair: rand(["#5d4037", "#212121", "#f9a825"]) };
+    BONH = { asked, idx: 0, round, ask: asked[0] };
+    const W = f.clientWidth, H = f.clientHeight;
+    const wrap = document.createElement("div");
+    wrap.style.cssText = "position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;gap:6px";
+    let bw = 120, trayH = 0;
+    for (; bw >= 72; bw -= 4) {
+      const per = Math.max(1, Math.floor((W - 16) / (bw + 8))), rowsN = Math.ceil(7 / per);
+      trayH = rowsN * (Math.round(bw * 0.8) + 8);
+      if (trayH <= H * 0.4) break;
+    }
+    const hSvg = Math.max(80, Math.floor(H - trayH - 24));
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 100 140"); svg.style.cssText = `height:${hSvg}px;width:${hSvg * 100 / 140}px;max-width:90%`;
+    svg.id = "bonhSvg";
+    const layers = {};
+    Object.keys(PARTS).sort((a, b) => PARTS[a].z - PARTS[b].z).forEach(k => {
+      const gg = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      gg.setAttribute("style", "opacity:.22;filter:grayscale(1)"); gg.innerHTML = PARTS[k].svg(colors); svg.appendChild(gg);
+    });
+    Object.keys(PARTS).forEach(k => { const g = document.createElementNS("http://www.w3.org/2000/svg", "g"); g.dataset.part = k; g.style.display = "none"; g.innerHTML = PARTS[k].svg(colors); layers[k] = g; });
+    Object.keys(PARTS).sort((a, b) => PARTS[a].z - PARTS[b].z).forEach(k => svg.appendChild(layers[k]));
+    const tray = document.createElement("div");
+    tray.style.cssText = "display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:96%";
+    const ask = () => {
+      BONH.ask = asked[BONH.idx];
+      setArena(`Ajoute ${PARTS[BONH.ask].n} !`, `Ajoute ${PARTS[BONH.ask].n} au bonhomme !`);
+    };
+    Object.keys(PARTS).forEach(k => {
+      const b = document.createElement("button"); b.className = "bpart"; b.dataset.part = k;
+      b.style.cssText = `width:${bw}px;min-height:${Math.round(bw * 0.8)}px`;
+      b.innerHTML = `<span>${PARTS[k].e}</span><small>${PARTS[k].n}</small>`;
+      b.addEventListener("click", () => {
+        if (!BONH || BONH.ask === null || b.classList.contains("used")) return;
+        if (k === BONH.ask) {
+          layers[k].style.display = ""; b.classList.add("used"); tone(500 + BONH.idx * 70, 0.12, "triangle");
+          if (k === "tete" && !hard) FACE.forEach(x => { layers[x].style.display = ""; });
+          BONH.idx++;
+          if (BONH.idx >= asked.length) {
+            BONH.ask = null; round++;
+            $("stars3").textContent = "⭐".repeat(round) + "☆".repeat(3 - round);
+            sound.win(); confetti(40);
+            later(() => say(`Bravo${nm()} ! Ton bonhomme est complet !`), 400);
+            later(() => round >= 3 ? finish() : play(), 2600);
+          } else ask();
+        } else { b.classList.remove("bad"); void b.offsetWidth; b.classList.add("bad"); sound.oops(); }
+      });
+      tray.appendChild(b);
+    });
+    wrap.appendChild(svg); wrap.appendChild(tray); f.appendChild(wrap);
+    ask();
+  };
+  play();
+};
 
 /* ================== Jeux 5-6 ans : mini-jeux ================== */
 
