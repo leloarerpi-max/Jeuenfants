@@ -88,6 +88,7 @@
   .menu-btn { padding: 1.6vh 1vw; font-size: clamp(16px, 2.2vw, 24px); border-radius: 24px; }
   .menu-btn .ico { font-size: clamp(38px, 5.5vw, 62px); }
   .menu-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); width: min(1000px, 94vw); }
+  .season-sec[hidden] { display: none; }
   .menu-section { display: flex; flex-direction: column; align-items: center; gap: 1.5vh; width: 100%; }
   .menu-sub { margin: 0; font-size: clamp(20px, 3vw, 32px); color: #37474f; text-shadow: 1px 1px 0 #fff; }
 
@@ -171,6 +172,18 @@
     border-radius: 18px; text-align: center; -webkit-user-select: text; user-select: text; }
   .modal-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
   #voiceBtn { background: #7e57c2; }
+  .studio-box { width: min(640px, 96vw); max-height: 94vh; overflow-y: auto; align-items: stretch; text-align: left; gap: 10px; }
+  #studioModal { z-index: 60; }
+  .stu-intro { background: #f3e5f5; border-radius: 14px; padding: 10px 14px; font-size: clamp(14px, 2vw, 17px); color: #4a148c; }
+  .stu-intro ol { margin: 6px 0 6px 20px; padding: 0; }
+  .stu-intro.good { background: #e8f5e9; color: #1b5e20; } .stu-intro.bad { background: #fff3e0; color: #bf360c; }
+  .stu-h { font-weight: bold; font-size: clamp(16px, 2.2vw, 20px); margin-top: 8px; color: #37474f; }
+  .stu-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: #fafafa; border-radius: 14px; padding: 6px 10px; }
+  .stu-row.ok { background: #e8f5e9; } .stu-n { flex: 1 1 130px; font-size: clamp(14px, 2vw, 17px); }
+  .stu-script { margin: 0 0 0 24px; padding: 0; font-size: clamp(18px, 2.8vw, 26px); line-height: 1.5; color: #263238; }
+  .stu-script li { margin-bottom: 6px; } .stu-play { border: none; background: #e1bee7; border-radius: 10px; font-size: 16px; padding: 2px 8px; cursor: pointer; }
+  .stu-sl { display: flex; flex-direction: column; gap: 4px; font-size: 14px; } .stu-sl input { width: 100%; }
+  .vopt[disabled] { opacity: .4; }
   .voice-box { max-height: 92vh; overflow-y: auto; gap: 12px; width: min(560px, 94vw); }
   .vsec { display: flex; flex-direction: column; gap: 6px; width: 100%; }
   .vlabel { font-weight: bold; color: #37474f; font-size: clamp(16px, 2.4vw, 22px); }
@@ -204,6 +217,26 @@
   .bpart.used { opacity: .35; }
   .bpart.bad { animation: shake .45s; }
   @media (max-height: 520px) { .gridv td { font-size: .46em; } .storytxt { display: none; } }
+  /* ---------- Nombres, classements, lettres ---------- */
+  .dz { --b: clamp(9px, 1.7vmin, 15px); display: inline-flex; align-items: flex-end; gap: calc(var(--b) * 1.4); }
+  .tenbar { display: flex; flex-direction: column; gap: 2px; }
+  .tenbar i, .units i { display: block; width: var(--b); height: var(--b); background: #42a5f5; border-radius: 2px; }
+  .units { display: grid; grid-template-columns: repeat(5, var(--b)); gap: 2px; }
+  .units i { background: #ffa726; }
+  .dbl { border-collapse: separate; border-spacing: 4px; margin: 0 auto; }
+  .dbl td, .dbl th { width: clamp(26px, 7.5vmin, 60px); height: clamp(26px, 7.5vmin, 60px); padding: 0; text-align: center; background: #fff; border-radius: 10px; font-size: clamp(16px, 4vmin, 34px); line-height: 1; }
+  .dbl th { background: transparent; }
+  .dbl svg { width: 86%; height: 86%; }
+  .dbl .dot { display: inline-block; width: 70%; height: 70%; border-radius: 50%; }
+  .dbl td.miss { background: #fff59d; }
+  .wordtxt { font-size: clamp(16px, 2.4vw, 26px); font-weight: bold; color: #37474f; text-align: center; }
+  .ordtile { border: none; border-radius: 22px; font-family: inherit; font-weight: bold; color: #37474f; box-shadow: 0 6px 0 rgba(0,0,0,.18); cursor: pointer; }
+  .ordtile.used { opacity: .3; }
+  .sizeitem { border: none; background: transparent; line-height: 1; padding: 0; cursor: pointer; font-family: inherit; }
+  .sizeitem.used { opacity: .3; filter: grayscale(.6); }
+  .ordtile.bad, .sizeitem.bad, .cube.bad { animation: shake .45s; }
+  .cube { border: none; border-radius: 12px; background: #b3e5fc; box-shadow: inset -4px -4px 0 rgba(0,0,0,.15), 0 4px 0 rgba(0,0,0,.18); cursor: pointer; }
+  .cube.on { background: #ff7043; transform: translateY(-4px); }
   /* ---------- Contrôle parental ---------- */
   #parentBtn { background: #546e7a; }
   #timeChip { background: #fff; color: #37474f; border-radius: 999px; padding: 10px 18px; font-weight: bold;
@@ -361,6 +394,22 @@
     <button class="pill" id="parentBtn">🔒 Parents</button>
     <span id="timeChip" hidden></span>
   </div>
+  <div class="menu-section season-sec" data-season="halloween" hidden>
+    <h2 class="menu-sub">🎃 Spécial Halloween</h2>
+    <div class="menu-grid">
+      <button class="menu-btn" style="background:#e65100" data-mode="hcompte"><span class="ico">🎃</span>Compte les citrouilles</button>
+      <button class="menu-btn" style="background:#5e35b1" data-mode="hfind"><span class="ico">👻</span>Trouve le fantôme</button>
+      <button class="menu-btn" style="background:#37474f" data-mode="hsuite"><span class="ico">🦉</span>La suite d'Halloween</button>
+    </div>
+  </div>
+  <div class="menu-section season-sec" data-season="noel" hidden>
+    <h2 class="menu-sub">🎄 Spécial Noël</h2>
+    <div class="menu-grid">
+      <button class="menu-btn" style="background:#c62828" data-mode="ncompte"><span class="ico">🎁</span>Compte les cadeaux</button>
+      <button class="menu-btn" style="background:#2e7d32" data-mode="nfind"><span class="ico">🎅</span>Trouve le Père Noël</button>
+      <button class="menu-btn" style="background:#1565c0" data-mode="nsuite"><span class="ico">⛄</span>La suite de Noël</button>
+    </div>
+  </div>
   <div class="menu-section">
     <h2 class="menu-sub">🗣️ Je parle et j'écris</h2>
     <div class="menu-grid">
@@ -369,6 +418,9 @@
       <button class="menu-btn" style="background:#00897b" data-mode="syllstart"><span class="ico">🧩</span>Début de mot</button>
       <button class="menu-btn" style="background:#c2185b" data-mode="compris"><span class="ico">🎧</span>J'écoute</button>
       <button class="menu-btn" style="background:#ef6c00" data-mode="graphisme"><span class="ico">〰️</span>Graphisme</button>
+      <button class="menu-btn" style="background:#00838f" data-mode="alphabet"><span class="ico">🅰️</span>Alphabet</button>
+      <button class="menu-btn" style="background:#6a1b9a" data-mode="unune"><span class="ico">☝️</span>Un ou une</button>
+      <button class="menu-btn" style="background:#ad1457" data-mode="voyelle"><span class="ico">🎙️</span>Voyelles</button>
     </div>
   </div>
   <div class="menu-section">
@@ -380,6 +432,12 @@
       <button class="menu-btn" style="background:#f4511e" data-mode="probleme"><span class="ico">💭</span>Problèmes</button>
       <button class="menu-btn" style="background:#00acc1" data-mode="longueur"><span class="ico">📏</span>Long / court</button>
       <button class="menu-btn" style="background:#6d4c41" data-mode="grille"><span class="ico">🗺️</span>Quadrillage</button>
+      <button class="menu-btn" style="background:#1565c0" data-mode="dizaines"><span class="ico">🟦</span>Dizaines</button>
+      <button class="menu-btn" style="background:#00897b" data-mode="memonb"><span class="ico">🎴</span>Mémo nombres</button>
+      <button class="menu-btn" style="background:#ef6c00" data-mode="ordre"><span class="ico">🔗</span>Dans l'ordre</button>
+      <button class="menu-btn" style="background:#8d6e63" data-mode="taille"><span class="ico">🧸</span>Petit → grand</button>
+      <button class="menu-btn" style="background:#558b2f" data-mode="double"><span class="ico">🔲</span>Double entrée</button>
+      <button class="menu-btn" style="background:#d84315" data-mode="cubes"><span class="ico">🧱</span>Fais le nombre</button>
     </div>
   </div>
   <div class="menu-section">
@@ -391,15 +449,6 @@
       <button class="menu-btn" style="background:#d81b60" data-mode="sens"><span class="ico">🧍</span>Mon corps</button>
       <button class="menu-btn" style="background:#0288d1" data-mode="sante"><span class="ico">🧼</span>Santé</button>
       <button class="menu-btn" style="background:#0277bd" data-mode="flotte"><span class="ico">🌊</span>Flotte / coule</button>
-    </div>
-  </div>
-  <div class="menu-section">
-    <h2 class="menu-sub">🎨 Je bouge et je vis ensemble</h2>
-    <div class="menu-grid">
-      <button class="menu-btn" style="background:#e53935" data-mode="danse"><span class="ico">💃</span>Danse</button>
-      <button class="menu-btn" style="background:#7cb342" data-mode="bonhomme"><span class="ico">🙂</span>Bonhomme</button>
-      <button class="menu-btn" style="background:#fb8c00" data-mode="vivre"><span class="ico">🤝</span>Ensemble</button>
-      <button class="menu-btn" style="background:#5c6bc0" data-mode="aigu"><span class="ico">🎵</span>Aigu / grave</button>
     </div>
   </div>
   <div class="menu-section">
@@ -508,6 +557,16 @@
   </div>
 </div>
 
+<!-- STUDIO MA VOIX -->
+<div class="modal" id="studioModal" hidden>
+  <div class="modal-box studio-box">
+    <h3 style="text-align:center">🎙️ Ma voix pour le jeu</h3>
+    <div id="studioBody"></div>
+    <input type="file" id="studioFile" accept="audio/*,.m4a,.mp3,.wav,.aac,.caf,.ogg,.3gp,.amr" hidden>
+    <div class="modal-btns"><button class="pill" id="studioClose">✅ Fermer</button></div>
+  </div>
+</div>
+
 <!-- VOIX -->
 <div class="modal" id="voiceModal" hidden>
   <div class="modal-box voice-box">
@@ -536,6 +595,7 @@
     <div class="vsec">
       <div class="vrow">
         <button class="vopt" id="voiceToggle"></button>
+        <button class="vopt" id="studioBtn">🎙️ Ma voix (enregistrer)</button>
       </div>
     </div>
     <div class="modal-btns">
@@ -607,23 +667,41 @@ if (!(VOICE.pitch in PITCHES)) VOICE.pitch = "normale";
 if (!(VOICE.rate in RATES)) VOICE.rate = "normale";
 function saveVoice() { try { localStorage.setItem(VOICE_KEY, JSON.stringify(VOICE)); } catch (e) {} }
 let frVoices = [], frVoice = null;
+/* Plus le score est haut, plus la voix est naturelle (voix « améliorée », « premium », « naturelle », Siri, Google...) */
+function voiceScore(v) {
+  const n = (v.name || "") + " " + (v.voiceURI || "");
+  let sc = 0;
+  if (/premium|enhanced|améliorée|ameliorée|natural|neural|siri/i.test(n)) sc += 10;
+  if (/online|google/i.test(n)) sc += 6;
+  if (/compact|espeak|eloquence/i.test(n)) sc -= 8;
+  if (/^fr[-_]FR/i.test(v.lang)) sc += 2;
+  if (v.localService === false) sc += 1;
+  return sc;
+}
+function voiceIsGood(v) { return voiceScore(v) >= 6; }
 function loadVoice() {
   if (!("speechSynthesis" in window)) return;
   let vs = [];
   try { vs = speechSynthesis.getVoices() || []; } catch (e) {}
   frVoices = vs.filter(v => /^fr/i.test(v.lang))
-    .sort((a, b) => (/^fr[-_]FR/i.test(b.lang) ? 1 : 0) - (/^fr[-_]FR/i.test(a.lang) ? 1 : 0));
+    .map((v, i) => ({ v, i, s: voiceScore(v) })).sort((a, b) => b.s - a.s || a.i - b.i).map(x => x.v);
   frVoice = frVoices.find(v => v.name === VOICE.name) || frVoices[0] || null;
   const vm = document.getElementById("voiceModal");
   if (vm && !vm.hidden) renderVoiceList();
 }
 if ("speechSynthesis" in window) { loadVoice(); speechSynthesis.onvoiceschanged = loadVoice; }
 function say(text) {
-  if (!("speechSynthesis" in window) || !VOICE.on) return;
+  if (!VOICE.on) return;
+  try {
+    const mk = myClipFor(text);
+    if (mk) { try { speechSynthesis.cancel(); } catch (e) {} if (playClip(mk)) return; }
+    stopClip();
+  } catch (e) {}
+  if (!("speechSynthesis" in window)) return;
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang = frVoice ? frVoice.lang : "fr-FR";
-  u.rate = RATES[VOICE.rate]; u.pitch = PITCHES[VOICE.pitch];
+  u.rate = RATES[VOICE.rate]; u.pitch = voiceIsGood(frVoice || {}) ? Math.min(PITCHES[VOICE.pitch], 1.1) : PITCHES[VOICE.pitch];
   if (frVoice) u.voice = frVoice;
   speechSynthesis.speak(u);
 }
@@ -774,13 +852,13 @@ function renderVoiceList() {
   frVoices.forEach(v => {
     const b = document.createElement("button");
     b.className = "vopt" + (frVoice && v.name === frVoice.name ? " on" : "");
-    b.textContent = v.name.replace(/\s*\(.*\)\s*$/, "").replace(/^(Microsoft|Google)\s+/, "") + (/CA/i.test(v.lang) ? " 🇨🇦" : /BE/i.test(v.lang) ? " 🇧🇪" : /CH/i.test(v.lang) ? " 🇨🇭" : "");
+    b.textContent = (voiceIsGood(v) ? "⭐ " : "") + v.name.replace(/\s*\(.*\)\s*$/, "").replace(/^(Microsoft|Google)\s+/, "") + (/CA/i.test(v.lang) ? " 🇨🇦" : /BE/i.test(v.lang) ? " 🇧🇪" : /CH/i.test(v.lang) ? " 🇨🇭" : "");
     b.addEventListener("click", () => { VOICE.name = v.name; frVoice = v; saveVoice(); renderVoiceList(); voiceDemo(); });
     box.appendChild(b);
   });
-  $("voiceHint").textContent = frVoices.length > 1 ? "Touche une voix pour l'écouter."
-    : frVoices.length === 1 ? "Une seule voix française sur cet appareil. Sur iPad : Réglages › Accessibilité › Contenu énoncé › Voix › Français pour en ajouter."
-    : "Aucune voix française trouvée. Sur iPad : Réglages › Accessibilité › Contenu énoncé › Voix › Français.";
+  const good = frVoices.some(voiceIsGood);
+  $("voiceHint").textContent = (frVoices.length > 1 ? "Touche une voix pour l'écouter. ⭐ = voix la plus naturelle. " : frVoices.length === 1 ? "Une seule voix française sur cet appareil. " : "Aucune voix française trouvée. ")
+    + (good ? "" : "Pour une voix plus douce : iPad/iPhone › Réglages › Accessibilité › Contenu énoncé › Voix › Français › choisir une voix « Améliorée » ou « Premium » (Amélie, Thomas…). Windows : navigateur Edge, voix « Natural ». Android : voix Google français.");
   document.querySelectorAll("[data-pitch]").forEach(b => b.classList.toggle("on", b.dataset.pitch === VOICE.pitch));
   document.querySelectorAll("[data-rate]").forEach(b => b.classList.toggle("on", b.dataset.rate === VOICE.rate));
   $("voiceToggle").textContent = VOICE.on ? "🔊 Voix activée" : "🔇 Voix coupée";
@@ -796,6 +874,231 @@ function closeName(save) {
   }
   $("nameInput").blur(); $("nameModal").hidden = true;
 }
+
+const CATALOG = [["_commun", ["Bravo !", "Essaie encore !"]], ["hcompte", ["Compte les citrouilles. Combien y en a-t-il ? Touche le bon chiffre !", "Compte les bonbons. Combien y en a-t-il ? Touche le bon chiffre !", "Compte les hiboux. Combien y en a-t-il ? Touche le bon chiffre !", "Compte les araignées. Combien y en a-t-il ? Touche le bon chiffre !", "Compte les fantômes. Combien y en a-t-il ? Touche le bon chiffre !", "Compte les sorcières. Combien y en a-t-il ? Touche le bon chiffre !", "Bien joué !", "Compte les citrouilles. Combien y en a-t-il ? Touche sur le bon chiffre !", "Compte les fantômes. Combien y en a-t-il ? Touche sur le bon chiffre !", "Compte les hiboux. Combien y en a-t-il ? Touche sur le bon chiffre !", "Super !"]], ["hfind", ["Où est la sorcière ? Touche dessus !", "Où est le bonbon ? Touche dessus !", "Où est le hibou ? Touche dessus !", "Où est l'araignée ? Touche dessus !", "Où est la citrouille ? Touche dessus !", "Où est le fantôme ? Touche dessus !"]], ["hsuite", ["Regarde bien la suite. Qu'est-ce qui vient après ? Touche dessus !"]], ["ncompte", ["Compte les rennes. Combien y en a-t-il ? Touche le bon chiffre !", "Compte les Pères Noël. Combien y en a-t-il ? Touche le bon chiffre !", "Compte les sapins. Combien y en a-t-il ? Touche le bon chiffre !", "Compte les étoiles. Combien y en a-t-il ? Touche le bon chiffre !", "Compte les bonshommes de neige. Combien y en a-t-il ? Touche le bon chiffre !", "Compte les cloches. Combien y en a-t-il ? Touche le bon chiffre !", "Compte les cadeaux. Combien y en a-t-il ? Touche le bon chiffre !"]], ["nfind", ["Où est le Père Noël ? Touche dessus !", "Où est le bonhomme de neige ? Touche dessus !", "Où est le sapin ? Touche dessus !", "Où est le renne ? Touche dessus !", "Où est l'étoile ? Touche dessus !", "Où est la cloche ? Touche dessus !", "Où est le cadeau ? Touche dessus !"]], ["nsuite", ["Regarde bien la suite. Qu'est-ce qui vient après ? Touche dessus !"]], ["prenom", ["Trouve le prénom Tom en lettres capitales ! Tom. Touche dessus !", "Trouve le prénom Tom en lettres attachées ! Tom. Touche dessus !"]], ["lettres3", ["Trouve la petite lettre qui va avec la grande lettre M. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre Z. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre F. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre D. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre V. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre T. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre O. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre S. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre E. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre N. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre U. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre Q. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre H. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre Z. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre M. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre R. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre V. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre D. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre O. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre T. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre E. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre J. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre U. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre F. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre R. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre B. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre S. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre G. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre H. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre J. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre B. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre L. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre A. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre L. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre G. Touche dessus !", "Trouve la petite lettre qui va avec la grande lettre N. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre A. Touche dessus !", "Trouve la lettre attachée qui va avec la grande lettre Q. Touche dessus !"]], ["syllstart", ["Quel mot commence par ca ? Regarde bien les images. Touche dessus !", "Quel mot commence par fu ? Regarde bien les images. Touche dessus !", "Quel mot commence par ba ? Regarde bien les images. Touche dessus !", "Quel mot commence par mo ? Regarde bien les images. Touche dessus !", "Quel mot commence par ro ? Regarde bien les images. Touche dessus !", "Quel mot commence par pi ? Regarde bien les images. Touche dessus !", "Quel mot commence par ci ? Regarde bien les images. Touche dessus !", "Quel mot commence par lu ? Regarde bien les images. Touche dessus !", "Quel mot commence par pou ? Regarde bien les images. Touche dessus !", "Quel mot commence par sa ? Regarde bien les images. Touche dessus !", "Quel mot commence par vé ? Regarde bien les images. Touche dessus !", "Quel mot commence par sou ? Regarde bien les images. Touche dessus !", "Quel mot commence par ga ? Regarde bien les images. Touche dessus !", "Quel mot commence par pa ? Regarde bien les images. Touche dessus !", "Quel mot commence par to ? Regarde bien les images. Touche dessus !"]], ["compris", ["Écoute bien l'histoire. Hugo prend son vélo. Il roule jusqu'au parc. Comment Hugo va-t-il au parc ? Touche dessus !", "Écoute bien l'histoire. Lou regarde le ciel la nuit. Elle voit la lune briller. Qu'est-ce que Lou voit dans le ciel ? Touche dessus !", "Écoute bien l'histoire. Le petit lapin a très froid. Il met son bonnet et son écharpe. Que met le lapin autour du cou ? Touche dessus !", "Écoute bien l'histoire. Le chat a peur du chien. Il grimpe très vite sur l'arbre. Où monte le chat ? Touche dessus !", "Écoute bien l'histoire. Papa prend sa voiture pour aller au travail. Il met sa ceinture. Dans quoi voyage Papa ? Touche dessus !", "Écoute bien l'histoire. Mia a faim. Elle ouvre le frigo et prend une pomme. Elle croque dedans. Que mange Mia ? Touche dessus !", "Écoute bien l'histoire. Nina plante une graine dans la terre. Elle l'arrose chaque jour. Une fleur pousse ! Qu'est-ce qui pousse ? Touche dessus !", "Écoute bien l'histoire. Théo fête son anniversaire. Il souffle les bougies de son gâteau. Que souffle Théo sur son gâteau ? Touche dessus !", "Écoute bien l'histoire. Tom va à la plage avec son seau. Il construit un grand château de sable. Que construit Tom ? Touche dessus !"]], ["graphisme", ["Essaie de rester sur la ligne !", "Suis la ligne penchée avec ton doigt ! Pose ton doigt et suis la forme !", "Suis le cercle avec ton doigt ! Pose ton doigt et suis la forme !", "Suis les ponts avec ton doigt ! Pose ton doigt et suis la forme !"]], ["voyelle", ["La lettre V est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre J est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre H est-elle une voyelle ou une consonne ? Touche dessus !", "Regarde bien la lettre. Est-elle majuscule, une grande lettre, ou minuscule, une petite lettre ? Touche dessus !", "La lettre C est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre D est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre A est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre E est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre I est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre L est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre M est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre N est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre G est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre T est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre B est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre S est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre Z est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre O est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre U est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre P est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre R est-elle une voyelle ou une consonne ? Touche dessus !", "La lettre F est-elle une voyelle ou une consonne ? Touche dessus !"]], ["compte", ["Compte les ballons. Combien y en a-t-il ? Touche le bon chiffre !", "Compte les fraises. Combien y en a-t-il ? Touche le bon chiffre !", "Compte les poissons. Combien y en a-t-il ? Touche le bon chiffre !", "Compte les étoiles. Combien y en a-t-il ? Touche le bon chiffre !", "Compte les pommes. Combien y en a-t-il ? Touche le bon chiffre !"]], ["decomp", ["6, c'est 4 et combien ? Compte bien et touche le bon chiffre !", "7, c'est 1 et combien ? Compte bien et touche le bon chiffre !", "6, c'est 3 et combien ? Compte bien et touche le bon chiffre !", "7, c'est 4 et combien ? Compte bien et touche le bon chiffre !", "4, c'est 2 et combien ? Compte bien et touche le bon chiffre !", "5, c'est 4 et combien ? Compte bien et touche le bon chiffre !", "5, c'est 1 et combien ? Compte bien et touche le bon chiffre !", "7, c'est 5 et combien ? Compte bien et touche le bon chiffre !", "3, c'est 1 et combien ? Compte bien et touche le bon chiffre !", "4, c'est 1 et combien ? Compte bien et touche le bon chiffre !", "6, c'est 1 et combien ? Compte bien et touche le bon chiffre !", "6, c'est 2 et combien ? Compte bien et touche le bon chiffre !", "5, c'est 3 et combien ? Compte bien et touche le bon chiffre !", "9, c'est 6 et combien ? Compte bien et touche le bon chiffre !", "4, c'est 3 et combien ? Compte bien et touche le bon chiffre !", "10, c'est 5 et combien ? Compte bien et touche le bon chiffre !", "3, c'est 2 et combien ? Compte bien et touche le bon chiffre !", "9, c'est 1 et combien ? Compte bien et touche le bon chiffre !", "5, c'est 2 et combien ? Compte bien et touche le bon chiffre !", "8, c'est 3 et combien ? Compte bien et touche le bon chiffre !", "9, c'est 2 et combien ? Compte bien et touche le bon chiffre !", "8, c'est 5 et combien ? Compte bien et touche le bon chiffre !", "10, c'est 9 et combien ? Compte bien et touche le bon chiffre !", "9, c'est 7 et combien ? Compte bien et touche le bon chiffre !", "10, c'est 7 et combien ? Compte bien et touche le bon chiffre !", "7, c'est 3 et combien ? Compte bien et touche le bon chiffre !", "10, c'est 3 et combien ? Compte bien et touche le bon chiffre !", "10, c'est 1 et combien ? Compte bien et touche le bon chiffre !", "9, c'est 8 et combien ? Compte bien et touche le bon chiffre !", "9, c'est 5 et combien ? Compte bien et touche le bon chiffre !", "9, c'est 3 et combien ? Compte bien et touche le bon chiffre !", "6, c'est 5 et combien ? Compte bien et touche le bon chiffre !", "8, c'est 1 et combien ? Compte bien et touche le bon chiffre !", "10, c'est 8 et combien ? Compte bien et touche le bon chiffre !", "8, c'est 7 et combien ? Compte bien et touche le bon chiffre !", "9, c'est 4 et combien ? Compte bien et touche le bon chiffre !", "8, c'est 2 et combien ? Compte bien et touche le bon chiffre !", "10, c'est 2 et combien ? Compte bien et touche le bon chiffre !", "7, c'est 2 et combien ? Compte bien et touche le bon chiffre !", "7, c'est 6 et combien ? Compte bien et touche le bon chiffre !", "10, c'est 4 et combien ? Compte bien et touche le bon chiffre !", "8, c'est 6 et combien ? Compte bien et touche le bon chiffre !", "8, c'est 4 et combien ? Compte bien et touche le bon chiffre !", "10, c'est 6 et combien ? Compte bien et touche le bon chiffre !"]], ["longueur", ["Lequel est le plus long ? Touche dessus !", "Lequel est le plus court ? Touche dessus !"]], ["grille", ["Dans quelle case est le ballon ? Cherche la lettre en haut et le chiffre sur le côté. Touche dessus !", "Dans quelle case est l'étoile ? Cherche la lettre en haut et le chiffre sur le côté. Touche dessus !", "Dans quelle case est la pomme ? Cherche la lettre en haut et le chiffre sur le côté. Touche dessus !", "Dans quelle case est le chat ? Cherche la lettre en haut et le chiffre sur le côté. Touche dessus !", "Dans quelle case est la grenouille ? Cherche la lettre en haut et le chiffre sur le côté. Touche dessus !", "Dans quelle case est le poisson ? Cherche la lettre en haut et le chiffre sur le côté. Touche dessus !", "Dans quelle case est le chien ? Cherche la lettre en haut et le chiffre sur le côté. Touche dessus !", "Dans quelle case est la voiture ? Cherche la lettre en haut et le chiffre sur le côté. Touche dessus !"]], ["dizaines", ["Une grande barre, ce sont dix carrés. Combien y a-t-il de carrés en tout ? Touche le bon chiffre !"]], ["memonb", ["Retrouve chaque chiffre avec la bonne quantité d'images ! Appuie sur les cartes."]], ["ordre", ["Appuie sur les nombres dans l'ordre, du plus petit au plus grand, de 1 à 5 !", "Appuie sur les nombres dans l'ordre, du plus petit au plus grand, de 1 à 7 !", "Appuie sur les nombres dans l'ordre, du plus petit au plus grand, de 7 à 13 !", "Cherche le bon nombre !"]], ["taille", ["Appuie sur les jouets, du plus grand au plus petit !", "Appuie sur les jouets, du plus petit au plus grand !", "Cherche le bon jouet !"]], ["double", ["Regarde bien le tableau. Sur chaque ligne, c'est la même forme. Dans chaque colonne, c'est la même couleur. Quelle pièce manque ? Touche dessus !"]], ["cubes", ["Fais le nombre 15 avec les cubes ! Choisis 15 cubes, puis appuie sur le bouton vert.", "Fais le nombre 4 avec les cubes ! Choisis 4 cubes, puis appuie sur le bouton vert.", "Fais le nombre 7 avec les cubes ! Choisis 7 cubes, puis appuie sur le bouton vert.", "Tu as 14 cubes. Il en faut 15. Ajoutes-en !", "Tu as 3 cubes. Il en faut 4. Ajoutes-en !", "Tu as 6 cubes. Il en faut 7. Ajoutes-en !"]], ["journee", ["Le soleil est tout en haut du ciel. Quel moment de la journée est-ce ? Touche dessus !", "Papa lit une histoire avant de dormir. Quel moment de la journée est-ce ? Touche dessus !", "C'est l'heure du goûter. Quel moment de la journée est-ce ? Touche dessus !", "C'est l'heure du déjeuner. Quel moment de la journée est-ce ? Touche dessus !", "Je pars à l'école avec mon cartable. Quel moment de la journée est-ce ? Touche dessus !", "Après la sieste, je joue dans le jardin. Quel moment de la journée est-ce ? Touche dessus !", "Je prends mon petit-déjeuner. Quel moment de la journée est-ce ? Touche dessus !", "C'est l'heure du dîner. Quel moment de la journée est-ce ? Touche dessus !", "Les étoiles brillent dans le ciel noir. Quel moment de la journée est-ce ? Touche dessus !", "Je prends mon bain avant de dormir. Quel moment de la journée est-ce ? Touche dessus !", "Je dors profondément dans mon lit. Quel moment de la journée est-ce ? Touche dessus !", "Le coq chante, c'est le réveil. Quel moment de la journée est-ce ? Touche dessus !"]], ["grandit", ["Regarde comment ça grandit. Qu'est-ce qui vient ensuite ? Touche dessus !"]], ["sens", ["Qu'est-ce qui bat dans ma poitrine ? Touche dessus !", "Avec quoi je réfléchis ? Touche dessus !", "Avec quoi je goûte un bonbon ? Touche dessus !", "Avec quoi j'écoute la musique ? Touche dessus !", "Avec quoi je regarde ? Touche dessus !", "Avec quoi je marche et je cours ? Touche dessus !", "Avec quoi je croque une pomme ? Touche dessus !", "Avec quoi je sens une fleur ? Touche dessus !", "Avec quoi je touche et je prends ? Touche dessus !"]], ["sante", ["Je suis très fatigué, j'ai besoin de... Quelle image choisis-tu ? Touche dessus !", "J'ai soif, je bois de l'... Quelle image choisis-tu ? Touche dessus !", "Pour être fort et en bonne santé, je mange des... Quelle image choisis-tu ? Touche dessus !", "Le soleil brille fort, je mets ma... Quelle image choisis-tu ? Touche dessus !", "Je me suis fait mal au genou, il me faut un... Quelle image choisis-tu ? Touche dessus !", "Il fait très froid dehors, je mets mon... Quelle image choisis-tu ? Touche dessus !", "Pour avoir les mains propres, j'utilise du... Quelle image choisis-tu ? Touche dessus !", "Pour garder des dents propres, j'utilise une... Quelle image choisis-tu ? Touche dessus !"]], ["flotte", ["L'ancre est mis dans l'eau. Est-ce que ça flotte ou est-ce que ça coule ? Touche dessus !", "Le bateau est mis dans l'eau. Est-ce que ça flotte ou est-ce que ça coule ? Touche dessus !", "La brique est mis dans l'eau. Est-ce que ça flotte ou est-ce que ça coule ? Touche dessus !", "La cuillère est mis dans l'eau. Est-ce que ça flotte ou est-ce que ça coule ? Touche dessus !", "Le canard est mis dans l'eau. Est-ce que ça flotte ou est-ce que ça coule ? Touche dessus !", "La feuille est mis dans l'eau. Est-ce que ça flotte ou est-ce que ça coule ? Touche dessus !", "Le marteau est mis dans l'eau. Est-ce que ça flotte ou est-ce que ça coule ? Touche dessus !", "Le ballon est mis dans l'eau. Est-ce que ça flotte ou est-ce que ça coule ? Touche dessus !", "Le canoë est mis dans l'eau. Est-ce que ça flotte ou est-ce que ça coule ? Touche dessus !", "La clé est mis dans l'eau. Est-ce que ça flotte ou est-ce que ça coule ? Touche dessus !"]], ["draw", ["Dessine avec ton doigt ! Pose ton doigt et bouge-le."]], ["memory", ["Retrouve les deux images pareilles ! Touche les cartes."]], ["clicks", ["Touche cinq fois l'étoile !", "Touche cinq fois la pomme !", "Touche quatre fois l'étoile !", "Touche trois fois le ballon !", "Touche une fois la pomme !", "cinq", "deux", "quatre", "trois", "un"]], ["path", ["Suis le chemin jusqu'à la carotte ! Glisse ton doigt sur les étoiles dans l'ordre."]], ["puzzle", ["Reconstruis le puzzle ! Glisse chaque morceau à sa place."]], ["sort", ["Range chaque image dans la bonne boîte : les véhicules, les fruits ou les animaux !"]], ["basket", ["Mets deux ballons dans le panier !", "Mets huit fraises dans le panier !", "Mets quatre poissons dans le panier !", "Mets sept ballons dans le panier !", "Mets six pommes dans le panier !", "cinq", "deux", "huit", "quatre", "sept", "six", "trois", "un"]], ["piano", ["Joue de la musique ! Touche les touches de couleur."]], ["melody", ["À toi de jouer !", "Écoute bien la mélodie !"]], ["maze", ["Emmène la petite souris jusqu'au fromage ! Glisse ton doigt dans les couloirs, sans traverser les murs."]], ["word", ["a", "c", "e", "h", "i", "l", "n", "o", "r", "t", "Écris le mot chat ! Touche les lettres dans l'ordre.", "Écris le mot train ! Touche les lettres dans l'ordre.", "Écris ton prénom ! Touche les lettres dans l'ordre."]], ["shapes", ["Où est le triangle ? Touche dessus !", "Où est le carré ? Touche dessus !", "Où est le cœur ? Touche dessus !", "Où est le rectangle ? Touche dessus !", "Où est l'étoile ? Touche dessus !", "Où est le cercle ? Touche dessus !"]], ["numbers", ["Combien y a-t-il de poissons ? Touche le bon chiffre !", "Où est le chiffre 6 ? Touche dessus !", "Combien y a-t-il de ballons ? Touche le bon chiffre !", "Où est le chiffre 8 ? Touche dessus !", "Combien y a-t-il de étoiles ? Touche le bon chiffre !", "Combien y a-t-il de fraises ? Touche le bon chiffre !", "Où est le chiffre 2 ? Touche dessus !", "Où est le chiffre 4 ? Touche dessus !", "Où est le chiffre 1 ? Touche dessus !", "Où est le chiffre 7 ? Touche dessus !", "Combien y a-t-il de pommes ? Touche le bon chiffre !", "Où est le chiffre 5 ? Touche dessus !", "Où est le chiffre 3 ? Touche dessus !", "Où est le chiffre 9 ? Touche dessus !"]], ["letters", ["Où est la lettre B ? Touche dessus !", "Où est la lettre T ? Touche dessus !", "Où est la lettre D ? Touche dessus !", "Où est la lettre F ? Touche dessus !", "Où est la lettre P ? Touche dessus !", "Où est la lettre A ? Touche dessus !", "Où est la lettre Q ? Touche dessus !", "Où est la lettre L ? Touche dessus !", "Où est la lettre U ? Touche dessus !", "Où est la lettre I ? Touche dessus !", "Où est la lettre E ? Touche dessus !", "Où est la lettre M ? Touche dessus !", "Où est la lettre G ? Touche dessus !", "Où est la lettre S ? Touche dessus !", "Où est la lettre C ? Touche dessus !", "Où est la lettre J ? Touche dessus !", "Où est la lettre O ? Touche dessus !", "Où est la lettre R ? Touche dessus !", "Où est la lettre N ? Touche dessus !", "Où est la lettre V ? Touche dessus !", "Où est la lettre H ? Touche dessus !", "Bien joué !", "Génial !", "Super !"]], ["odd", ["Trouve celui qui n'est pas pareil ! Touche dessus !"]], ["pattern", ["Que vient ensuite ? Touche dessus !"]], ["compare", ["Où y en a-t-il le moins ? Touche dessus !", "Où y en a-t-il le plus ? Touche dessus !"]], ["shadow", ["Où est l'ombre de cette image ? Touche dessus !"]], ["mix", ["Si on mélange le bleu et le jaune, quelle couleur obtient-on ? Touche dessus !", "Si on mélange le rouge et le bleu, quelle couleur obtient-on ? Touche dessus !", "Si on mélange le rouge et le jaune, quelle couleur obtient-on ? Touche dessus !", "Si on mélange le blanc et le rouge, quelle couleur obtient-on ? Touche dessus !"]], ["initial", ["Par quelle lettre commence le mot éléphant ? Touche dessus !", "Par quelle lettre commence le mot banane ? Touche dessus !", "Par quelle lettre commence le mot hélicoptère ? Touche dessus !", "Par quelle lettre commence le mot vache ? Touche dessus !", "Par quelle lettre commence le mot pomme ? Touche dessus !", "Par quelle lettre commence le mot vélo ? Touche dessus !", "Par quelle lettre commence le mot lapin ? Touche dessus !", "Par quelle lettre commence le mot bus ? Touche dessus !", "Par quelle lettre commence le mot avion ? Touche dessus !", "Par quelle lettre commence le mot orange ? Touche dessus !", "Par quelle lettre commence le mot poule ? Touche dessus !", "Par quelle lettre commence le mot bateau ? Touche dessus !", "Par quelle lettre commence le mot chat ? Touche dessus !", "Par quelle lettre commence le mot raisin ? Touche dessus !", "Par quelle lettre commence le mot cochon ? Touche dessus !", "Par quelle lettre commence le mot pastèque ? Touche dessus !", "Par quelle lettre commence le mot lion ? Touche dessus !", "Par quelle lettre commence le mot train ? Touche dessus !", "Par quelle lettre commence le mot grenouille ? Touche dessus !", "Par quelle lettre commence le mot chien ? Touche dessus !", "Par quelle lettre commence le mot citron ? Touche dessus !", "Par quelle lettre commence le mot poire ? Touche dessus !", "Par quelle lettre commence le mot moto ? Touche dessus !", "Par quelle lettre commence le mot voiture ? Touche dessus !", "Par quelle lettre commence le mot tracteur ? Touche dessus !", "Par quelle lettre commence le mot fraise ? Touche dessus !", "Par quelle lettre commence le mot poisson ? Touche dessus !", "Par quelle lettre commence le mot canard ? Touche dessus !", "Par quelle lettre commence le mot singe ? Touche dessus !", "Par quelle lettre commence le mot pêche ? Touche dessus !"]], ["trace", ["Essaie de rester sur la forme !", "Trace la lettre A ! Pose ton doigt et suis la forme !", "Trace le chiffre 2 ! Pose ton doigt et suis la forme !", "Trace le chiffre 4 ! Pose ton doigt et suis la forme !"]], ["sound", ["Trouve quelque chose qui commence par la lettre H. Touche dessus !", "Trouve quelque chose qui commence par la lettre B. Touche dessus !", "Trouve quelque chose qui commence par la lettre P. Touche dessus !", "Trouve quelque chose qui commence par la lettre T. Touche dessus !", "Trouve quelque chose qui commence par la lettre G. Touche dessus !", "Trouve quelque chose qui commence par la lettre M. Touche dessus !", "Trouve quelque chose qui commence par la lettre C. Touche dessus !", "Trouve quelque chose qui commence par la lettre R. Touche dessus !", "Trouve quelque chose qui commence par la lettre L. Touche dessus !", "Trouve quelque chose qui commence par la lettre F. Touche dessus !", "Trouve quelque chose qui commence par la lettre V. Touche dessus !", "Trouve quelque chose qui commence par la lettre O. Touche dessus !", "Trouve quelque chose qui commence par la lettre S. Touche dessus !", "Trouve quelque chose qui commence par la lettre E. Touche dessus !", "Trouve quelque chose qui commence par la lettre A. Touche dessus !"]], ["syll", ["Combien de syllabes dans le mot papa ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot pain ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot lapin ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot sac ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot bateau ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot éléphant ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot ballon ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot papillon ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot chat ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot chapeau ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot loup ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot canard ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot gâteau ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot kangourou ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot main ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot ours ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot poisson ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot soleil ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot chocolat ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot lit ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot mer ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot fleur ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot parapluie ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot maison ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot nez ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot cheval ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot ananas ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot dinosaure ? Tape-les dans tes mains. Touche le bon chiffre !", "Combien de syllabes dans le mot hérisson ? Tape-les dans tes mains. Touche le bon chiffre !"]], ["rhyme", ["Quel mot rime avec boule ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec fleur ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec pain ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec raisin ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec hibou ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec nid ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec poule ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec tracteur ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec cadeau ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec dauphin ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec cœur ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec gâteau ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec bijou ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec fourmi ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec citron ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec lit ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec chou ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec train ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec ballon ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec mouton ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec camion ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec château ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec maison ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec avion ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec poisson ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec main ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec bouton ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec caillou ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec riz ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec lapin ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec bateau ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec drapeau ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec souris ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec oiseau ? Écoute bien la fin du mot. Touche dessus !", "Quel mot rime avec chapeau ? Écoute bien la fin du mot. Touche dessus !"]], ["dots", ["Relie les points dans l'ordre, en commençant par 1 ! Glisse ton doigt dessus."]], ["mirror", ["Fais pareil de l'autre côté du miroir ! Colorie les cases de droite, comme celles de gauche. Touche dessus !"]], ["shapes3d", ["Lequel a la forme d'un cône ? Touche dessus !", "Lequel a la forme d'un cylindre ? Touche dessus !", "Lequel a la forme d'une sphère ? Touche dessus !", "Lequel a la forme d'un cube ? Touche dessus !"]], ["habitat", ["Où vit le perroquet ? Touche dessus !", "Où vit le zèbre ? Touche dessus !", "Où vit la pieuvre ? Touche dessus !", "Où vit la girafe ? Touche dessus !", "Où vit le cerf ? Touche dessus !", "Où vit le scorpion ? Touche dessus !", "Où vit le tigre ? Touche dessus !", "Où vit le renard ? Touche dessus !", "Où vit le lion ? Touche dessus !", "Où vit le singe ? Touche dessus !", "Où vit l'éléphant ? Touche dessus !", "Où vit le manchot ? Touche dessus !", "Où vit le chameau ? Touche dessus !", "Où vit le dauphin ? Touche dessus !", "Où vit le requin ? Touche dessus !", "Où vit le gorille ? Touche dessus !", "Où vit le hérisson ? Touche dessus !", "Où vit la baleine ? Touche dessus !", "Où vit le phoque ? Touche dessus !", "Où vit la chouette ? Touche dessus !"]], ["emotion", ["Son doudou est perdu. Comment se sent-il ? Touche dessus !", "Un gros chien aboie très fort. Comment se sent-il ? Touche dessus !", "Il est très tard et il bâille. Comment se sent-il ? Touche dessus !", "Une boîte surprise s'ouvre d'un coup. Comment se sent-il ? Touche dessus !", "Il y a un gros orage la nuit. Comment se sent-il ? Touche dessus !", "Son frère a cassé sa tour. Comment se sent-il ? Touche dessus !", "C'est son anniversaire. Comment se sent-il ? Touche dessus !", "Son ballon s'est envolé. Comment se sent-il ? Touche dessus !", "Il reçoit un beau cadeau. Comment se sent-il ? Touche dessus !", "Un copain lui a pris sa place. Comment se sent-il ? Touche dessus !", "Il a couru toute la journée. Comment se sent-il ? Touche dessus !", "Un feu d'artifice éclate. Comment se sent-il ? Touche dessus !"]], ["season", ["Regarde bien ces images. Quelle saison est-ce ? Touche dessus !"]], ["story", ["Écoute l'histoire. D'abord l'œuf, puis le poussin, et enfin la poule. Remets les images dans l'ordre, du début à la fin. Touche dessus !", "Écoute l'histoire. D'abord la graine, puis la pousse, et enfin la belle fleur. Remets les images dans l'ordre, du début à la fin. Touche dessus !", "Écoute l'histoire. Le nuage arrive, la pluie tombe, et l'arc-en-ciel apparaît. Remets les images dans l'ordre, du début à la fin. Touche dessus !"]], ["robot", ["Aïe, un mur ! Essaie encore !", "Choisis d'abord des flèches !", "Pas encore. Essaie encore !", "Programme le robot pour qu'il aille jusqu'à la pile ! Choisis des flèches dans l'ordre, puis lance le programme. Touche dessus !"]]];
+/* ================== Studio « Ma voix » : phrases enregistrées par le parent ================== */
+let MYCLIPS = new Map(), CLIPBUF = new Map(), clipSrc = null, latestClip = "";
+function clipKey(text) {
+  let t = String(text || "");
+  const n = (PROFILE && PROFILE.name) || "";
+  if (n) t = t.replace(new RegExp("\\s+" + n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(?=\\s*[!?.,]|$)", "gi"), "");
+  return t.replace(/\bClique(z)?\b/g, "Touche").replace(/\s+/g, " ").trim();
+}
+function idbOpen() {
+  return new Promise((res, rej) => {
+    try { const r = indexedDB.open("tomidou_voix", 1); r.onupgradeneeded = () => r.result.createObjectStore("clips"); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); } catch (e) { rej(e); }
+  });
+}
+const idbReq = r => new Promise((res, rej) => { r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
+async function loadClips() {
+  try {
+    const db = await idbOpen(), st = db.transaction("clips").objectStore("clips");
+    const keys = await idbReq(st.getAllKeys()), vals = await idbReq(st.getAll());
+    keys.forEach((k, i) => MYCLIPS.set(k, vals[i]));
+    db.close();
+  } catch (e) {}
+  if (!$("studioModal").hidden) renderStudio();
+}
+async function saveClips(entries) {
+  entries.forEach(([k, v]) => { MYCLIPS.set(k, v); CLIPBUF.delete(k); });
+  try {
+    const db = await idbOpen(), tx = db.transaction("clips", "readwrite"), st = tx.objectStore("clips");
+    entries.forEach(([k, v]) => st.put(v, k));
+    await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = () => rej(tx.error); });
+    db.close();
+    return true;
+  } catch (e) { return false; }
+}
+async function clearClips() {
+  MYCLIPS.clear(); CLIPBUF.clear();
+  try { const db = await idbOpen(), tx = db.transaction("clips", "readwrite"); tx.objectStore("clips").clear(); await new Promise(r => { tx.oncomplete = r; tx.onerror = r; }); db.close(); } catch (e) {}
+}
+function stopClip() { try { if (clipSrc) { clipSrc.onended = null; clipSrc.stop(); } } catch (e) {} clipSrc = null; latestClip = ""; }
+function playClip(k) {
+  const c = ctx(); if (!c || !MYCLIPS.has(k)) return false;
+  stopClip(); latestClip = k;
+  const go = buf => {
+    if (latestClip !== k) return;
+    const s = c.createBufferSource(); s.buffer = buf; s.connect(c.destination); clipSrc = s; s.start();
+    window.__clipPlayed = (window.__clipPlayed || 0) + 1;
+  };
+  if (CLIPBUF.has(k)) go(CLIPBUF.get(k));
+  else c.decodeAudioData(MYCLIPS.get(k).slice(0)).then(b => { CLIPBUF.set(k, b); go(b); }).catch(() => {});
+  return true;
+}
+function myClipFor(text) { if (VOICE.mine === false || MYCLIPS.size === 0) return null; const k = clipKey(text); return MYCLIPS.has(k) ? k : null; }
+
+/* --- Découpage automatique d'un enregistrement en phrases --- */
+function monoOf(buf) {
+  const a = buf.getChannelData(0);
+  if (buf.numberOfChannels < 2) return a;
+  const b = buf.getChannelData(1), o = new Float32Array(a.length);
+  for (let i = 0; i < a.length; i++) o[i] = (a[i] + b[i]) / 2;
+  return o;
+}
+function frameRms(mono, sr) {
+  const hop = Math.round(sr * 0.01), win = Math.round(sr * 0.03), n = Math.max(0, Math.floor((mono.length - win) / hop));
+  const r = new Float32Array(n);
+  for (let f = 0; f < n; f++) { let s = 0; const o = f * hop; for (let i = 0; i < win; i += 2) s += mono[o + i] * mono[o + i]; r[f] = Math.sqrt(s / (win / 2)); }
+  return r;
+}
+function segmentsOf(rms, gapSec, mult) {
+  const n = rms.length; if (!n) return [];
+  const sorted = Float32Array.from(rms).sort();
+  const noise = sorted[Math.floor(n * 0.2)], p95 = sorted[Math.floor(n * 0.95)];
+  const thr = Math.min(Math.max(0.006, noise * mult), p95 * 0.3);
+  const gap = Math.round(gapSec / 0.01), runs = [];
+  let start = -1, last = -1;
+  for (let f = 0; f < n; f++) {
+    if (rms[f] > thr) { if (start < 0) start = f; else if (f - last > gap) { runs.push([start, last]); start = f; } last = f; }
+  }
+  if (start >= 0) runs.push([start, last]);
+  const keep = runs.filter(r => r[1] - r[0] >= 25);
+  return keep.map((r, i) => {
+    const prevEnd = i ? keep[i - 1][1] : -1e9, nextStart = i < keep.length - 1 ? keep[i + 1][0] : 1e9;
+    const s = Math.max(r[0] - 15, (prevEnd + r[0]) / 2), e = Math.min(r[1] + 25, (r[1] + nextStart) / 2, n + 20);
+    return [Math.max(0, s) * 0.01, e * 0.01];
+  });
+}
+function autoSplit(rms, expected) {
+  for (const mult of [4, 3, 6, 2, 8]) for (const gap of [0.8, 1.0, 0.6, 0.5, 1.3, 0.4, 0.3, 1.8]) {
+    const sg = segmentsOf(rms, gap, mult);
+    if (sg.length === expected) return { segs: sg, gap, mult };
+  }
+  return { segs: segmentsOf(rms, 0.8, 4), gap: 0.8, mult: 4 };
+}
+function toWav(mono, sr, s, e) {
+  const part = mono.subarray(Math.floor(s * sr), Math.min(mono.length, Math.floor(e * sr)));
+  const outSr = 22050, n = Math.max(1, Math.floor(part.length * outSr / sr)), out = new Float32Array(n);
+  for (let i = 0; i < n; i++) { const p = i * sr / outSr, j = Math.floor(p), f = p - j; out[i] = part[j] * (1 - f) + (part[j + 1] !== undefined ? part[j + 1] : part[j]) * f; }
+  let peak = 0.001; for (let i = 0; i < n; i++) peak = Math.max(peak, Math.abs(out[i]));
+  const g = 0.9 / peak, fade = Math.floor(outSr * 0.01);
+  const ab = new ArrayBuffer(44 + n * 2), v = new DataView(ab);
+  const w = (o, t) => { for (let i = 0; i < t.length; i++) v.setUint8(o + i, t.charCodeAt(i)); };
+  w(0, "RIFF"); v.setUint32(4, 36 + n * 2, true); w(8, "WAVEfmt "); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, outSr, true); v.setUint32(28, outSr * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); w(36, "data"); v.setUint32(40, n * 2, true);
+  for (let i = 0; i < n; i++) {
+    let x = out[i] * g; if (i < fade) x *= i / fade; if (n - i < fade) x *= (n - i) / fade;
+    v.setInt16(44 + i * 2, Math.max(-1, Math.min(1, x)) * 32767, true);
+  }
+  return ab;
+}
+
+/* --- Interface du studio --- */
+const CLIP_PER_SERIES = 12;
+let STUDIO = { series: [], view: "list", idx: -1, rec: null, gap: 0.8, mult: 4, busy: "", msg: "" };
+function buildSeries() {
+  const out = [];
+  CATALOG.forEach(([gid, phrases]) => {
+    const btn = document.querySelector('.menu-btn[data-mode="' + gid + '"]');
+    const title = gid === "_commun" ? "⭐ Les phrases de base" : btn ? btn.textContent.trim() : gid;
+    const nS = Math.ceil(phrases.length / CLIP_PER_SERIES);
+    for (let i = 0; i < nS; i++) out.push({ title, num: i + 1, of: nS, phrases: phrases.slice(i * CLIP_PER_SERIES, (i + 1) * CLIP_PER_SERIES) });
+  });
+  return out;
+}
+const esc = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+function seriesDone(se) { return se.phrases.filter(p => MYCLIPS.has(clipKey(p))).length; }
+function renderStudio() {
+  const body = $("studioBody"), S = STUDIO;
+  if (!S.series.length) S.series = buildSeries();
+  let h = "";
+  if (S.view === "list") {
+    const total = S.series.reduce((a, s) => a + s.phrases.length, 0), done = S.series.reduce((a, s) => a + seriesDone(s), 0);
+    h += `<div class="stu-intro"><b>Comment faire ?</b><ol>
+      <li>Touche <b>📄 Script</b> d'une série : tu vois les phrases à dire.</li>
+      <li>Sur ton téléphone, ouvre <b>Dictaphone</b> (ou Notes vocales) et lis les phrases d'une voix douce, avec <b>2 secondes de silence</b> entre chacune.</li>
+      <li>Envoie le fichier audio sur cet appareil (AirDrop, WhatsApp, mail, iCloud…).</li>
+      <li>Touche <b>📥 Importer</b> : le jeu découpe tout seul les phrases.</li></ol>
+      <div>${done} phrases enregistrées sur ${total}. Les autres gardent la voix de l'appareil.</div></div>`;
+    h += `<div class="vrow"><button class="vopt${VOICE.mine === false ? "" : " on"}" data-act="mine">${VOICE.mine === false ? "🔇 Ma voix : coupée" : "🎙️ Ma voix : activée"}</button></div>`;
+    let lastT = "";
+    S.series.forEach((se, i) => {
+      if (se.title !== lastT) { h += `<div class="stu-h">${esc(se.title)}</div>`; lastT = se.title; }
+      const d = seriesDone(se), ok = d === se.phrases.length;
+      h += `<div class="stu-row${ok ? " ok" : ""}"><span class="stu-n">${se.of > 1 ? "Série " + se.num + "/" + se.of : "Série"} · ${d}/${se.phrases.length} ${ok ? "✅" : ""}</span>
+        <button class="vopt" data-act="script" data-i="${i}">📄 Script</button><button class="vopt" data-act="import" data-i="${i}">📥 Importer</button></div>`;
+    });
+    h += `<div class="vrow" style="margin-top:8px"><button class="vopt" data-act="clear">🗑️ ${S.confirmClear ? "Touche encore pour tout effacer" : "Effacer mes enregistrements"}</button></div>`;
+  } else if (S.view === "script") {
+    const se = S.series[S.idx];
+    h += `<div class="stu-h">${esc(se.title)} ${se.of > 1 ? "· série " + se.num + "/" + se.of : ""}</div>
+      <div class="stu-intro">Dis chaque phrase <b>d'une voix douce et souriante</b>, puis fais <b>2 secondes de silence</b> avant la suivante. Si tu te trompes, recommence cette série.</div><ol class="stu-script">`;
+    se.phrases.forEach(p => { h += `<li>${esc(p)}</li>`; });
+    h += `</ol><div class="vrow"><button class="vopt" data-act="import" data-i="${S.idx}">📥 Importer mon audio</button><button class="vopt" data-act="back">⬅️ Retour</button></div>`;
+  } else if (S.view === "import") {
+    const se = S.series[S.idx], R = S.rec;
+    h += `<div class="stu-h">${esc(se.title)} ${se.of > 1 ? "· série " + se.num + "/" + se.of : ""}</div>`;
+    if (S.busy) h += `<div class="stu-intro">${esc(S.busy)}</div>`;
+    else if (!R) h += `<div class="stu-intro">${esc(S.msg || "Choisis le fichier audio enregistré.")}</div><div class="vrow"><button class="vopt" data-act="pick">📥 Choisir le fichier</button><button class="vopt" data-act="back">⬅️ Retour</button></div>`;
+    else {
+      const eq = R.segs.length === se.phrases.length;
+      h += `<div class="stu-intro ${eq ? "good" : "bad"}">${eq ? "✅ " + R.segs.length + " phrases trouvées : c'est bon !" : "⚠️ " + R.segs.length + " phrases trouvées, il en faut " + se.phrases.length + ". Règle les curseurs ou refais la série."}</div>
+        <div class="stu-sl"><label>Pause entre phrases <input type="range" id="stuGap" min="0.2" max="2" step="0.1" value="${S.gap}"></label>
+        <label>Sensibilité <input type="range" id="stuMult" min="2" max="10" step="1" value="${S.mult}"></label></div><ol class="stu-script">`;
+      R.segs.forEach((sg, i) => { h += `<li><button class="stu-play" data-act="play" data-i="${i}">▶️</button> ${esc(se.phrases[i] || "(en trop)")}</li>`; });
+      h += `</ol><div class="vrow"><button class="vopt" id="stuSave" data-act="save" ${eq ? "" : "disabled"}>💾 Enregistrer</button><button class="vopt" data-act="pick">🔄 Autre fichier</button><button class="vopt" data-act="back">⬅️ Retour</button></div>`;
+    }
+  }
+  body.innerHTML = h;
+}
+function studioResplit() {
+  const S = STUDIO; if (!S.rec) return;
+  S.rec.segs = segmentsOf(S.rec.rms, S.gap, S.mult);
+  renderStudio();
+}
+async function studioLoadFile(file) {
+  const S = STUDIO, se = S.series[S.idx];
+  S.busy = "Je découpe l'enregistrement…"; S.rec = null; S.view = "import"; renderStudio();
+  try {
+    const c = ctx() || new (window.AudioContext || window.webkitAudioContext)();
+    const buf = await c.decodeAudioData(await file.arrayBuffer());
+    const mono = monoOf(buf), rms = frameRms(mono, buf.sampleRate);
+    const a = autoSplit(rms, se.phrases.length);
+    S.gap = a.gap; S.mult = a.mult; S.rec = { buf, mono, rms, segs: a.segs }; S.busy = "";
+  } catch (e) { S.busy = ""; S.rec = null; S.msg = "Je n'arrive pas à lire ce fichier audio. Essaie un autre format (m4a, mp3, wav)."; }
+  renderStudio();
+}
+function studioPlaySeg(i) {
+  const R = STUDIO.rec; if (!R) return; const c = ctx(); if (!c) return;
+  stopClip();
+  const [s, e] = R.segs[i];
+  const src = c.createBufferSource(); src.buffer = R.buf; src.connect(c.destination); clipSrc = src; src.start(0, s, e - s);
+}
+async function studioSave() {
+  const S = STUDIO, se = S.series[S.idx], R = S.rec;
+  if (!R || R.segs.length !== se.phrases.length) return;
+  S.busy = "J'enregistre…"; renderStudio();
+  const entries = se.phrases.map((p, i) => [clipKey(p), toWav(R.mono, R.buf.sampleRate, R.segs[i][0], R.segs[i][1])]);
+  const ok = await saveClips(entries);
+  S.busy = ""; S.rec = null; S.view = "list"; S.msg = ok ? "" : "Impossible de garder les enregistrements sur cet appareil.";
+  renderStudio();
+  say(ok ? "Super ! C'est enregistré." : "Oups.");
+}
+function openStudio() { STUDIO.view = "list"; STUDIO.rec = null; STUDIO.busy = ""; STUDIO.msg = ""; STUDIO.confirmClear = false; renderStudio(); $("studioModal").hidden = false; }
+$("studioBtn").addEventListener("click", openStudio);
+$("studioClose").addEventListener("click", () => { stopClip(); $("studioModal").hidden = true; });
+$("studioFile").addEventListener("change", e => { const f = e.target.files && e.target.files[0]; e.target.value = ""; if (f) studioLoadFile(f); });
+$("studioBody").addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if (!b || b.disabled) return;
+  const S = STUDIO, a = b.dataset.act, i = +b.dataset.i;
+  if (a === "mine") { VOICE.mine = VOICE.mine === false; saveVoice(); renderStudio(); }
+  else if (a === "script") { S.idx = i; S.view = "script"; renderStudio(); }
+  else if (a === "import") { S.idx = i; S.view = "import"; S.rec = null; S.msg = ""; renderStudio(); $("studioFile").click(); }
+  else if (a === "pick") { $("studioFile").click(); }
+  else if (a === "back") { stopClip(); S.view = "list"; S.rec = null; renderStudio(); }
+  else if (a === "play") studioPlaySeg(i);
+  else if (a === "save") studioSave();
+  else if (a === "clear") {
+    if (!S.confirmClear) { S.confirmClear = true; renderStudio(); setTimeout(() => { S.confirmClear = false; if (!$("studioModal").hidden && S.view === "list") renderStudio(); }, 4000); }
+    else { S.confirmClear = false; clearClips().then(renderStudio); }
+  }
+});
+$("studioBody").addEventListener("change", e => {
+  if (e.target.id === "stuGap") { STUDIO.gap = +e.target.value; studioResplit(); }
+  if (e.target.id === "stuMult") { STUDIO.mult = +e.target.value; studioResplit(); }
+});
+loadClips();
 
 /* ================== Navigation ================== */
 document.querySelectorAll(".menu-btn").forEach(b => b.addEventListener("click", () => start(b.dataset.mode)));
@@ -2723,6 +3026,367 @@ ARENA.bonhomme = function () {
   play();
 };
 
+/* ================== Nombres, classements et lettres : jeux originaux ================== */
+
+/* --- Barres et cubes : dizaines et unités --- */
+function buildDizaines() {
+  const maxT = lv() >= 2 ? 5 : 3, hi = maxT * 10 + 9;
+  const q = fresh("dizaines", () => ({ t: 1 + Math.floor(Math.random() * maxT), u: Math.floor(Math.random() * 10) }));
+  const n = q.t * 10 + q.u;
+  const opts = numOpts(n, 1, hi);
+  const sw = q.u * 10 + q.t;
+  if (q.u > 0 && sw !== n && sw <= hi && !opts.includes(sw)) { const k = opts.findIndex(x => x !== n); if (k >= 0) opts[k] = sw; }
+  const vis = `<span class="dz">${Array(q.t).fill('<span class="tenbar">' + "<i></i>".repeat(10) + "</span>").join("")}${q.u ? '<span class="units">' + "<i></i>".repeat(q.u) + "</span>" : ""}</span>`;
+  return {
+    text: "Combien y a-t-il de carrés ?", visualHTML: vis, sum: n,
+    speech: "Une grande barre, ce sont dix carrés. Combien y a-t-il de carrés en tout ? Touche le bon chiffre !",
+    options: numCards(opts, n)
+  };
+}
+
+/* --- Tableau à double entrée : quelle pièce manque ? --- */
+function buildDouble() {
+  const shapes = shuffle(SHAPES.filter(s => ["cercle", "carré", "triangle", "étoile", "cœur"].includes(s.name))).slice(0, 3);
+  const cols = shuffle(COLORS).slice(0, 3);
+  const r = Math.floor(Math.random() * 3), c = Math.floor(Math.random() * 3);
+  const sv = (s, hex) => `<svg viewBox="0 0 100 100">${s.svg(hex)}</svg>`;
+  let html = '<table class="dbl"><tr><th></th>' + cols.map(cc => `<th><span class="dot" style="background:${cc.hex}"></span></th>`).join("") + "</tr>";
+  for (let i = 0; i < 3; i++) {
+    html += `<tr><th>${sv(shapes[i], "#b0bec5")}</th>` + cols.map((cc, j) => (i === r && j === c) ? '<td class="miss">❓</td>' : `<td>${sv(shapes[i], cc.hex)}</td>`).join("") + "</tr>";
+  }
+  html += "</table>";
+  const good = [shapes[r], cols[c]];
+  const wrong = [[shapes[r], cols[(c + 1) % 3]], [shapes[(r + 1) % 3], cols[c]], [shapes[(r + 2) % 3], cols[(c + 2) % 3]]].slice(0, nOthers());
+  return {
+    text: "Quelle pièce manque ?", visualHTML: html,
+    speech: "Regarde bien le tableau. Sur chaque ligne, c'est la même forme. Dans chaque colonne, c'est la même couleur. Quelle pièce manque ? Touche dessus !",
+    options: shuffle([good, ...wrong]).map(([s, cc]) => ({ html: sv(s, cc.hex), correct: s === good[0] && cc === good[1], key: s.name + "|" + cc.hex }))
+  };
+}
+
+/* --- Alphabet : la lettre d'avant, d'après --- */
+const ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+function buildAlphabet() {
+  const r = Math.random();
+  const kind = lv() >= 3 && r < 0.35 ? "entre" : lv() >= 2 && r < 0.65 ? "avant" : "apres";
+  const q = fresh("alphabet", () => {
+    if (kind === "avant") return { i: 1 + Math.floor(Math.random() * 25) };
+    if (kind === "entre") return { i: Math.floor(Math.random() * 24) };
+    return { i: Math.floor(Math.random() * 25) };
+  });
+  const ai = kind === "avant" ? q.i - 1 : q.i + 1, ans = ABC[ai];
+  let text, vis;
+  if (kind === "avant") { text = `Quelle lettre vient avant ${ABC[q.i]} ?`; vis = `❓ ➜ ${ABC[q.i]}`; }
+  else if (kind === "entre") { text = `Quelle lettre se cache entre ${ABC[q.i]} et ${ABC[q.i + 2]} ?`; vis = `${ABC[q.i]} ❓ ${ABC[q.i + 2]}`; }
+  else { text = `Quelle lettre vient après ${ABC[q.i]} ?`; vis = `${ABC[q.i]} ➜ ❓`; }
+  const others = shuffle(ABC.filter((x, i) => x !== ans && Math.abs(i - ai) <= 4 && (kind === "avant" ? i !== q.i : kind === "entre" ? i !== q.i && i !== q.i + 2 : i !== q.i))).slice(0, nOthers());
+  const pal = shuffle(LETTER_COLORS);
+  return {
+    text, visual: vis, kind, target: ans,
+    speech: `${text} Touche dessus !`,
+    options: shuffle([ans, ...others]).map((x, i) => ({ html: `<span style="color:${pal[i % pal.length]}">${x}</span>`, correct: x === ans, key: x }))
+  };
+}
+
+/* --- Un, une ou des ? --- */
+const UNUNE = [
+  { w: "chat", p: "chats", g: "m", e: "🐱" }, { w: "chien", p: "chiens", g: "m", e: "🐶" }, { w: "ballon", p: "ballons", g: "m", e: "🎈" },
+  { w: "camion", p: "camions", g: "m", e: "🚚" }, { w: "lapin", p: "lapins", g: "m", e: "🐰" }, { w: "arbre", p: "arbres", g: "m", e: "🌳" },
+  { w: "bateau", p: "bateaux", g: "m", e: "⛵" }, { w: "gâteau", p: "gâteaux", g: "m", e: "🍰" }, { w: "avion", p: "avions", g: "m", e: "✈️" },
+  { w: "vélo", p: "vélos", g: "m", e: "🚲" }, { w: "livre", p: "livres", g: "m", e: "📖" }, { w: "cadeau", p: "cadeaux", g: "m", e: "🎁" },
+  { w: "éléphant", p: "éléphants", g: "m", e: "🐘" },
+  { w: "maison", p: "maisons", g: "f", e: "🏠" }, { w: "voiture", p: "voitures", g: "f", e: "🚗" }, { w: "fleur", p: "fleurs", g: "f", e: "🌸" },
+  { w: "pomme", p: "pommes", g: "f", e: "🍎" }, { w: "banane", p: "bananes", g: "f", e: "🍌" }, { w: "étoile", p: "étoiles", g: "f", e: "⭐" },
+  { w: "fraise", p: "fraises", g: "f", e: "🍓" }, { w: "tortue", p: "tortues", g: "f", e: "🐢" }, { w: "girafe", p: "girafes", g: "f", e: "🦒" },
+  { w: "clé", p: "clés", g: "f", e: "🔑" }, { w: "cloche", p: "cloches", g: "f", e: "🔔" }, { w: "glace", p: "glaces", g: "f", e: "🍦" }
+];
+function buildUnUne() {
+  const w = fresh("unune", () => ({ i: Math.floor(Math.random() * UNUNE.length), pl: Math.random() < 0.34 }));
+  const it = UNUNE[w.i], art = w.pl ? "des" : it.g === "m" ? "un" : "une";
+  const nb = w.pl ? 2 + Math.floor(Math.random() * 2) : 1;
+  const name = w.pl ? it.p : it.w;
+  return {
+    text: "Un, une ou des ?", visualHTML: `<span>${Array(nb).fill(it.e).join("")}</span><div class="wordtxt">${name}</div>`, target: art, word: name,
+    speech: `Regarde l'image : ${name}. Est-ce un, une ou des ? Touche dessus !`,
+    options: ["un", "une", "des"].map(a => ({ html: txtc(a, 0.5, a === "un" ? "#1e88e5" : a === "une" ? "#e53935" : "#43a047"), correct: a === art, key: a }))
+  };
+}
+
+/* --- Voyelle ou consonne ? Majuscule ou minuscule ? --- */
+function buildVoyelle() {
+  const maj = lv() >= 2 && Math.random() < 0.5;
+  const pool = "ABCDEFGHIJLMNOPRSTUVZ".split("");
+  const L = fresh("voyelle", () => rand(pool));
+  if (maj) {
+    const up = Math.random() < 0.5;
+    return {
+      text: "Cette lettre est-elle majuscule ou minuscule ?", visualHTML: `<span style="font-weight:bold;color:#e65100">${up ? L : L.toLowerCase()}</span>`, kind: "casse", target: up ? "majuscule" : "minuscule", letter: up ? L : L.toLowerCase(),
+      speech: "Regarde bien la lettre. Est-elle majuscule, une grande lettre, ou minuscule, une petite lettre ? Touche dessus !",
+      options: [["majuscule", "#e53935"], ["minuscule", "#1e88e5"]].map(([k, col]) => ({ html: txtc(k, 0.24, col), correct: k === (up ? "majuscule" : "minuscule"), key: k }))
+    };
+  }
+  const vow = "AEIOU".includes(L), k0 = vow ? "voyelle" : "consonne";
+  return {
+    text: `${L} est-elle une voyelle ou une consonne ?`, visualHTML: `<span style="font-weight:bold;color:#e65100">${L}</span>`, kind: "type", target: k0, letter: L,
+    speech: `La lettre ${L} est-elle une voyelle ou une consonne ? Touche dessus !`,
+    options: [["voyelle", "#e53935"], ["consonne", "#1e88e5"]].map(([k, col]) => ({ html: txtc(k, 0.26, col), correct: k === k0, key: k }))
+  };
+}
+Object.assign(QB, { dizaines: buildDizaines, double: buildDouble, alphabet: buildAlphabet, unune: buildUnUne, voyelle: buildVoyelle });
+
+/* ---------- Dans l'ordre / du plus petit au plus grand ---------- */
+let ORDRE = null, TAILLE = null;
+function orderGame(kind) {
+  return function () {
+    const f = $("field");
+    let round = 0;
+    $("stars3").textContent = "☆☆☆";
+    const play = () => {
+      f.innerHTML = "";
+      const hard = lv() >= 2;
+      const n = kind === "ordre" ? (hard ? 7 : 5) : (hard ? 5 : 4);
+      let asc = true, text, speech, vals;
+      if (kind === "ordre") {
+        const start = hard ? 1 + Math.floor(Math.random() * 14) : 1 + round * 2;
+        vals = Array.from({ length: n }, (_, i) => start + i);
+        text = `Range les nombres, de ${start} à ${start + n - 1} !`;
+        speech = `Appuie sur les nombres dans l'ordre, du plus petit au plus grand, de ${start} à ${start + n - 1} !`;
+      } else {
+        asc = round !== 1;
+        vals = null;
+        text = asc ? "Range du plus petit au plus grand !" : "Range du plus grand au plus petit !";
+        speech = asc ? "Appuie sur les jouets, du plus petit au plus grand !" : "Appuie sur les jouets, du plus grand au plus petit !";
+      }
+      setArena(text, speech);
+      const W = f.clientWidth, H = f.clientHeight;
+      const wrap = document.createElement("div");
+      wrap.style.cssText = "position:absolute;inset:0;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;align-content:center;gap:12px;padding:8px";
+      let order;
+      if (kind === "ordre") {
+        const s = Math.max(56, Math.floor(Math.min(H * 0.42, (W - 16) / Math.ceil(n / 2) - 14, 150)));
+        do { order = shuffle(vals); } while (order.every((v, i) => v === vals[i]));
+        order.forEach(v => {
+          const b = document.createElement("button"); b.className = "ordtile"; b.dataset.v = v; b.textContent = v;
+          b.style.cssText = `width:${s}px;height:${s}px;font-size:${Math.round(s * 0.52)}px;background:${rand(["#ffcc80", "#90caf9", "#a5d6a7", "#ce93d8", "#fff59d"])}`;
+          wrap.appendChild(b);
+        });
+        ORDRE = { vals: vals.slice(), idx: 0, round, asc: true, n };
+      } else {
+        const toy = rand(["🧸", "🐘", "🦆", "🚗", "🍎", "🎈", "🐶"]);
+        const M = Math.max(100, Math.floor(Math.min(H * 0.4, 170, (W - 24) / (n * 0.62))));
+        const sizes = Array.from({ length: n }, (_, i) => Math.round(44 + (M - 44) * i / (n - 1)));
+        do { order = shuffle(sizes); } while (order.every((v, i) => v === sizes[i]));
+        wrap.style.alignItems = "flex-end";
+        order.forEach(sz => {
+          const b = document.createElement("button"); b.className = "sizeitem"; b.dataset.s = sz; b.textContent = toy;
+          b.style.cssText = `font-size:${sz}px;width:${Math.round(sz * 1.15)}px;height:${Math.round(sz * 1.25)}px`;
+          wrap.appendChild(b);
+        });
+        vals = sizes;
+        TAILLE = { sizes: sizes.slice(), idx: 0, round, asc, n };
+      }
+      f.appendChild(wrap);
+      const seq = kind === "ordre" ? vals.slice() : (asc ? vals.slice() : vals.slice().reverse());
+      const S = kind === "ordre" ? ORDRE : TAILLE;
+      wrap.addEventListener("click", e => {
+        const b = e.target.closest("button"); if (!b || b.classList.contains("used") || S.idx >= n) return;
+        const v = +(kind === "ordre" ? b.dataset.v : b.dataset.s);
+        if (v === seq[S.idx]) {
+          b.classList.add("used"); S.idx++; tone(440 + S.idx * 70, 0.12, "triangle");
+          if (S.idx >= n) {
+            round++;
+            $("stars3").textContent = "⭐".repeat(round) + "☆".repeat(3 - round);
+            sound.win(); confetti(40);
+            later(() => say(`Bravo${nm()} ! Tout est bien rangé !`), 400);
+            later(() => round >= 3 ? finish() : play(), 2400);
+          }
+        } else { b.classList.remove("bad"); void b.offsetWidth; b.classList.add("bad"); sound.oops(); say(kind === "ordre" ? "Cherche le bon nombre !" : "Cherche le bon jouet !"); }
+      });
+    };
+    play();
+  };
+}
+ARENA.ordre = orderGame("ordre");
+ARENA.taille = orderGame("taille");
+
+/* ---------- Mémoire des nombres : chiffre et quantité ---------- */
+let MEMNB = null;
+ARENA.memonb = function () {
+  const f = $("field");
+  let round = 0;
+  $("stars3").textContent = "☆☆";
+  const play = () => {
+    f.innerHTML = "";
+    setArena("Retrouve le chiffre et la bonne quantité !", "Retrouve chaque chiffre avec la bonne quantité d'images ! Appuie sur les cartes.");
+    const hard = lv() >= 2;
+    const np = round === 0 ? 3 : (hard ? 5 : 4);
+    const pool = hard ? [2, 3, 4, 5, 6, 7, 8, 9] : [1, 2, 3, 4, 5, 6];
+    const nums = shuffle(pool).slice(0, np), e = rand(["🍎", "⭐", "🐟", "🎈", "🍓", "🐞"]);
+    const deck = shuffle([...nums.map(n => ({ n, t: "num" })), ...nums.map(n => ({ n, t: "qty" }))]);
+    const W = f.clientWidth, H = f.clientHeight, gap = 12, cnt = deck.length;
+    let best = 0, bc = 2;
+    for (let c = 2; c <= 5; c++) {
+      const r = Math.ceil(cnt / c);
+      const s = Math.min((W - gap * (c + 1)) / c, (H - gap * (r + 1)) / r, 190);
+      if (s > best) { best = s; bc = c; }
+    }
+    const s = Math.floor(best);
+    const grid = document.createElement("div");
+    grid.style.cssText = `display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:${gap}px;width:${bc * s + (bc - 1) * gap + 2}px;max-width:100%;height:100%;margin:0 auto;`;
+    f.appendChild(grid);
+    let first = null, busy = false, matched = 0;
+    MEMNB = { round, np, matched: 0 };
+    const face = c => c.dataset.t === "num" ? `<span style="font-size:${Math.round(s * 0.6)}px;color:#1e88e5">${c.dataset.n}</span>`
+      : `<span style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;width:92%;font-size:${Math.round(s * (+c.dataset.n > 6 ? 0.2 : 0.26))}px;line-height:1.05">${e.repeat(+c.dataset.n)}</span>`;
+    const hide = c => { c.textContent = "❓"; c.style.background = "#fff59d"; c.style.fontSize = Math.round(s * 0.55) + "px"; };
+    deck.forEach(d => {
+      const c = document.createElement("button");
+      c.className = "card"; c.dataset.n = d.n; c.dataset.t = d.t;
+      c.style.cssText += `width:${s}px;height:${s}px;border-width:5px;border-radius:20px;`;
+      hide(c);
+      c.addEventListener("click", () => {
+        if (busy || c === first || c.classList.contains("good")) return;
+        c.innerHTML = face(c); c.style.background = "#fff"; tone(880, 0.1);
+        if (!first) { first = c; return; }
+        if (first.dataset.n === c.dataset.n && first.dataset.t !== c.dataset.t) {
+          first.classList.add("good"); c.classList.add("good"); first = null; matched++; MEMNB.matched = matched;
+          sound.win(); confetti(20);
+          if (matched === np) {
+            round++;
+            $("stars3").textContent = "⭐".repeat(round) + "☆".repeat(2 - round);
+            later(() => round >= 2 ? finish() : play(), 1300);
+          }
+        } else {
+          busy = true; sound.oops();
+          const f1 = first; first = null;
+          later(() => { hide(f1); hide(c); busy = false; }, 1100);
+        }
+      });
+      grid.appendChild(c);
+    });
+  };
+  play();
+};
+
+/* ---------- Fais le nombre avec les cubes ---------- */
+let CUBES = null;
+ARENA.cubes = function () {
+  const f = $("field");
+  let round = 0, lastN = 0;
+  $("stars3").textContent = "☆☆☆";
+  const play = () => {
+    f.innerHTML = "";
+    const hard = lv() >= 2;
+    let N; do { N = hard ? 6 + Math.floor(Math.random() * 15) : 2 + Math.floor(Math.random() * 8); } while (N === lastN);
+    lastN = N;
+    setArena(`Fais le nombre ${N} avec les cubes !`, `Fais le nombre ${N} avec les cubes ! Choisis ${N} cubes, puis appuie sur le bouton vert.`);
+    const W = f.clientWidth, H = f.clientHeight;
+    const rows = hard ? 2 : 1, perRow = 10, physPer = W < 520 ? 5 : 10, physRows = rows * perRow / physPer;
+    const s = Math.max(28, Math.floor(Math.min((W - 24) / physPer - 6, (H * 0.66) / physRows - 10, 90)));
+    const wrap = document.createElement("div");
+    wrap.style.cssText = "position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;padding:6px";
+    const board = document.createElement("div");
+    board.style.cssText = "display:flex;flex-direction:column;gap:10px;align-items:center";
+    let sel = 0;
+    CUBES = { n: N, round, sel: 0, rows };
+    const cubes = [];
+    for (let r = 0; r < physRows; r++) {
+      const row = document.createElement("div"); row.style.cssText = "display:flex;gap:6px";
+      for (let i = 0; i < physPer; i++) {
+        const c = document.createElement("button"); c.className = "cube"; c.dataset.i = r * physPer + i;
+        c.style.cssText = `width:${s}px;height:${s}px`;
+        c.addEventListener("click", () => {
+          if (CUBES.done) return;
+          c.classList.toggle("on"); sel += c.classList.contains("on") ? 1 : -1; CUBES.sel = sel;
+          tone(400 + sel * 40, 0.1, "triangle");
+        });
+        row.appendChild(c); cubes.push(c);
+      }
+      board.appendChild(row);
+    }
+    const ok_ = document.createElement("button"); ok_.className = "pill cubeok"; ok_.textContent = "✅ C'est bon !";
+    ok_.style.background = "#43a047";
+    ok_.addEventListener("click", () => {
+      if (CUBES.done) return;
+      if (sel === N) {
+        CUBES.done = true; round++;
+        $("stars3").textContent = "⭐".repeat(round) + "☆".repeat(3 - round);
+        sound.win(); confetti(40);
+        later(() => say(`Bravo${nm()} ! Tu as mis ${N} cubes !`), 400);
+        later(() => round >= 3 ? finish() : play(), 2400);
+      } else {
+        sound.oops();
+        say(sel < N ? `Tu as ${sel} cube${sel > 1 ? "s" : ""}. Il en faut ${N}. Ajoutes-en !` : `Tu as ${sel} cubes. Il en faut ${N}. Enlèves-en !`);
+      }
+    });
+    wrap.appendChild(board); wrap.appendChild(ok_); f.appendChild(wrap);
+  };
+  play();
+};
+
+/* ================== Jeux de saison : Halloween et Noël (apparition automatique) ================== */
+const SEASON_DEF = {
+  halloween: { from: [10, 15], to: [11, 2], prefix: "h",
+    items: [["🎃", "la citrouille"], ["👻", "le fantôme"], ["🦉", "le hibou"], ["🕷️", "l'araignée"], ["🧙", "la sorcière"], ["🍬", "le bonbon"]],
+    words: ["citrouilles", "fantômes", "hiboux", "araignées", "sorcières", "bonbons"] },
+  noel: { from: [12, 1], to: [1, 6], prefix: "n",
+    items: [["🎄", "le sapin"], ["🎅", "le Père Noël"], ["🎁", "le cadeau"], ["⛄", "le bonhomme de neige"], ["🔔", "la cloche"], ["⭐", "l'étoile"], ["🦌", "le renne"]],
+    words: ["sapins", "Pères Noël", "cadeaux", "bonshommes de neige", "cloches", "étoiles", "rennes"] }
+};
+const SEASON_OTHER = [["🍎", "la pomme"], ["🚗", "la voiture"], ["🐶", "le chien"], ["⚽", "le ballon"], ["🌻", "la fleur"], ["🐟", "le poisson"]];
+function seasonNow() {
+  let d = new Date();
+  try { if (window.__FAKE_DATE) { const p = String(window.__FAKE_DATE).split("-").map(Number); d = new Date(p[0], p[1] - 1, p[2]); } } catch (e) {}
+  const md = (d.getMonth() + 1) * 100 + d.getDate();
+  const k = a => a[0] * 100 + a[1];
+  const h = SEASON_DEF.halloween, n = SEASON_DEF.noel;
+  if (md >= k(h.from) && md <= k(h.to)) return "halloween";
+  if (md >= k(n.from) || md <= k(n.to)) return "noel";
+  return null;
+}
+function applySeason() {
+  const cur = seasonNow();
+  document.querySelectorAll(".season-sec").forEach(sec => { sec.hidden = sec.dataset.season !== cur; });
+}
+function seasonOf(m) { return m[0] === "h" ? SEASON_DEF.halloween : SEASON_DEF.noel; }
+function seasonCard(e) { return e; }
+function buildSeasonCount(m) {
+  const S = seasonOf(m), i = Math.floor(Math.random() * S.items.length);
+  const hi = lv() >= 2 ? 9 : 6;
+  const n = fresh(m, () => 1 + Math.floor(Math.random() * hi));
+  const e = S.items[i][0];
+  return {
+    text: `Combien de ${S.words[i]} ?`, visualHTML: `<span class="cntgrp">${Array(n).fill(e).join("")}</span>`,
+    speech: `Compte les ${S.words[i]}. Combien y en a-t-il ? Touche le bon chiffre !`,
+    sum: n, item: e, options: numCards(numOpts(n, 1, 10), n)
+  };
+}
+function buildSeasonFind(m) {
+  const S = seasonOf(m), want = nOthers() + 1;
+  const tgt = fresh(m, () => rand(S.items));
+  const pool = shuffle(S.items.filter(x => x[0] !== tgt[0]).concat(lv() >= 2 ? [] : SEASON_OTHER));
+  const others = pool.slice(0, want - 1);
+  const opts = shuffle([tgt].concat(others)).map(x => ({ html: seasonCard(x[0]), correct: x[0] === tgt[0], key: x[0] }));
+  return { text: `Où est ${tgt[1].replace(/^le /, "le ").replace(/^la /, "la ")} ?`, speech: `Où est ${tgt[1]} ? Touche dessus !`, item: tgt[0], options: opts };
+}
+function buildSeasonSuite(m) {
+  const S = seasonOf(m), hard = lv() >= 2;
+  const k = hard ? 3 : 2;
+  const set = shuffle(S.items).slice(0, k);
+  const len = hard ? 7 : 5;
+  const seq = Array.from({ length: len }, (_, i) => set[i % k][0]);
+  const ans = set[len % k][0];
+  const wrong = shuffle(S.items.map(x => x[0]).filter(x => x !== ans)).slice(0, nOthers());
+  const opts = shuffle([ans].concat(wrong)).map(x => ({ html: seasonCard(x), correct: x === ans, key: x }));
+  return { text: "Quelle est la suite ?", visual: seq.join(" ") + " ❓", speech: "Regarde bien la suite. Qu'est-ce qui vient après ? Touche dessus !", item: ans, seq: seq, options: opts };
+}
+Object.assign(QB, {
+  hcompte: () => buildSeasonCount("hcompte"), hfind: () => buildSeasonFind("hfind"), hsuite: () => buildSeasonSuite("hsuite"),
+  ncompte: () => buildSeasonCount("ncompte"), nfind: () => buildSeasonFind("nfind"), nsuite: () => buildSeasonSuite("nsuite")
+});
+applySeason();
+document.addEventListener("visibilitychange", () => { if (!document.hidden) applySeason(); });
+
 /* ================== Jeux 5-6 ans : mini-jeux ================== */
 
 /* --- Je trace : suivre un chiffre ou une lettre --- */
@@ -2825,6 +3489,8 @@ ARENA.trace = function () {
 
 /* --- Relie-points : de 1 à 16, dans l'ordre --- */
 const DOT_SHAPES = {
+  sapin: { n: "un sapin", pts: () => [[.5, .05], [.74, .4], [.6, .4], [.86, .75], [.58, .75], [.58, .95], [.42, .95], [.42, .75], [.14, .75], [.4, .4], [.26, .4]] },
+  oeuf: { n: "un œuf", pts: () => Array.from({ length: 12 }, (_, i) => { const t = 2 * Math.PI * i / 12; return [0.5 + 0.34 * Math.sin(t) * (1 - 0.16 * Math.cos(t)), 0.5 - 0.45 * Math.cos(t)]; }) },
   maison: { n: "une maison", pts: () => [[.15, .92], [.15, .5], [.5, .12], [.85, .5], [.85, .92], [.63, .92], [.63, .66], [.37, .66], [.37, .92]] },
   etoile: { n: "une étoile", pts: () => Array.from({ length: 10 }, (_, i) => { const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? 0.22 : 0.5; return [0.5 + r * Math.cos(a), 0.52 + r * Math.sin(a)]; }) },
   coeur:  { n: "un cœur", pts: n => n >= 14
@@ -2834,7 +3500,7 @@ const DOT_SHAPES = {
 ARENA.dots = function () {
   const f = $("field");
   let round = 0;
-  const order = shuffle(["maison", "etoile", "coeur"]);
+  const order = shuffle(["maison", "etoile", "coeur", "sapin", "oeuf"]).slice(0, 3);
   $("stars3").textContent = "☆☆☆";
   const play = () => {
     f.innerHTML = "";
